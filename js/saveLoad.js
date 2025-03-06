@@ -84,6 +84,13 @@ function convertVillageToObject(village) {
     hasDonePreEvent: village.hasDonePreEvent,
     hasDonePostEvent: village.hasDonePostEvent,
 
+    // 以下追加
+    buildings: village.buildings,
+    modalStates: village.modalStates,
+  
+
+
+
     // 襲撃系
     isRaidProcessDone: village.isRaidProcessDone,
     raidTurnCount: village.raidTurnCount,
@@ -124,7 +131,14 @@ function convertVillageToObject(village) {
       jobTable: [...vill.jobTable],
       action: vill.action,
       actionTable: [...vill.actionTable],
-      bodyOwner: vill.bodyOwner
+      bodyOwner: vill.bodyOwner,
+
+      // 以下追加
+      race: vill.race,
+      ares: vill.ares,
+      portraitFile: vill.portraitFile,
+      speechType: vill.speechType
+
     }))
   };
 }
@@ -165,7 +179,13 @@ function convertVillagerToObject(vill) {
     jobTable: [...vill.jobTable],
     action: vill.action,
     actionTable: [...vill.actionTable],
-    bodyOwner: vill.bodyOwner
+    bodyOwner: vill.bodyOwner,
+
+    // 以下追加
+    race: vill.race,
+    ares: vill.ares,
+    portraitFile: vill.portraitFile,
+    speechType: vill.speechType
   };
 }
 
@@ -189,7 +209,8 @@ function convertObjectToVillage(dataObj) {
   if (Array.isArray(dataObj.villageTraits)) {
     v.villageTraits = [...dataObj.villageTraits];
   }
-  v.logs = Array.isArray(dataObj.logs) ? [...dataObj.logs] : [];
+  v.logs = Array.isArray(dataObj.logs) ? [...dataObj.logs.slice(-100)] : [];
+  //v.logs = Array.isArray(dataObj.logs) ? [...dataObj.logs] : [];
   v.gameOver = !!dataObj.gameOver;
   v.hasDonePreEvent = !!dataObj.hasDonePreEvent;
   v.hasDonePostEvent = !!dataObj.hasDonePostEvent;
@@ -244,6 +265,13 @@ function convertObjectToVillager(obj) {
   vill.action = obj.action;
   vill.actionTable = Array.isArray(obj.actionTable) ? [...obj.actionTable] : [];
   vill.bodyOwner = obj.bodyOwner;
+
+  // 以下追加
+  vill.race = obj.race;
+  vill.ares = obj.ares;
+  vill.portraitFile = obj.portraitFile;
+  vill.speechType = obj.speechType;
+
 
   return vill;
 }
