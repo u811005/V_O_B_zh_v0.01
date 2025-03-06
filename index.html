@@ -7,29 +7,29 @@
 /* =====================
    ▼ CSS全体
    テーブル列構成:
-   0: 名前
-   1: 肉体
-   2: 種族
-   3: 性別(肉体性別)
-   4: 年齢(肉体年齢)
-   5: 体力
-   6: メンタル
-   7: 幸福
-   8: 仕事
-   9: 筋力
-   10: 耐久
-   11: 器用
-   12:魔力
-   13:魅力
-   14:肉体特性
-   15:知力
-   16:勤勉
-   17:倫理
-   18:勇気
-   19:好色
-   20:精神特性
-   21:趣味
-   22:(詳細: 人間関係+精神年齢+精神性別)
+   0: 姓名/名前
+   1: 身體/肉体
+   2: 種族/種族
+   3: 性別(身體性別)/性別(肉体性別)
+   4: 年齡(身體年齡)/年齢(身體年齡)
+   5: 體力/体力
+   6: 精神/メンタル
+   7: 幸福/幸福
+   8: 工作/仕事
+   9: 力量/筋力
+   10: 耐力/耐久
+   11: 靈巧/器用
+   12:魔力/魔力
+   13:魅力/魅力
+   14:身體特性/肉体特性
+   15:智力/知力
+   16:勤奮/勤勉
+   17:道德/倫理
+   18:勇氣/勇気
+   19:好色/好色
+   20:精神特性/精神特性
+   21:興趣/趣味
+   22:(詳細: 人際關係+精神年齡+精神性別)/(詳細: 人間関係+精神年齢+精神性別)
 ===================== */
 
 body {
@@ -632,49 +632,49 @@ section h2 {
 </header>
 <main>
   <section>
-    <h2>村情報</h2>
+    <h2>村莊情報</h2>
     <div class="resource-panel" id="resourcePanel"></div>
 
     <!-- 追加: セーブ/ロード ボタン群 -->
-    <button onclick="openMiracleModal()">奇跡の行使</button>
+    <button onclick="openMiracleModal()">發生奇蹟</button>
     <button onclick="openBuildingModal()">建築</button>
-    <button id="nextTurnButton" onclick="onNextTurn()">次の月へ</button>
+    <button id="nextTurnButton" onclick="onNextTurn()">下個月</button>
     <button onclick="onSaveAsJsonFile()">JSON保存</button>
-    <button onclick="onLoadFromJsonFile()">JSON読込</button>
-    <button onclick="onSaveToLocalStorage()">ローカル保存</button>
-    <button onclick="onLoadFromLocalStorage()">ローカル読込</button>
-    <button onclick="window.open('Readme.txt', '_blank')" style="margin-left: 0px;">説明</button>
+    <button onclick="onLoadFromJsonFile()">JSON讀取</button>
+    <button onclick="onSaveToLocalStorage()">本地保存</button>
+    <button onclick="onLoadFromLocalStorage()">本地讀取</button>
+    <button onclick="window.open('Readme.txt', '_blank')" style="margin-left: 0px;">說明</button>
     <!-- ファイル読込用 input (非表示) -->
     <input type="file" id="fileInput" style="display:none;" accept=".json">
   </section>
   <section>
-    <h2>村人一覧</h2>
+    <h2>村民一覧</h2>
     <table id="villagersTable">
       <thead>
         <tr>
-          <th>名前</th>      <!--0-->
-          <th>肉体</th>      <!--1-->
+          <th>姓名</th>      <!--0-->
+          <th>身體</th>      <!--1-->
           <th>種族</th>      <!--2-->
           <th>性別</th>      <!--3-->
-          <th>年齢</th>      <!--4-->
-          <th>体力</th>      <!--5-->
-          <th>メンタル</th>  <!--6-->
+          <th>年齡</th>      <!--4-->
+          <th>體力</th>      <!--5-->
+          <th>精神</th>  <!--6-->
           <th>幸福</th>      <!--7-->
           <th>行動</th>      <!--8-->
-          <th>仕事</th>      <!--9-->
-          <th>筋力</th>      <!--10-->
-          <th>耐久</th>      <!--11-->
-          <th>器用</th>      <!--12-->
+          <th>工作</th>      <!--9-->
+          <th>力量</th>      <!--10-->
+          <th>耐力</th>      <!--11-->
+          <th>靈巧</th>      <!--12-->
           <th>魔力</th>      <!--13-->
           <th>魅力</th>      <!--14-->
-          <th>肉体特性</th>  <!--15-->
-          <th>知力</th>      <!--16-->
-          <th>勤勉</th>      <!--17-->
-          <th>倫理</th>      <!--18-->
-          <th>勇気</th>      <!--19-->
+          <th>身體特性</th>  <!--15-->
+          <th>智力</th>      <!--16-->
+          <th>勤奮</th>      <!--17-->
+          <th>道德</th>      <!--18-->
+          <th>勇氣</th>      <!--19-->
           <th>好色</th>      <!--20-->
           <th>精神特性</th>  <!--21-->
-          <th>趣味</th>      <!--22-->
+          <th>興趣</th>      <!--22-->
           <th>詳細</th>      <!--23-->
         </tr>
       </thead>
@@ -683,33 +683,33 @@ section h2 {
     </table>
   </section>
   <section id="visitorsSection" style="display:none;">
-    <h2>訪問者一覧</h2>
+    <h2>訪客一覧</h2>
     <table id="visitorsTable">
       <thead>
         <tr>
-          <th>名前</th>      <!--0-->
-          <th>肉体</th>      <!--1-->
+          <th>姓名</th>      <!--0-->
+          <th>身體</th>      <!--1-->
           <th>種族</th>      <!--2-->
           <th>性別</th>      <!--3-->
-          <th>年齢</th>      <!--4-->
-          <th>体力</th>      <!--5-->
-          <th>メンタル</th>  <!--6-->
+          <th>年齡</th>      <!--4-->
+          <th>體力</th>      <!--5-->
+          <th>精神</th>  <!--6-->
           <th>幸福</th>      <!--7-->
           <th>行動</th>      <!--8-->
-          <th>仕事</th>      <!--9-->
-          <th>筋力</th>      <!--10-->
-          <th>耐久</th>      <!--11-->
-          <th>器用</th>      <!--12-->
+          <th>工作</th>      <!--9-->
+          <th>力量</th>      <!--10-->
+          <th>耐力</th>      <!--11-->
+          <th>靈巧</th>      <!--12-->
           <th>魔力</th>      <!--13-->
           <th>魅力</th>      <!--14-->
-          <th>肉体特性</th>  <!--15-->
-          <th>知力</th>      <!--16-->
-          <th>勤勉</th>      <!--17-->
-          <th>倫理</th>      <!--18-->
-          <th>勇気</th>      <!--19-->
+          <th>身體特性</th>  <!--15-->
+          <th>智力</th>      <!--16-->
+          <th>勤奮</th>      <!--17-->
+          <th>道德</th>      <!--18-->
+          <th>勇氣</th>      <!--19-->
           <th>好色</th>      <!--20-->
           <th>精神特性</th>  <!--21-->
-          <th>趣味</th>      <!--22-->
+          <th>興趣</th>      <!--22-->
           <th>詳細</th>      <!--23-->
         </tr>
       </thead>
@@ -722,29 +722,29 @@ section h2 {
     <table id="raidEnemiesTable">
       <thead>
         <tr>
-          <th>名前</th>      <!--0-->
-          <th>肉体</th>      <!--1-->
+          <th>姓名</th>      <!--0-->
+          <th>身體</th>      <!--1-->
           <th>種族</th>      <!--2-->
           <th>性別</th>      <!--3-->
-          <th>年齢</th>      <!--4-->
-          <th>体力</th>      <!--5-->
-          <th>メンタル</th>  <!--6-->
+          <th>年齡</th>      <!--4-->
+          <th>體力</th>      <!--5-->
+          <th>精神</th>      <!--6-->
           <th>幸福</th>      <!--7-->
           <th>行動</th>      <!--8-->
-          <th>仕事</th>      <!--9-->
-          <th>筋力</th>      <!--10-->
-          <th>耐久</th>      <!--11-->
-          <th>器用</th>      <!--12-->
+          <th>工作</th>      <!--9-->
+          <th>力量</th>      <!--10-->
+          <th>耐力</th>      <!--11-->
+          <th>靈巧</th>      <!--12-->
           <th>魔力</th>      <!--13-->
           <th>魅力</th>      <!--14-->
-          <th>肉体特性</th>  <!--15-->
-          <th>知力</th>      <!--16-->
-          <th>勤勉</th>      <!--17-->
-          <th>倫理</th>      <!--18-->
-          <th>勇気</th>      <!--19-->
+          <th>身體特性</th>  <!--15-->
+          <th>智力</th>      <!--16-->
+          <th>勤奮</th>      <!--17-->
+          <th>道德</th>      <!--18-->
+          <th>勇氣</th>      <!--19-->
           <th>好色</th>      <!--20-->
           <th>精神特性</th>  <!--21-->
-          <th>趣味</th>      <!--22-->
+          <th>興趣</th>      <!--22-->
           <th>詳細</th>      <!--23-->
         </tr>
       </thead>
@@ -771,75 +771,75 @@ section h2 {
 <!-- モーダル: 奇跡の行使 -->
 <div id="modalOverlay"></div>
 <div id="miracleModal">
-  <div class="modal-header">奇跡の行使</div>
+  <div class="modal-header">奇蹟</div>
   <div class="modal-content">
-    <label>奇跡を選択:
+    <label>選擇奇蹟:
       <select id="miracleSelect" onchange="onSelectMiracleChange()"></select>
     </label>
     <div id="miracleOptions" style="margin-top:5px;"></div>
   </div>
   <div class="modal-buttons">
-    <button onclick="performMiracle()">行使</button>
-    <button onclick="closeMiracleModal()">閉じる</button>
+    <button onclick="performMiracle()">執行</button>
+    <button onclick="closeMiracleModal()">關閉</button>
   </div>
 </div>
 
 <!-- モーダル: 迎撃フェーズ(襲撃イベント) -->
 <div id="raidOverlay"></div>
 <div id="raidModal">
-  <h2>襲撃発生中！ 迎撃フェーズ</h2>
+  <h2>發生襲擊！ 迎撃階段</h2>
   <div class="raid-section">
-    <h3>罠作成部隊</h3>
+    <h3>陷阱作成部隊</h3>
     <table id="defenderTable">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>体力</th>
+          <th>姓名</th>
+          <th>體力</th>
           <th>行動</th>
-          <th>筋力</th>
-          <th>耐久</th>
+          <th>力量</th>
+          <th>耐力</th>
           <th>魔力</th>
-          <th>勇気</th>
+          <th>勇氣</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
   <div class="raid-section">
-    <h3>迎撃部隊</h3>
+    <h3>迎擊部隊</h3>
     <table id="raidersTable">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>体力</th>
-          <th>筋力</th>
-          <th>耐久</th>
+          <th>姓名</th>
+          <th>體力</th>
+          <th>力量</th>
+          <th>耐力</th>
           <th>魔力</th>
-          <th>勇気</th>
+          <th>勇氣</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
   <div class="raid-section">
-    <h3>襲撃者</h3>
+    <h3>襲擊者</h3>
     <table id="enemyTable">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>体力</th>
+          <th>姓名</th>
+          <th>體力</th>
           <th>行動</th>
-          <th>筋力</th>
-          <th>耐久</th>
+          <th>力量</th>
+          <th>耐力</th>
           <th>魔力</th>
-          <th>勇気</th>
+          <th>勇氣</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
   <div class="raid-section">
-    <h3>迎撃ログ</h3>
+    <h3>迎擊紀錄</h3>
     <div id="raidLogArea"></div>
   </div>
   <div class="raid-buttons">
@@ -854,7 +854,7 @@ section h2 {
   <div id="buildingContent" class="modal-content">
   </div>
   <div class="modal-buttons">
-    <button onclick="closeBuildingModal()">閉じる</button>
+    <button onclick="closeBuildingModal()">關閉</button>
   </div>
 </div>
 
@@ -871,7 +871,7 @@ section h2 {
     </div>
   </div>
   <div class="modal-buttons">
-    <button onclick="closeConversationModal()">閉じる</button>
+    <button onclick="closeConversationModal()">關閉</button>
   </div>
 </div>
 
@@ -880,8 +880,8 @@ section h2 {
 <div id="exchangeModal">
   <div class="exchange-content">
     <div class="exchange-title">
-      <h3>交換の奇跡</h3>
-      <p>二人の魂は互いの体を見て驚いている...</p>
+      <h3>交換的奇蹟</h3>
+      <p>兩人的靈魂正驚訝地看著彼此的身體...</p>
     </div>
     <div class="character-exchange">
       <div class="exchange-character">
@@ -903,7 +903,7 @@ section h2 {
     </div>
   </div>
   <div class="modal-buttons">
-    <button onclick="closeExchangeModal()">閉じる</button>
+    <button onclick="closeExchangeModal()">關閉</button>
   </div>
 </div>
 
@@ -965,7 +965,7 @@ window.onLoadFromJsonFile = () => {
     if (newVillage) {
       // 現在の村データを上書きする
       Object.assign(theVillage, newVillage);
-      theVillage.log("JSONファイルからロードしました");
+      theVillage.log("從JSON檔案載入。");
       // 画面更新
       updateUI(theVillage);
     }
@@ -978,10 +978,10 @@ window.onLoadFromLocalStorage = () => {
   const newVillage = loadVillageFromLocalStorage();
   if (newVillage) {
     Object.assign(theVillage, newVillage);
-    theVillage.log("ローカルストレージからロードしました");
+    theVillage.log("從本地儲存中載入。");
     updateUI(theVillage);
   } else {
-    alert("ローカルストレージにセーブデータがありません。");
+    alert("本地儲存中沒有儲存資料。");
   }
 };
 
