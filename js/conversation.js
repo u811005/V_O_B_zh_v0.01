@@ -364,11 +364,11 @@ export function openConversationModal(character) {
     portrait.src = portraitPath;
     portrait.onerror = () => {
       console.error(`Portrait image not found: ${portraitPath}`);
-      portrait.src = 'images/portraits/DEFAULT.png';
+      portrait.src = 'images/portraits/default.png';
     };
   } catch (error) {
     console.error('Error loading portrait:', error);
-    portrait.src = 'images/portraits/DEFAULT.png';
+    portrait.src = 'images/portraits/default.png';
   }
   
   // キャラクターの状態を判定

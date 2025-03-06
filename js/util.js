@@ -73,6 +73,6 @@ export function randNormalInRange(min, max, mean = (min + max) / 2, stddev = (ma
  * @returns {string} 顔グラフィックのパス
  */
 export function getPortraitPath(character) {
-  if (!character) return 'images/portraits/DEFAULT.png';
-  return `images/portraits/${character.portraitFile || "DEFAULT.png"}`;
+  if (!character) return 'images/portraits/default.png';
+  return `images/portraits/${character.portraitFile || "default.png"}`;
 }
