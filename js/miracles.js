@@ -102,11 +102,11 @@ function createVillagerSelect(id, village) {
     sel.appendChild(opp);
   });
 
-  // 襲撃者を追加
+  // 襲擊者を追加
   village.raidEnemies.forEach(vv=>{
     let opp=document.createElement("option");
     opp.value=vv.name;
-    opp.textContent=`${vv.name}(襲撃者)`;
+    opp.textContent=`${vv.name}(襲擊者)`;
     sel.appendChild(opp);
   });
 
@@ -151,13 +151,13 @@ export function performMiracle(village) {
   let vA=null;
   let vB=null;
   if (ta && ta.value) {
-    // 村人、訪問者、襲撃者から対象を検索
+    // 村人、訪問者、襲擊者から対象を検索
     vA = village.villagers.find(x=>x.name===ta.value) ||
          village.visitors.find(x=>x.name===ta.value) ||
          village.raidEnemies.find(x=>x.name===ta.value);
   }
   if (tb && tb.value) {
-    // 村人、訪問者、襲撃者から対象を検索
+    // 村人、訪問者、襲擊者から対象を検索
     vB = village.villagers.find(x=>x.name===tb.value) ||
          village.visitors.find(x=>x.name===tb.value) ||
          village.raidEnemies.find(x=>x.name===tb.value);
@@ -462,7 +462,7 @@ export function doExchange(a, b, v, isLightning) {
     bodyOwner: a.bodyOwner,
     race: a.race,  // 種族も交換
     portraitFile: a.portraitFile,  // 顔グラフィック情報を追加
-    raiderPortrait: a.raiderPortrait, // 襲撃者用の顔グラフィック
+    raiderPortrait: a.raiderPortrait, // 襲擊者用の顔グラフィック
     visitorPortrait: a.visitorPortrait, // 訪問者用の顔グラフィック
 
     // 肉体パラメータ
@@ -483,7 +483,7 @@ export function doExchange(a, b, v, isLightning) {
   a.bodyOwner = b.bodyOwner;
   a.race = b.race;
   a.portraitFile = b.portraitFile;  // 顔グラフィック情報を交換
-  a.raiderPortrait = b.raiderPortrait; // 襲撃者用の顔グラフィック
+  a.raiderPortrait = b.raiderPortrait; // 襲擊者用の顔グラフィック
   a.visitorPortrait = b.visitorPortrait; // 訪問者用の顔グラフィック
   a.hp = b.hp;
   a.str = b.str;
@@ -499,7 +499,7 @@ export function doExchange(a, b, v, isLightning) {
   b.bodyOwner = exchangeParams.bodyOwner;
   b.race = exchangeParams.race;
   b.portraitFile = exchangeParams.portraitFile;  // 顔グラフィック情報を交換
-  b.raiderPortrait = exchangeParams.raiderPortrait; // 襲撃者用の顔グラフィック
+  b.raiderPortrait = exchangeParams.raiderPortrait; // 襲擊者用の顔グラフィック
   b.visitorPortrait = exchangeParams.visitorPortrait; // 訪問者用の顔グラフィック
   b.hp = exchangeParams.hp;
   b.str = exchangeParams.str;
@@ -562,9 +562,9 @@ function openExchangeModal(personA, personB) {
   
   // 口調タイプの決定を修正
   const getSpeechType = (person) => {
-    // 襲撃者の場合は襲撃者タイプを使用
-    if (person.mindTraits && person.mindTraits.includes("襲撃者")) {
-      // 名前から襲撃者タイプを抽出
+    // 襲擊者の場合は襲擊者タイプを使用
+    if (person.mindTraits && person.mindTraits.includes("襲擊者")) {
+      // 名前から襲擊者タイプを抽出
       const raiderTypes = ["山賊", "哥布林", "狼", "獨眼巨魔", "哈比"];
       for (const type of raiderTypes) {
         if (person.name.includes(type)) {
@@ -711,11 +711,11 @@ const EXCHANGE_SPEECH_PATTERNS = {
     "うわー！これって入れ替わり！？信じらんない～！",
     "新しい体ゲットしちゃった！どんな感じか試してみよっと！"
   ],
-  // 襲撃者用のパターンを追加
+  // 襲擊者用のパターンを追加
   "山賊": [
     "くそっ、なんだこの体は！戦いづらいじゃねえか！",
     "おい、どうなってやがる！元の体に戻せ！",
-    "ちっ、こんな体でも襲撃は続けるぜ！"
+    "ちっ、こんな体でも襲擊は続けるぜ！"
   ],
   "哥布林": [
     "ゴブゴブ！体が変わったのだ！",

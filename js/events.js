@@ -334,8 +334,8 @@ export function endOfMonthProcess(v) {
   if (totalF>0) v.log(`食料-${totalF}`);
   if (totalMat>0) v.log(`資材-${totalMat}`);
 
-  let removeList=["豊穣","訪問者","襲撃者","ミダス"];
-  // "襲撃中" はここでは消さない(raid.js 内で完了時に消す)
+  let removeList=["豊穣","訪問者","襲擊者","ミダス"];
+  // "襲擊中" はここでは消さない(raid.js 内で完了時に消す)
   v.villageTraits = v.villageTraits.filter(tr=> !removeList.includes(tr));
 
   // 狂乱の解除処理を最初に行う
@@ -450,7 +450,7 @@ export function endOfMonthProcess(v) {
  *  - 食料/資材0時のペナルティ
  *  - 幸福度調整
  *  - jobTable再構築
- *  - 襲撃判定
+ *  - 襲擊判定
  */
 export function doMonthStartProcess(v) {
   v.log("【月初処理】");
@@ -579,8 +579,8 @@ export function doMonthStartProcess(v) {
 
 
 
-  // 既に"襲撃中"でなければ、20%で襲撃開始
-  if (!v.villageTraits.includes("襲撃中")) {
+  // 既に"襲擊中"でなければ、20%で襲擊開始
+  if (!v.villageTraits.includes("襲擊中")) {
     if (Math.random()<0.2) {
       startRaidEvent(v);
     }
@@ -668,8 +668,8 @@ export function doMonthStartProcess(v) {
       }
     }
 
-    // 襲撃関連の行動追加（状態異常がない場合のみ）
-    if (v.villageTraits.includes("襲撃中")) {
+    // 襲擊関連の行動追加（状態異常がない場合のみ）
+    if (v.villageTraits.includes("襲擊中")) {
       p.actionTable.push("迎撃", "罠作成");
     }
 
@@ -877,10 +877,10 @@ import { doExchange } from "./raid.js";
 function randFloat(min,max){ return Math.random()*(max-min)+min; }
 
 function finalizeRaid(isSuccess, reason, village) {
-  village.log(`【襲撃結果】${isSuccess?"防衛成功":"防衛失敗"} : ${reason}`);
+  village.log(`【襲擊結果】${isSuccess?"防衛成功":"防衛失敗"} : ${reason}`);
   let rlog=document.getElementById("raidLogArea");
-  rlog.innerHTML+=`<br>→ 襲撃結果: ${isSuccess?"防衛成功":"失敗"} (${reason})<br>モーダルを閉じます...`;
-  alert(`襲撃結果: ${isSuccess?"防衛成功":"失敗"} (${reason})`);
+  rlog.innerHTML+=`<br>→ 襲擊結果: ${isSuccess?"防衛成功":"失敗"} (${reason})<br>モーダルを閉じます...`;
+  alert(`襲擊結果: ${isSuccess?"防衛成功":"失敗"} (${reason})`);
   endRaidProcess(isSuccess, false, village);
 }
 
@@ -893,15 +893,15 @@ export function openRaidModal(village) {
 
   updateRaidTables(village);
   const rlog=document.getElementById("raidLogArea");
-  rlog.innerHTML="襲撃が始まります。<br>「次のステップ」ボタンを押して進めてください。";
+  rlog.innerHTML="襲擊が始まります。<br>「次のステップ」ボタンを押して進めてください。";
 
   let trapMakers = village.villagers.filter(p=> p.action==="罠作成");
   let defenders  = village.villagers.filter(p=> p.action==="迎撃");
 
   if (trapMakers.length===0 && defenders.length===0) {
     // 確認ダイアログを表示
-    if (confirm("迎撃および罠作成の村人が一人もいません。このまま進めると襲撃は自動的に失敗します。続けますか？")) {
-      rlog.innerHTML+=`<br>迎撃する者がいません！ → 自動的に襲撃成功(敵側)。`;
+    if (confirm("迎撃および罠作成の村人が一人もいません。このまま進めると襲擊は自動的に失敗します。続けますか？")) {
+      rlog.innerHTML+=`<br>迎撃する者がいません！ → 自動的に襲擊成功(敵側)。`;
       village.raidActionQueue=[ {type:"AUTO_FAIL"} ];
       village.currentActionIndex=0;
     } else {

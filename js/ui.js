@@ -27,16 +27,16 @@ export function updateUI(v) {
 
   rp.innerHTML = `
     <div class="resource-box">年/月<br>${v.year}年${v.month}月</div>
-    <div class="resource-box">食料<br>${v.food}</div>
-    <div class="resource-box">資材<br>${v.materials}</div>
+    <div class="resource-box">食材<br>${v.food}</div>
+    <div class="resource-box">建材<br>${v.materials}</div>
     <div class="resource-box">資金<br>${v.funds}</div>
     <div class="resource-box">魔素<br>${v.mana}</div>
-    <div class="resource-box">名声<br>${v.fame}</div>
+    <div class="resource-box">名聲<br>${v.fame}</div>
     <div class="resource-box">技術<br>${v.tech}</div>
     <div class="resource-box">治安<br>${v.security}</div>
     <div class="resource-box">規模<br>${v.building}</div>
     <div class="resource-box">人口/上限<br>${v.villagers.length}/${v.popLimit}</div>
-    <div class="resource-box">村特性<br>${v.villageTraits.join(",")}</div>
+    <div class="resource-box">村莊特性<br>${v.villageTraits.join(",")}</div>
   `;
 
   const tb = document.querySelector("#villagersTable tbody");
@@ -196,8 +196,8 @@ export function updateUI(v) {
       <details>
         <summary>詳細</summary>
         <div>精神性別: ${person.spiritSex}</div>
-        <div>精神年齢: ${person.spiritAge}</div>
-        <div>人間関係: ${person.relationships}</div>
+        <div>精神年齡: ${person.spiritAge}</div>
+        <div>人際關係: ${person.relationships}</div>
       </details>
     `;
     tr.appendChild(tdFold);
@@ -411,25 +411,25 @@ export function updateUI(v) {
     });
   }
 
-  // 襲撃者一覧テーブル更新
+  // 襲擊者一覧テーブル更新
   const raidTb = document.querySelector("#raidEnemiesTable tbody");
 
-  // 襲撃者セクション表示制御
+  // 襲擊者セクション表示制御
   const raidSection = document.getElementById("raidEnemiesSection");
   if (raidSection) {
-    if (v.villageTraits.includes("襲撃中") && v.raidEnemies.length > 0) {
+    if (v.villageTraits.includes("襲擊中") && v.raidEnemies.length > 0) {
       raidSection.style.display = "block";
     } else {
       raidSection.style.display = "none";
     }
   }
 
-  // 襲撃者テーブル更新
+  // 襲擊者テーブル更新
   if (raidTb) {
     raidTb.innerHTML="";
 
-    // 襲撃中の場合のみ表示
-    if (v.villageTraits.includes("襲撃中") && v.raidEnemies.length > 0) {
+    // 襲擊中の場合のみ表示
+    if (v.villageTraits.includes("襲擊中") && v.raidEnemies.length > 0) {
       v.raidEnemies.forEach(person=>{
         let tr=document.createElement("tr");
 
@@ -559,8 +559,8 @@ export function updateUI(v) {
           <details>
             <summary>詳細</summary>
             <div>精神性別: ${person.spiritSex}</div>
-            <div>精神年齢: ${person.spiritAge}</div>
-            <div>人間関係: ${person.relationships}</div>
+            <div>精神年齡: ${person.spiritAge}</div>
+            <div>人際關係: ${person.relationships}</div>
           </details>
         `;
         tr.appendChild(tdFold);

@@ -302,7 +302,7 @@ export function createRandomVillager({ sex, minAge, maxAge, params = {}, ranges 
   refreshJobTable(vill);
   
   // 顔グラフィックの設定
-  // 襲撃者でない場合のみ顔グラフィックを設定
+  // 襲擊者でない場合のみ顔グラフィックを設定
   if (!params.job || !["野盗", "ゴブリン", "狼", "キュクロプス", "ハーピー"].includes(params.job)) {
     if (sex === "男") {
       // 男性の場合の処理
@@ -997,8 +997,8 @@ export function refreshJobTable(v) {
     }
   }
 
-  // 襲撃関連の行動追加（状態異常がない場合のみ）
-  if (theVillage.villageTraits.includes("襲撃中")) {
+  // 襲擊関連の行動追加（状態異常がない場合のみ）
+  if (theVillage.villageTraits.includes("襲擊中")) {
     v.actionTable.unshift("迎撃", "罠作成");
   }
 }

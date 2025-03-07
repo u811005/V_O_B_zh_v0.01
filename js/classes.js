@@ -29,7 +29,7 @@ export class Village {
     this.hasDonePreEvent = false;
     this.hasDonePostEvent = false;
 
-    // 襲撃イベント用フラグ/データ
+    // 襲擊イベント用フラグ/データ
     this.raidEnemies = [];
     this.isRaidProcessDone = false;
     this.raidTurnCount = 0;

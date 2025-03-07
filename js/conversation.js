@@ -375,7 +375,7 @@ export function openConversationModal(character) {
   const isExhausted = character.hp <= 33 || character.mp <= 33;
   const isTired = (character.hp > 33 && character.hp <= 59) || (character.mp > 33 && character.mp <= 59);
   const isHealthy = character.hp > 59 && character.mp > 59;
-  const isUnderRaid = theVillage.villageTraits.includes("襲撃中");
+  const isUnderRaid = theVillage.villageTraits.includes("襲擊中");
   const isVisitor = character.mindTraits && character.mindTraits.includes("訪問者");
   const hasFailedRecruitment = character.mindTraits && character.mindTraits.includes("勧誘失敗");
 
@@ -389,8 +389,8 @@ export function openConversationModal(character) {
   // 状態に応じたセリフを生成
   let statusText = "";
   
-  // 襲撃者の場合は専用のセリフを表示
-  if (character.mindTraits && character.mindTraits.includes("襲撃者") && character.raiderDialogues) {
+  // 襲擊者の場合は専用のセリフを表示
+  if (character.mindTraits && character.mindTraits.includes("襲擊者") && character.raiderDialogues) {
     const raiderLine = character.raiderDialogues[Math.floor(Math.random() * character.raiderDialogues.length)];
     statusText = `<p><strong></strong> ${raiderLine}</p>`;
   } else if (isUnderRaid) {
@@ -429,7 +429,7 @@ export function openConversationModal(character) {
       openSeductionModal(character);
     });
   } else if (isUnderRaid && theVillage.villagers.includes(character)) {
-    // 襲撃中の村人の場合は迎撃・罠作成ボタンを表示
+    // 襲擊中の村人の場合は迎撃・罠作成ボタンを表示
     actionButtons.innerHTML = `
       <button id="assignDefender" class="${character.action === '迎撃' ? 'active-action' : ''}">迎撃任命</button>
       <button id="assignTrapMaker" class="${character.action === '罠作成' ? 'active-action' : ''}">罠作成任命</button>
@@ -474,7 +474,7 @@ function getStatusLine(character, status) {
       raid: {
         "普通Ｍ": ["危険な状況だね...気を付けないと。", "みんなで村を守らないと。"],
         "丁寧Ｍ": ["非常事態ですね。万全の備えを。", "村の安全が第一です。"],
-        "強気Ｍ": ["来るなら来い！やってやる！", "襲撃者なんか怖くないぜ！"],
+        "強気Ｍ": ["来るなら来い！やってやる！", "襲擊者なんか怖くないぜ！"],
         "乱暴": ["ぶっ潰してやる！", "かかって来い！"],
         "お調子者": ["やべぇ状況っすね～", "なんとかなるっしょ！","いいとこ見せてやるぜ！"],
         "陰気": ["こ、怖いです...", "ど、どうすれば..."],

@@ -128,10 +128,10 @@ function doJobAction(p, v) {
     case "醸造":
       doBrewing(p, v);
       break;
-    // "罠作成", "迎撃" は襲撃専用(raid.js)で処理するので、ここはログだけ
+    // "罠作成", "迎撃" は襲擊専用(raid.js)で処理するので、ここはログだけ
     case "罠作成":
     case "迎撃":
-      v.log(`${p.name}は${p.action}(襲撃専用フェーズで実行)`);
+      v.log(`${p.name}は${p.action}(襲擊専用フェーズで実行)`);
       break;
 
     default:

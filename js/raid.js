@@ -8,11 +8,11 @@ import { updateUI } from "./ui.js";
 import { MALE_PORTRAIT_FILES, usedPortraits } from "./createVillagers.js";
 
 /**
- * 襲撃者タイプの定義
+ * 襲擊者タイプの定義
  */
 const RAIDER_TYPES = [
   {
-    type: "野盗",
+    type: "山賊",
     weight: 30,  // 出現率30%
     minCount: 2,
     maxCount: 3,
@@ -20,8 +20,8 @@ const RAIDER_TYPES = [
     forcedSex: "男",  // 性別を男に固定
     ageRange: { min: 18, max: 45 },  // 青年～中年
     params: {
-      job: "野盗",
-      action: "襲撃"
+      job: "山賊",
+      action: "襲擊"
     },
     portraits: [
       "BAN1.png", "BAN2.png", "BAN3.png", "BAN4.png", "BAN5.png",
@@ -48,20 +48,20 @@ const RAIDER_TYPES = [
       "この村は今から俺たちのものだ。抵抗は無駄だ！",
       "女も寄越せ！さもなくば皆殺しだ！",
       "ここの村長を出せ！交渉したい事がある。",
-      "俺たちは飢えているんだ。食料を分けてくれないか？断れば襲撃するぞ！"
+      "俺たちは飢えているんだ。食料を分けてくれないか？断れば襲擊するぞ！"
     ]
   },
   {
-    type: "ゴブリン",
+    type: "哥布林",
     weight: 25,
     minCount: 4,
     maxCount: 5,
-    race: "ゴブリン",
+    race: "哥布林",
     forcedSex: "男",
-    ageRange: { min: 15, max: 30 },  // 若いゴブリン
+    ageRange: { min: 15, max: 30 },  // 若い哥布林
     params: {
-      job: "ゴブリン",
-      action: "襲撃"
+      job: "哥布林",
+      action: "襲擊"
     },
     portraits: [
       "GOB1.png", "GOB2.png", "GOB3.png", "GOB4.png", "GOB5.png",
@@ -84,8 +84,8 @@ const RAIDER_TYPES = [
       "キヒヒ！村の宝物をよこすのだ！",
       "ゴブゴブ！人間は弱いから殺して食べるのだ！",
       "キャッキャッ！女を連れて帰るのだ！",
-      "ゴブリン族の力を思い知るのだ！",
-      "人間の村を奪うのだ！ここはゴブリンの新しい巣になるのだ！",
+      "哥布林族の力を思い知るのだ！",
+      "人間の村を奪うのだ！ここは哥布林の新しい巣になるのだ！",
       "食料をよこせ！さもなくば皆殺しにするのだ！"
     ]
   },
@@ -98,7 +98,7 @@ const RAIDER_TYPES = [
     ageRange: { min: 3, max: 8 },  // 若い～成熟した狼
     params: {
       job: "狼",
-      action: "襲撃"
+      action: "襲擊"
     },
     ranges: {
       hp: [40, 60],
@@ -122,7 +122,7 @@ const RAIDER_TYPES = [
       "キャンキャン...（仲間を呼んでいるようだ）",
       "フンフン...（村の匂いを嗅いでいる）",
       "ハァハァ...（獲物を前に興奮している）",
-      "ウォォォン！（襲撃の合図を出している）"
+      "ウォォォン！（襲擊の合図を出している）"
     ],
     portraits: [
       "WOLF1.png", "WOLF2.png", "WOLF3.png", "WOLF4.png", "WOLF5.png",
@@ -130,7 +130,7 @@ const RAIDER_TYPES = [
     ],
   },
   {
-    type: "キュクロプス",
+    type: "獨眼巨魔",
     weight: 10,
     minCount: 1,
     maxCount: 1,
@@ -138,8 +138,8 @@ const RAIDER_TYPES = [
     forcedSex: "男",
     ageRange: { min: 30, max: 60 },  // 成熟～老齢の巨人
     params: {
-      job: "キュクロプス",
-      action: "襲撃"
+      job: "獨眼巨魔",
+      action: "襲擊"
     },
     ranges: {
       hp: [90, 120],
@@ -160,7 +160,7 @@ const RAIDER_TYPES = [
       "腹が減った...人間を食べる...！",
       "この村を平らにしてやる！逃げられると思うな！",
       "お前たちの家畜をよこせ！抵抗するなら踏み潰す！",
-      "キュクロプスの怒りを知るがいい！",
+      "獨眼巨魔の怒りを知るがいい！",
       "人間は弱すぎる...簡単に潰せる..."
     ],
     portraits: [
@@ -168,16 +168,16 @@ const RAIDER_TYPES = [
     ],
   },
   {
-    type: "ハーピー",
+    type: "哈比",
     weight: 15,
     minCount: 2,
     maxCount: 3,
-    race: "ハーピー",
+    race: "哈比",
     forcedSex: "女",
-    ageRange: { min: 16, max: 25 },  // 若い～成熟したハーピー
+    ageRange: { min: 16, max: 25 },  // 若い～成熟した哈比
     params: {
-      job: "ハーピー",
-      action: "襲撃"
+      job: "哈比",
+      action: "襲擊"
     },
     portraits: [
       "HARPY1.png", "HARPY2.png", "HARPY3.png", "HARPY4.png", 
@@ -213,7 +213,7 @@ const RAIDER_TYPES = [
 ];
 
 /**
- * 重み付き抽選で襲撃者タイプを選択
+ * 重み付き抽選で襲擊者タイプを選択
  */
 function selectRaiderType() {
   const totalWeight = RAIDER_TYPES.reduce((sum, type) => sum + type.weight, 0);
@@ -229,12 +229,12 @@ function selectRaiderType() {
 }
 
 /**
- * 襲撃イベント開始を修正
+ * 襲擊イベント開始を修正
  */
 export function startRaidEvent(village) {
-  village.log("【襲撃イベント発生】20%判定により発生");
-  if (!village.villageTraits.includes("襲撃中")) {
-    village.villageTraits.push("襲撃中");
+  village.log("【襲擊事件發生】20%根據判定發生");
+  if (!village.villageTraits.includes("襲擊中")) {
+    village.villageTraits.push("襲擊中");
   }
 
   const raiderType = selectRaiderType();
@@ -253,8 +253,8 @@ export function startRaidEvent(village) {
       ranges: raiderType.ranges
     });
 
-    // 襲撃者の特性とダイアログを設定
-    e.mindTraits.push("襲撃者");
+    // 襲擊者の特性とダイアログを設定
+    e.mindTraits.push("襲擊者");
     e.raiderDialogues = raiderType.dialogues || [];
 
     // 顔グラフィックの設定（直接portraitFileを設定）
@@ -281,8 +281,8 @@ export function startRaidEvent(village) {
     else {
       // 強制的な肉体特性を追加
       if (raiderType.forcedBodyTraits) {
-        // キュクロプスの場合は強制的な特性のみを持つ
-        if (raiderType.type === "キュクロプス") {
+        // 獨眼巨魔の場合は強制的な特性のみを持つ
+        if (raiderType.type === "獨眼巨魔") {
           e.bodyTraits = [...raiderType.forcedBodyTraits];
         } else {
           raiderType.forcedBodyTraits.forEach(trait => {
@@ -308,10 +308,10 @@ export function startRaidEvent(village) {
     }
 
     e.jobTable = [raiderType.params.job];
-    e.actionTable = ["襲撃"];
+    e.actionTable = ["襲擊"];
     e.job = raiderType.params.job;
-    e.action = "襲撃";
-    e.name = `${raiderType.type}の${e.name}`;
+    e.action = "襲擊";
+    e.name = `${raiderType.type} ${e.name}`;
 
     // ニート特性は不要なので削除
     if (e.mindTraits.includes("ニート")) {
@@ -333,23 +333,23 @@ export function startRaidEvent(village) {
   village.currentActionIndex = 0;
   village.raidActionQueue = [];
 
-  // 襲撃者の数に応じてメッセージを変更
+  // 襲擊者の数に応じてメッセージを変更
   if (enemyCount === 1) {
-    village.log(`${raiderType.type}が1体襲来！`);
+    village.log(`1體${raiderType.type}襲擊！`);
   } else {
-    village.log(`${raiderType.type}(${enemyCount}体)が襲来！`);
+    village.log(`${raiderType.type}(${enemyCount}體)襲擊！`);
   }
 
   let nextBtn = document.getElementById("nextTurnButton");
   if (nextBtn) {
-    nextBtn.innerHTML = `<b style="color:red;">迎撃開始</b>`;
+    nextBtn.innerHTML = `<b style="color:red;">迎擊開始</b>`;
   }
 
   // アラートメッセージも数に応じて変更
   if (enemyCount === 1) {
-    alert(`【襲撃発生】${raiderType.type}が村に近づいています。迎撃してください！`);
+    alert(`【襲擊發生】${raiderType.type}正在接近村莊。請進行迎擊！`);
   } else {
-    alert(`【襲撃発生】${raiderType.type}の集団が村に近づいています。迎撃してください！`);
+    alert(`【襲擊發生】${raiderType.type}的集團正接近村莊。請進行迎擊！`);
   }
 
   const raidSection = document.getElementById("raidEnemiesSection");
@@ -357,7 +357,7 @@ export function startRaidEvent(village) {
 }
 
 /**
- * 迎撃モーダルを開く (nextTurnから呼ばれる)
+ * 迎擊モーダルを開く (nextTurnから呼ばれる)
  */
 export function openRaidModal(village) {
   document.getElementById("raidOverlay").style.display="block";
@@ -365,13 +365,13 @@ export function openRaidModal(village) {
 
   updateRaidTables(village);
   const rlog=document.getElementById("raidLogArea");
-  rlog.innerHTML="襲撃が始まります。<br>「次のステップ」ボタンを押して進めてください。";
+  rlog.innerHTML="襲擊開始。<br>請按「下一步」。";
 
-  let trapMakers = village.villagers.filter(p=> p.action==="罠作成");
-  let defenders  = village.villagers.filter(p=> p.action==="迎撃");
+  let trapMakers = village.villagers.filter(p=> p.action==="陷阱作成");
+  let defenders  = village.villagers.filter(p=> p.action==="迎擊");
 
   if (trapMakers.length===0 && defenders.length===0) {
-    rlog.innerHTML+=`<br>迎撃する者がいません！ → 自動的に襲撃成功(敵側)。`;
+    rlog.innerHTML+=`<br>沒有人可以迎擊！ → 襲擊成功(敵方)。`;
     village.raidActionQueue=[ {type:"AUTO_FAIL"} ];
     village.currentActionIndex=0;
   } else {
@@ -384,7 +384,7 @@ export function openRaidModal(village) {
  * 罠作成(最初の行動)のキューを作成
  */
 function createTrapActionQueue(village) {
-  let trapMakers = village.villagers.filter(p=>p.action==="罠作成" && p.hp>0);
+  let trapMakers = village.villagers.filter(p=>p.action==="陷阱作成" && p.hp>0);
   trapMakers = shuffleArray(trapMakers);
 
   village.raidActionQueue=[];
@@ -416,7 +416,7 @@ export function proceedRaidAction(village) {
       doOneCombatAction(action, village);
       break;
     case "AUTO_FAIL":
-      finalizeRaid(false, "迎撃部隊0", village);
+      finalizeRaid(false, "迎擊部隊0", village);
       return;
   }
   village.currentActionIndex++;
@@ -428,39 +428,39 @@ function doOneTrapAction(action, village) {
   let p=action.actor;
   let logDiv=document.getElementById("raidLogArea");
   if (!p||p.hp<=0) {
-    logDiv.innerHTML+=`<br>【罠作成】${p?p.name:"??"} は行動不能`;
+    logDiv.innerHTML+=`<br>【陷阱作成】${p?p.name:"??"} 失去行動能力`;
     updateRaidTables(village);
     return;
   }
   if (village.raidEnemies.length===0) {
-    logDiv.innerHTML+=`<br>【罠作成】敵は既に全滅`;
+    logDiv.innerHTML+=`<br>【陷阱作成】敵人已經全滅`;
     updateRaidTables(village);
     return;
   }
   let e=randChoice(village.raidEnemies);
   let dmg = Math.floor((p.dex*p.int/400)*30);
   e.hp-=dmg;
-  logDiv.innerHTML+=`<br>【罠作成】${p.name}→${e.name}に${dmg}ダメージ`;
+  logDiv.innerHTML+=`<br>【陷阱作成】${p.name}→對${e.name}造成${dmg}點傷害`;
   if (e.hp<=0) {
-    logDiv.innerHTML+=`<br>　　→ ${e.name}は倒れた！`;
+    logDiv.innerHTML+=`<br>　　→ ${e.name}被擊倒了！`;
     village.raidEnemies=village.raidEnemies.filter(x=> x!==e);
   }
   updateRaidTables(village);
 }
 
-/** 罠作成後 -> 迎撃フェーズ(3ターン) */
+/** 罠作成後 -> 迎擊フェーズ(3ターン) */
 export function setupCombatPhase(village) {
   const logDiv=document.getElementById("raidLogArea");
 
-  let defenders = village.villagers.filter(p=> p.action==="迎撃" && p.hp>0);
+  let defenders = village.villagers.filter(p=> p.action==="迎擊" && p.hp>0);
   let enemies   = village.raidEnemies.filter(e=> e.hp>0);
 
   if (enemies.length===0) {
-    finalizeRaid(true, "罠作成だけで撃退", village);
+    finalizeRaid(true, "只陷阱作成達成撃退", village);
     return;
   }
   if (defenders.length===0) {
-    finalizeRaid(false, "迎撃部隊なし(行動不能)", village);
+    finalizeRaid(false, "沒有迎擊部隊(行動不能)", village);
     return;
   }
   if (village.raidTurnCount>3) {
@@ -468,7 +468,7 @@ export function setupCombatPhase(village) {
     return;
   }
 
-  logDiv.innerHTML+=`<hr><br>【迎撃フェーズ】ターン ${village.raidTurnCount} 開始`;
+  logDiv.innerHTML+=`<hr><br>【迎擊階段】第 ${village.raidTurnCount} 回合開始`;
 
   village.raidActionQueue=createCombatActions(defenders, village.raidEnemies);
   village.currentActionIndex=0;
@@ -494,19 +494,19 @@ function doOneCombatAction(action, village) {
   let actor=action.actor;
   let logDiv=document.getElementById("raidLogArea");
   if (!actor||actor.hp<=0) {
-    logDiv.innerHTML+=`<br>【迎撃】${actor?actor.name:"??"}は行動不能`;
+    logDiv.innerHTML+=`<br>【迎擊】${actor?actor.name:"??"}失去行動能力`;
     updateRaidTables(village);
     return;
   }
   let isEnemy = village.raidEnemies.includes(actor);
 
-  let defenders = village.villagers.filter(p=> p.action==="迎撃" && p.hp>0);
+  let defenders = village.villagers.filter(p=> p.action==="迎擊" && p.hp>0);
   let enemies   = village.raidEnemies.filter(e=> e.hp>0);
 
   if (isEnemy) {
     // 敵の攻撃
     if (defenders.length===0) {
-      logDiv.innerHTML+=`<br>【敵の攻撃】迎撃側は全滅...`;
+      logDiv.innerHTML+=`<br>【敵の攻撃】迎擊側は全滅...`;
       updateRaidTables(village);
       return;
     }
@@ -543,7 +543,7 @@ function doOneCombatAction(action, village) {
     let dmg=result.damage;
     let atkTypeText=result.isMagic? "魔法攻撃":"物理攻撃";
     target.hp-=dmg;
-    logDiv.innerHTML+=`<br>【迎撃】${actor.name}の${atkTypeText}→${target.name}に ${dmg}ダメージ`;
+    logDiv.innerHTML+=`<br>【迎擊】${actor.name}の${atkTypeText}→${target.name}に ${dmg}ダメージ`;
     if (target.hp<=0) {
       logDiv.innerHTML+=`<br>　　→ ${target.name}は倒れた！`;
       village.raidEnemies=village.raidEnemies.filter(e=> e!==target);
@@ -586,11 +586,11 @@ function calcAttackDamage(atk, def, isCounter) {
 function finalizeCombatTurn(village) {
   let logDiv=document.getElementById("raidLogArea");
 
-  let defenders = village.villagers.filter(p=> p.action==="迎撃" && p.hp>0);
+  let defenders = village.villagers.filter(p=> p.action==="迎擊" && p.hp>0);
   let enemies   = village.raidEnemies.filter(e=> e.hp>0);
 
   if (defenders.length===0) {
-    finalizeRaid(false, "迎撃部隊全滅", village);
+    finalizeRaid(false, "迎擊部隊全滅", village);
     return;
   }
   if (enemies.length===0) {
@@ -606,13 +606,13 @@ function finalizeCombatTurn(village) {
   }
 }
 
-/** 全員の行動終了時に敵 or 迎撃側が全滅したかどうか確認 */
+/** 全員の行動終了時に敵 or 迎擊側が全滅したかどうか確認 */
 function checkCombatEndOfActions(village) {
-  let defenders = village.villagers.filter(p=> p.action==="迎撃" && p.hp>0);
+  let defenders = village.villagers.filter(p=> p.action==="迎擊" && p.hp>0);
   let enemies   = village.raidEnemies.filter(e=> e.hp>0);
 
   if (defenders.length===0) {
-    finalizeRaid(false, "迎撃部隊全滅", village);
+    finalizeRaid(false, "迎擊部隊全滅", village);
     return;
   }
   if (enemies.length===0) {
@@ -628,34 +628,34 @@ function checkCombatEndOfActions(village) {
 
 /** (完全)成功 or 失敗 */
 function finalizeRaid(isSuccess, reason, village) {
-  village.log(`【襲撃結果】${isSuccess?"防衛成功":"防衛失敗"} : ${reason}`);
+  village.log(`【襲擊結果】${isSuccess?"防衛成功":"防衛失敗"} : ${reason}`);
   let rlog=document.getElementById("raidLogArea");
-  rlog.innerHTML+=`<br>→ 襲撃結果: ${isSuccess?"防衛成功":"失敗"} (${reason})<br>モーダルを閉じます...`;
+  rlog.innerHTML+=`<br>→ 襲擊結果: ${isSuccess?"防衛成功":"失敗"} (${reason})<br>モーダルを閉じます...`;
 
   endRaidProcess(isSuccess, false, village);
 }
 
 /** 3ターン粘って撤退(部分成功) */
 function finalizeRaidPartSuccess(village) {
-  village.log("【襲撃結果】3ターン粘って敵撤退→部分的成功");
+  village.log("【襲擊結果】3ターン粘って敵撤退→部分的成功");
   let rlog=document.getElementById("raidLogArea");
-  rlog.innerHTML+=`<br>→ 襲撃結果: 敵撤退(部分成功)<br>モーダルを閉じます...`;
+  rlog.innerHTML+=`<br>→ 襲擊結果: 敵撤退(部分成功)<br>モーダルを閉じます...`;
 
   endRaidProcess(true,true,village);
 }
 
-/** 襲撃終了処理 */
+/** 襲擊終了処理 */
 function endRaidProcess(isSuccess, isPartSuccess, village) {
-  village.log(`[DEBUG] 襲撃結果 成功:${isSuccess} 部分成功:${isPartSuccess}`);
+  village.log(`[DEBUG] 襲擊結果 成功:${isSuccess} 部分成功:${isPartSuccess}`);
   setTimeout(()=>{
     closeRaidModal();
-    let idx=village.villageTraits.indexOf("襲撃中");
+    let idx=village.villageTraits.indexOf("襲擊中");
     if (idx>=0) {
       village.villageTraits.splice(idx,1);
     }
     village.raidEnemies=[];
 
-    // 襲撃者一覧セクションを非表示に
+    // 襲擊者一覧セクションを非表示に
     const raidSection = document.getElementById("raidEnemiesSection");
     if (raidSection) {
       raidSection.style.display = "none";
@@ -691,7 +691,7 @@ function endRaidProcess(isSuccess, isPartSuccess, village) {
         p.hp=clampValue(p.hp - randInt(5,15),0,100);
         p.happiness=clampValue(p.happiness-30,0,100);
       });
-      village.log(`迎撃失敗:食料-${fLoss},資材-${mLoss},資金-${fundLoss},治安-10,村人HP-5~15,幸福-30`);
+      village.log(`迎擊失敗:食料-${fLoss},資材-${mLoss},資金-${fundLoss},治安-10,村人HP-5~15,幸福-30`);
     }
 
     village.isRaidProcessDone=true;
@@ -702,7 +702,7 @@ function endRaidProcess(isSuccess, isPartSuccess, village) {
       btn.textContent="次の月へ";
     }
 
-    // 襲撃終了後、その月の残り処理を実行→次月へ
+    // 襲擊終了後、その月の残り処理を実行→次月へ
     village.hasDonePreEvent=false;
     village.hasDonePostEvent=false;
 
@@ -765,7 +765,7 @@ export function doExchange(a, b, v, isLightning) {
     bodyOwner: a.bodyOwner,
     race: a.race,  // 種族も交換
     portraitFile: a.portraitFile,  // 顔グラフィック情報
-    raiderPortrait: a.raiderPortrait, // 襲撃者用の顔グラフィック
+    raiderPortrait: a.raiderPortrait, // 襲擊者用の顔グラフィック
     visitorPortrait: a.visitorPortrait // 訪問者用の顔グラフィック
   };
   a.bodySex=b.bodySex; 
@@ -791,7 +791,7 @@ export function doExchange(a, b, v, isLightning) {
   b.visitorPortrait=tmp.visitorPortrait;
 }
 
-/** 迎撃画面更新 */
+/** 迎擊画面更新 */
 export function updateRaidTables(village) {
   // 敵側
   let enemyTbody = document.querySelector("#enemyTable tbody");
@@ -832,8 +832,8 @@ export function updateRaidTables(village) {
     });
   }
   
-  // 迎撃部隊
-  let raiders = village.villagers.filter(v => v.action === "迎撃");
+  // 迎擊部隊
+  let raiders = village.villagers.filter(v => v.action === "迎擊");
   let raidersTbody = document.querySelector("#raidersTable tbody");
   if (raidersTbody) {
     raidersTbody.innerHTML = "";
@@ -858,14 +858,14 @@ function applyDamage(target, damage, village) {
   
   // HP0以下になった場合の処理
   if (target.hp <= 0) {
-    // 村人の場合（襲撃者でない場合）の処理
-    if (!target.mindTraits.includes("襲撃者")) {
+    // 村人の場合（襲擊者でない場合）の処理
+    if (!target.mindTraits.includes("襲擊者")) {
       // 負傷特性を追加
-      if (!target.bodyTraits.includes("負傷")) {
-        target.bodyTraits.push("負傷");
+      if (!target.bodyTraits.includes("受傷")) {
+        target.bodyTraits.push("受傷");
       }
       // ログ出力
-      village.log(`${target.name}は重傷を負い、戦闘から離脱した`);
+      village.log(`${target.name}受了重傷、脫離戰鬥`);
     }
   }
 }
@@ -883,9 +883,9 @@ function executeCombatAction(action, village) {
       // ダメージ適用を関数化した処理に変更
       applyDamage(def, dmg.damage, village);
       
-      rlog.innerHTML += `<br>${atk.name} → ${def.name} : ${dmg.damage}ダメージ`;
+      rlog.innerHTML += `<br>${atk.name} → ${def.name} : ${dmg.damage}點傷害`;
       if (def.hp <= 0) {
-        rlog.innerHTML += `<br>${def.name}は戦闘不能！`;
+        rlog.innerHTML += `<br>${def.name}失去戰鬥能力！`;
       }
       break;
     }
