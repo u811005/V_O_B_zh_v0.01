@@ -41,8 +41,8 @@
 インテリヤクザ 黑道: { male:  クールＭ  female:  クールＦ  }
 守銭奴  守財奴 : { male:  クールＭ  female:  クールＦ  }
 優等生  優等生 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-策士 : { male:  クールＭ  female:  クールＦ  }
-神経質 : { male:  陰気  female:  内気  }
+策士 謀略家 : { male:  クールＭ  female:  クールＦ  }
+神経質 神經質 : { male:  陰気  female:  内気  }
 女好き : { male:  お調子者  female:  快活  }
 チャラい : { male:  お調子者  female:  ギャル風  }
 情熱的 : { male:  強気Ｍ  female:  強気Ｆ  }
@@ -88,21 +88,21 @@
 夢想家 : { male:  お調子者  female:  ぶりっこ  }
 堅物 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 ストイック : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-仕事好き : { male:  普通Ｍ  female:  普通Ｆ  }
-仕事の鬼 : { male:  強気Ｍ  female:  強気Ｆ  }
+仕事好き 熱愛工作 : { male:  普通Ｍ  female:  普通Ｆ  }
+仕事の鬼 工作狂 : { male:  強気Ｍ  female:  強気Ｆ  }
 頭脳派 : { male:  クールＭ  female:  クールＦ  }
 聡明 : { male:  丁寧Ｍ  female:  中性的  }
 才気煥発 : { male:  丁寧Ｍ  female:  中性的  }
 マッド : { male:  クールＭ  female:  中性的  }
-享楽的 : { male:  お調子者  female:  ギャル風  }
+享楽的 享樂主義 : { male:  お調子者  female:  ギャル風  }
 悪女 : { male:  乱暴  female:  お嬢様  }
-筋肉馬鹿 : { male:  乱暴  female:  強気Ｆ  }
+筋肉馬鹿 肌肉笨蛋 : { male:  乱暴  female:  強気Ｆ  }
 熱血 : { male:  強気Ｍ  female:  強気Ｆ  }
 世渡り上手 : { male:  お調子者  female:  ギャル風  }
-文武両道 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+文武両道 文武雙全 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 愚鈍 : { male:  陰気  female:  内気  }
 強欲 : { male:  クールＭ  female:  クールＦ  }
-現実主義 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+現実主義 現實主義 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 才女 : { male:  丁寧Ｍ  female:  お嬢様  }
 才色兼備 : { male:  丁寧Ｍ  female:  お嬢様  }
-肉食系 : { male:  強気Ｍ  female:  ギャル風  }
+肉食系 肉食系: { male:  強気Ｍ  female:  ギャル風  }
