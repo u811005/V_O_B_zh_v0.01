@@ -719,7 +719,7 @@ export function assignBodyMindTraits(v) {
 
   // 非排他特性
   const nonExclusiveTraits = [
-    { name: "ニート", condition: (v)=>(v.ind<=10), chance:0.3, target:"mind" },
+    { name: "尼特", condition: (v)=>(v.ind<=10), chance:0.3, target:"mind" },
     { name: "ワーカホリック", condition: (v)=>(v.ind>=23), chance:0.2, target:"mind" },
     { name: "澄んだ声", condition: (v)=>(v.bodySex==="女" && v.chr>=25), chance:0.1, target:"body" },
     { name: "通る声", condition: (v)=>(v.chr>=20 && v.cou>=20 && v.eth>=20), chance:0.3, target:"body" },
@@ -770,7 +770,7 @@ export function applyTraitParameterBonuses(v) {
   if (v.mindTraits.includes("ワーカホリック")) {
     v.ind += 3;
   }
-  if (v.mindTraits.includes("ニート")) {
+  if (v.mindTraits.includes("尼特")) {
     v.ind -= 2;
   }
   if (v.mindTraits.includes("箱入り")) {
@@ -1130,7 +1130,7 @@ export function createRandomVisitor() {
   });
 
   // 訪問者の名前を修正
-  visitor.name = `${visitorType.type} - ${visitor.name}`;
+  visitor.name = `${visitorType.type}–${visitor.name}`;
   
   // 行動テーブルを訪問のみに制限
   visitor.actionTable = ["訪問"];

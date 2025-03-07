@@ -56,6 +56,17 @@ export class Village {
       exchange: false,
       raid: false
     };
+
+    this.buildingFlags = {
+      hasTavern: false,
+      hasWeaving: false,
+      hasAlchemy: false,
+      hasBrewery: false,
+      hasLibrary: false,
+      hasClinic: false,
+      hasChurch : false
+    };
+
   }
 
   /**

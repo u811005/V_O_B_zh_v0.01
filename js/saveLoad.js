@@ -87,9 +87,8 @@ function convertVillageToObject(village) {
     // 以下追加
     buildings: village.buildings,
     modalStates: village.modalStates,
+    buildingFlags: village.buildingFlags,
   
-
-
 
     // 襲撃系
     isRaidProcessDone: village.isRaidProcessDone,

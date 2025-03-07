@@ -311,11 +311,11 @@ export function startRaidEvent(village) {
     e.actionTable = ["襲擊"];
     e.job = raiderType.params.job;
     e.action = "襲擊";
-    e.name = `${raiderType.type} ${e.name}`;
+    e.name = `${raiderType.type}–${e.name}`;
 
     // ニート特性は不要なので削除
-    if (e.mindTraits.includes("ニート")) {
-      e.mindTraits = e.mindTraits.filter(trait => trait !== "ニート");
+    if (e.mindTraits.includes("尼特")) {
+      e.mindTraits = e.mindTraits.filter(trait => trait !== "尼特");
     }
 
     village.raidEnemies.push(e);
