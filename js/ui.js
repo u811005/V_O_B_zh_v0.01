@@ -67,6 +67,8 @@ export function updateUI(v) {
     let tdOwn=document.createElement("td");
     // tdOwn.textContent=person.bodyOwner;
     tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+    tdOwn.style.cursor = "pointer";
+    tdOwn.onclick = () => openConversationModal(person);
     tr.appendChild(tdOwn);
 
     // 種族を追加
@@ -282,6 +284,8 @@ export function updateUI(v) {
       let tdOwn = document.createElement("td");
       tdOwn.innerHTML = `<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
       // tdOwn.textContent = person.bodyOwner;
+      tdOwn.style.cursor = "pointer";
+      tdOwn.onclick = () => openConversationModal(person);
       tr.appendChild(tdOwn);
 
       // 種族を追加
@@ -468,6 +472,8 @@ export function updateUI(v) {
         let tdOwn=document.createElement("td");
         // tdOwn.textContent=person.bodyOwner;
         tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+        tdOwn.style.cursor = "pointer";
+        tdOwn.onclick = () => openConversationModal(person);
         tr.appendChild(tdOwn);
 
         // 種族を追加
