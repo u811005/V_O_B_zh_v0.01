@@ -506,7 +506,7 @@ function doOneCombatAction(action, village) {
   if (isEnemy) {
     // 敵の攻撃
     if (defenders.length===0) {
-      logDiv.innerHTML+=`<br>【敵の攻撃】迎擊側は全滅...`;
+      logDiv.innerHTML+=`<br>【敵人的攻撃】迎擊方全滅...`;
       updateRaidTables(village);
       return;
     }
@@ -515,26 +515,26 @@ function doOneCombatAction(action, village) {
     let dmg=result.damage;
     let atkTypeText = result.isMagic? "魔法攻撃":"物理攻撃";
     target.hp-=dmg;
-    logDiv.innerHTML+=`<br>【敵の攻撃】${actor.name}の${atkTypeText}→${target.name}に ${dmg}ダメージ`;
+    logDiv.innerHTML+=`<br>【敵人的攻撃】${actor.name}的${atkTypeText}→對${target.name}造成 ${dmg}點傷害`;
     if (target.hp<=0) {
-      logDiv.innerHTML+=`<br>　　→ ${target.name}は負傷離脱(HP0)`;
-      if (!target.bodyTraits.includes("負傷")) target.bodyTraits.push("負傷");
+      logDiv.innerHTML+=`<br>　　→ ${target.name}は受傷離脱(HP0)`;
+      if (!target.bodyTraits.includes("受傷")) target.bodyTraits.push("受傷");
     } else {
       // 反撃
       let ret=calcAttackDamage(target, actor, true);
       let rdmg=Math.floor(ret.damage*0.5);
       let retTypeText=ret.isMagic? "魔法攻撃":"物理攻撃";
       actor.hp-=rdmg;
-      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):${target.name}→${actor.name}に${rdmg}ダメージ`;
+      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):${target.name}→對${actor.name}造成 ${rdmg}點傷害`;
       if (actor.hp<=0) {
-        logDiv.innerHTML+=`<br>　　→ ${actor.name}は倒れた！`;
+        logDiv.innerHTML+=`<br>　　→ ${actor.name}被擊倒了！`;
         village.raidEnemies=village.raidEnemies.filter(e=> e!==actor);
       }
     }
   } else {
     // 村人の攻撃
     if (village.raidEnemies.length===0) {
-      logDiv.innerHTML+=`<br>【村人の攻撃】敵は既に全滅`;
+      logDiv.innerHTML+=`<br>【村民的攻撃】敵人已全滅`;
       updateRaidTables(village);
       return;
     }
@@ -543,9 +543,9 @@ function doOneCombatAction(action, village) {
     let dmg=result.damage;
     let atkTypeText=result.isMagic? "魔法攻撃":"物理攻撃";
     target.hp-=dmg;
-    logDiv.innerHTML+=`<br>【迎擊】${actor.name}の${atkTypeText}→${target.name}に ${dmg}ダメージ`;
+    logDiv.innerHTML+=`<br>【迎擊】${actor.name}的${atkTypeText}→對${target.name}造成 ${dmg}點傷害`;
     if (target.hp<=0) {
-      logDiv.innerHTML+=`<br>　　→ ${target.name}は倒れた！`;
+      logDiv.innerHTML+=`<br>　　→ ${target.name}被擊倒了！`;
       village.raidEnemies=village.raidEnemies.filter(e=> e!==target);
     } else {
       // 敵の反撃
@@ -553,10 +553,10 @@ function doOneCombatAction(action, village) {
       let rdmg=Math.floor(ret.damage*0.5);
       let retTypeText=ret.isMagic? "魔法攻撃":"物理攻撃";
       actor.hp-=rdmg;
-      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):${target.name}→${actor.name}に${rdmg}ダメージ`;
+      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):對${target.name}→${actor.name}造成${rdmg}點傷害`;
       if (actor.hp<=0) {
-        logDiv.innerHTML+=`<br>　　→ ${actor.name}は負傷離脱(HP0)`;
-        if (!actor.bodyTraits.includes("負傷")) actor.bodyTraits.push("負傷");
+        logDiv.innerHTML+=`<br>　　→ ${actor.name}受傷離開(HP0)`;
+        if (!actor.bodyTraits.includes("受傷")) actor.bodyTraits.push("受傷");
       }
     }
   }
@@ -637,7 +637,7 @@ function finalizeRaid(isSuccess, reason, village) {
 
 /** 3ターン粘って撤退(部分成功) */
 function finalizeRaidPartSuccess(village) {
-  village.log("【襲擊結果】3ターン粘って敵撤退→部分的成功");
+  village.log("【襲擊結果】3回合後敵人撤退→部分成功");
   let rlog=document.getElementById("raidLogArea");
   rlog.innerHTML+=`<br>→ 襲擊結果: 敵撤退(部分成功)<br>モーダルを閉じます...`;
 
@@ -668,14 +668,14 @@ function endRaidProcess(isSuccess, isPartSuccess, village) {
           p.happiness=clampValue(p.happiness+10,0,100);
         });
         village.fame+=10;
-        village.log("防衛成功(部分):村人幸福+10,名声+10");
+        village.log("防衛成功(部分):村人幸福+10,名聲+10");
       } else {
         // 完全成功
         village.villagers.forEach(p=>{
           p.happiness=clampValue(p.happiness+20,0,100);
         });
         village.fame+=20;
-        village.log("防衛成功(敵全滅):村人幸福+20,名声+20");
+        village.log("防衛成功(敵人全滅):村人幸福+20,名聲+20");
       }
     } else {
       // 失敗
@@ -691,7 +691,7 @@ function endRaidProcess(isSuccess, isPartSuccess, village) {
         p.hp=clampValue(p.hp - randInt(5,15),0,100);
         p.happiness=clampValue(p.happiness-30,0,100);
       });
-      village.log(`迎擊失敗:食料-${fLoss},資材-${mLoss},資金-${fundLoss},治安-10,村人HP-5~15,幸福-30`);
+      village.log(`迎擊失敗:食材-${fLoss},建材-${mLoss},資金-${fundLoss},治安-10,村民HP-5~15,幸福-30`);
     }
 
     village.isRaidProcessDone=true;
@@ -699,7 +699,7 @@ function endRaidProcess(isSuccess, isPartSuccess, village) {
     // nextTurnButton の表示を戻す
     let btn=document.getElementById("nextTurnButton");
     if (btn) {
-      btn.textContent="次の月へ";
+      btn.textContent="下個月";
     }
 
     // 襲擊終了後、その月の残り処理を実行→次月へ
@@ -718,7 +718,7 @@ function endRaidProcess(isSuccess, isPartSuccess, village) {
     endOfMonthProcess(village);
 
     if (village.villagers.length===0) {
-      village.log("村人全滅→ゲームオーバー");
+      village.log("村人全滅→GameOver");
       village.gameOver=true;
       updateUI(village);
       return;
@@ -813,7 +813,7 @@ export function updateRaidTables(village) {
   }
   
   // 罠作成部隊
-  let trapMakers = village.villagers.filter(v => v.action === "罠作成");
+  let trapMakers = village.villagers.filter(v => v.action === "陷阱作成");
   let defenderTbody = document.querySelector("#defenderTable tbody");
   if (defenderTbody) {
     defenderTbody.innerHTML = "";
@@ -860,7 +860,7 @@ function applyDamage(target, damage, village) {
   if (target.hp <= 0) {
     // 村人の場合（襲擊者でない場合）の処理
     if (!target.mindTraits.includes("襲擊者")) {
-      // 負傷特性を追加
+      // 受傷特性を追加
       if (!target.bodyTraits.includes("受傷")) {
         target.bodyTraits.push("受傷");
       }
