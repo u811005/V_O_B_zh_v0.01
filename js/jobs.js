@@ -155,8 +155,8 @@ function calcMindCost(base, ind) {
  * 仕事による精神消費を計算
  */
 function calcMentalCost(person, jobData) {
-  // ワーカホリックは仕事の精神消費なし
-  if (person.mindTraits.includes("ワーカホリック")) {
+  // 工作中毒は仕事の精神消費なし
+  if (person.mindTraits.includes("工作中毒")) {
     return 0;
   }
 
@@ -194,10 +194,10 @@ function doRestJob(p, v) {
   let hpG = 0;
   let mpG = 0;
   let msg = "";
-  if (p.mindTraits.includes("ワーカホリック")) {
+  if (p.mindTraits.includes("工作中毒")) {
     hpG = 30; 
     mpG = -10; 
-    msg = "(ワーカホリック)";
+    msg = "(工作中毒)";
   } else if (r<=30) {
     hpG = 70; mpG=30; msg="大成功";
   } else if (r<=90) {
@@ -672,10 +672,10 @@ function doHealingJob(p, v) {
   
   let logMsg = `${p.name}療養:體力+${hpG},精神+${mpG}`;
   
-  // 負傷特性の回復判定（100%の確率で回復）
-  if (p.bodyTraits.includes("負傷") && Math.random() < 1.0) {
-    p.bodyTraits = p.bodyTraits.filter(trait => trait !== "負傷");
-    logMsg += ",負傷が回復";
+  // 受傷特性の回復判定（100%の確率で回復）
+  if (p.bodyTraits.includes("受傷") && Math.random() < 1.0) {
+    p.bodyTraits = p.bodyTraits.filter(trait => trait !== "受傷");
+    logMsg += ",受傷が回復";
   }
   
   v.log(logMsg);

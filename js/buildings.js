@@ -4,15 +4,15 @@
 export const BUILDINGS = [
   {
     id: "house",
-    name: "家屋",
+    name: "民宅",
     materials: 100,
     funds: 0,
     tech: 0,
-    desc: "村の上限人口が2人増える。規模+10",
+    desc: "村莊的人口上限+2人。規模+10",
     effect: (village) => {
       village.popLimit += 2;
       village.building += 10;
-      village.log(`家屋建設: 人口上限+2 (現在${village.popLimit}人), 規模+10`);
+      village.log(`民宅建設: 人口上限+2 (現在${village.popLimit}人), 規模+10`);
     },
     // 家屋専用: 複数建設可能フラグ
     allowMultiple: true
@@ -33,7 +33,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasTavern = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("酒場建設完了: 詩人・舞者の効果1.2倍、訪問者最大2人、女性限定「兔女郎」解放、規模+20");
+      village.log("酒場建設完了: 詩人・舞者的効果1.2倍、訪問者最大2人、女性限定「兔女郎」解放、規模+20");
     }
   },
   {
@@ -67,16 +67,16 @@ export const BUILDINGS = [
       village.buildingFlags.hasClinic = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("診療所建設完了: 看護の効果1.2倍、「按摩」解放、規模+20");
+      village.log("診療所建設完了: 看護的効果1.2倍、「按摩」解放、規模+20");
     }
   },
   {
     id: "library",
-    name: "図書館",
+    name: "圖書館",
     materials: 50,
     funds: 50,
     tech: 100,
-    desc: "教育施設。研究の効果1.2倍、「寫書」解放。規模+30",
+    desc: "教育施設。研究的効果1.2倍、「寫書」解放。規模+30",
     effect: (village) => {
       village.building += 30;
       // 図書館建設フラグを設定
@@ -84,7 +84,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasLibrary = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("図書館建設完了: 研究の効果1.2倍、「寫書」解放、規模+30");
+      village.log("圖書館建設完了: 研究的効果1.2倍、「寫書」解放、規模+30");
     }
   },
   {
@@ -157,7 +157,7 @@ export const BUILDINGS = [
  */
 export function openBuildingModal(village) {
   if (village.gameOver) {
-    village.log("ゲームオーバー→建築不可");
+    village.log("GameOver→建築不可");
     return;
   }
   document.getElementById("buildingOverlay").style.display = "block";
@@ -167,16 +167,16 @@ export function openBuildingModal(village) {
   const content = document.getElementById("buildingContent");
   content.innerHTML = `
     <div class="building-resources">
-      <div>資材: ${village.materials}</div>
+      <div>建材: ${village.materials}</div>
       <div>資金: ${village.funds}</div>
       <div>技術: ${village.tech}</div>
     </div>
     <div class="building-list">
-      <h3>建設可能な建築物</h3>
+      <h3>建設可能的建築物</h3>
       <div class="building-grid"></div>
     </div>
     <div class="building-info">
-      <h3>建設済み建築物</h3>
+      <h3>建設完成的建築物</h3>
       <div class="built-list"></div>
     </div>
   `;
@@ -186,7 +186,7 @@ export function openBuildingModal(village) {
 
   // 建設済み建築物を表示
   if (village.buildings.length === 0) {
-    builtList.innerHTML = "<p>まだ建設された建築物はありません</p>";
+    builtList.innerHTML = "<p>尚未建造任何建築物。</p>";
   } else {
     // 建築物をカウントして表示
     const buildingCounts = village.buildings.reduce((acc, id) => {
@@ -217,10 +217,10 @@ export function openBuildingModal(village) {
     // 建設不可の理由を表示
     let reasonText = "";
     if (isBuilt) {
-      reasonText = "建設済み";
+      reasonText = "建設完成";
     } else if (!canBuild) {
       const reasons = [];
-      if (village.materials < b.materials) reasons.push("資材不足");
+      if (village.materials < b.materials) reasons.push("建材不足");
       if (village.funds < b.funds) reasons.push("資金不足");
       if (village.tech < b.tech) reasons.push("技術不足");
       reasonText = reasons.join(", ");
@@ -233,12 +233,12 @@ export function openBuildingModal(village) {
     div.innerHTML = `
       <div class="building-header">
         <h4>${b.name}</h4>
-        ${isBuilt ? '<span class="built-mark">建設済</span>' : ''}
+        ${isBuilt ? '<span class="built-mark">建設完成</span>' : ''}
         ${builtCount > 0 ? `<span class="built-count">建設数: ${builtCount}</span>` : ''}
       </div>
       <div class="building-desc">${b.desc}</div>
       <div class="building-cost">
-        ${b.materials > 0 ? `<div>資材: ${b.materials}</div>` : ''}
+        ${b.materials > 0 ? `<div>建材: ${b.materials}</div>` : ''}
         ${b.funds > 0 ? `<div>資金: ${b.funds}</div>` : ''}
         ${b.tech > 0 ? `<div>技術: ${b.tech}</div>` : ''}
       </div>
@@ -248,7 +248,7 @@ export function openBuildingModal(village) {
     const btn = document.createElement("button");
     btn.className = "building-button";
     if (isBuilt) {
-      btn.textContent = "建設済";
+      btn.textContent = "建設完成";
       btn.disabled = true;
       btn.className += " built";
     } else {
@@ -256,7 +256,7 @@ export function openBuildingModal(village) {
       btn.disabled = !canBuild;
       if (canBuild) {
         btn.onclick = () => {
-          if (confirm(`${b.name}を建設しますか？`)) {
+          if (confirm(`要建造${b.name}嗎？`)) {
             constructBuilding(b, village);
           }
         };

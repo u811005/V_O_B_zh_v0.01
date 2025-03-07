@@ -21,12 +21,12 @@ export const usedPortraits = {
 
 // 顔グラフィックのファイル名リストを上部に移動し、グループ分けを明確に
 export const MALE_PORTRAIT_FILES = {
-  // 筋肉質・たくましいグループ
+  // 肌肉發達・強壯グループ
   GROUP_A: [
     "MA1.png", "MA2.png", "MA3.png", "MA4.png", "MA5.png", "MA6.png", "MA7.png", "MA8.png", "MA9.png", "MA10.png", "MA11.png", "MA12.png", "MA13.png", "MA14.png", "MA15.png", "MA16.png"
   ],
   
-  // 美形・スマートグループ
+  // 美形・俊俏グループ
   GROUP_B: [
     "MB1.png", "MB2.png", "MB3.png", "MB4.png", "MB5.png", "MB6.png", "MB7.png", "MB8.png", "MB9.png", "MB10.png", "MB11.png", "MB12.png", "MB13.png", "MB14.png", "MB15.png", "MB16.png", "MB17.png", "MB18.png", "MB19.png", "MB20.png", "MB21.png", "MB22.png", "MB23.png", "MB24.png"
   ],
@@ -36,7 +36,7 @@ export const MALE_PORTRAIT_FILES = {
     "MC1.png", "MC2.png", "MC3.png", "MC4.png", "MC5.png", "MC6.png", "MC7.png", "MC8.png", "MC9.png", "MC10.png", "MC11.png", "MC12.png", "MC13.png", "MC14.png", "MC15.png", "MC16.png", "MC17.png", "MC18.png", "MC19.png", "MC20.png", "MC21.png", "MC22.png", "MC23.png", "MC24.png", "MC25.png", "MC26.png", "MC27.png", "MC28.png", "MC29.png", "MC30.png", "MC31.png", "MC32.png", "MC33.png", "MC34.png", "MC35.png", "MC36.png", "MC37.png", "MC38.png", "MC39.png", "MC40.png", "MC41.png", "MC42.png", "MC43.png", "MC44.png", "MC45.png", "MC46.png", "MC47.png", "MC48.png", "MC49.png", "MC50.png", "MC51.png", "MC52.png", "MC53.png", "MC54.png", "MC55.png"
   ],
   
-  // がっしり系グループ
+  // 堅實系グループ
   GROUP_D: [
     "MD1.png", "MD2.png", "MD3.png", "MD4.png", "MD5.png", "MD6.png", "MD7.png", "MD8.png", "MD9.png", "MD10.png", "MD11.png", "MD12.png", "MD13.png", "MD14.png", "MD15.png", "MD16.png", "MD17.png", "MD18.png", "MD19.png", "MD20.png", "MD21.png", "MD22.png", "MD23.png", "MD24.png", "MD25.png", "MD26.png", "MD27.png", "MD28.png", "MD29.png", "MD30.png"
   ],
@@ -59,7 +59,7 @@ const FEMALE_PORTRAIT_FILES = {
 "A51.png", "A52.png", "A53.png", "A54.png", "A55.png", "A56.png", "A57.png", "A58.png"
   ],
   
-  // 華やか・魅惑グループ
+  // 華麗・魅惑グループ
   GROUP_B: [
 "BB1.png", "BB2.png", "BB3.png", "BB4.png", "BB5.png", "BB6.png", "BB7.png", "BB8.png", "BB9.png", "BB10.png",
 "BB11.png", "BB12.png", "BB13.png", "BB14.png", "BB15.png", "BB16.png", "BB17.png", "BB18.png", "BB19.png", "BB20.png",
@@ -69,7 +69,7 @@ const FEMALE_PORTRAIT_FILES = {
 
   ],
   
-  // 凛々しい・健康的グループ
+  // 高冷・健康グループ
   GROUP_C: [
 "C1.png", "C2.png", "C3.png", "C4.png", "C5.png", "C6.png", "C7.png", "C8.png", "C9.png", "C10.png",
 "C11.png", "C12.png", "C13.png", "C14.png", "C15.png", "C16.png", "C17.png", "C18.png", "C19.png", "C20.png",
@@ -105,14 +105,14 @@ function selectPortraitByCharacter(character) {
     
     // 1. まず特性による判定を行う
     if (bodyTraits.some(trait => [
-      "巨漢", "怪力", "マッチョ", "筋骨隆々",
-      "筋肉質", "巨躯"
+      "巨漢", "怪力", "健壯", "肌肉結實",
+      "肌肉發達", "巨人"
     ].includes(trait))) {
       selectedGroup = MALE_PORTRAIT_FILES.GROUP_A;
     } 
     else if (bodyTraits.some(trait => [
-      "美形", "スマート", "中性的", "眉目秀麗", "優男",
-      "色男", "ミステリアス", "クール"
+      "美形", "俊俏", "中性", "眉目秀麗", "帥哥",
+      "男模", "謎團", "冷酷"
     ].includes(trait))) {
       selectedGroup = MALE_PORTRAIT_FILES.GROUP_B;
     }
@@ -154,8 +154,8 @@ function selectPortraitByCharacter(character) {
   
   // グループA: 清楚・神秘系
   if (bodyTraits.some(trait => [
-    "癒し系", "清楚", "神秘的", "ミステリアス",
-    "華奢", "薄倖"
+    "療癒系", "清楚", "神秘的", "謎團",
+    "奢華", "薄倖"
   ].includes(trait))) {
     const availablePortraits = filterUnusedPortraits(FEMALE_PORTRAIT_FILES.GROUP_A);
     if (availablePortraits.length > 0) {
@@ -165,9 +165,9 @@ function selectPortraitByCharacter(character) {
     }
   }
   
-  // グループB: 華やか・魅惑系
+  // グループB: 華麗・魅惑系
   if (bodyTraits.some(trait => [
-    "華やか", "魔性", "豊満", "スタイル抜群", "絶世の美女"
+    "華麗", "魔性", "豐滿", "體態優美", "絕世美女"
   ].includes(trait))) {
     const availablePortraits = filterUnusedPortraits(FEMALE_PORTRAIT_FILES.GROUP_B);
     if (availablePortraits.length > 0) {
@@ -177,10 +177,10 @@ function selectPortraitByCharacter(character) {
     }
   }
   
-  // グループC: 凛々しい・健康的系
+  // グループC: 高冷・健康系
   if (bodyTraits.some(trait => [
-    "凛々しい", "クール", "しなやか",
-    "健康的", "スレンダー", "筋肉質", "大柄", "ふくよか"
+    "高冷", "冷酷", "柔軟",
+    "健康", "纖細", "肌肉發達", "巨大", "胖女人"
   ].includes(trait))) {
     const availablePortraits = filterUnusedPortraits(FEMALE_PORTRAIT_FILES.GROUP_C);
     if (availablePortraits.length > 0) {
@@ -192,8 +192,8 @@ function selectPortraitByCharacter(character) {
   
   // グループD: 普通・地味系
   if (bodyTraits.some(trait => [
-    "虚弱", "やせ型", "小柄", "平凡",
-    "地味", "目立たない", "素朴", "童顔"
+    "虛弱", "精瘦", "嬌小", "平凡",
+    "地味", "不起眼", "質樸", "童顔"
   ].includes(trait))) {
     const availablePortraits = filterUnusedPortraits(FEMALE_PORTRAIT_FILES.GROUP_D);
     if (availablePortraits.length > 0) {
@@ -405,101 +405,101 @@ export function initRandomParams(v) {
 
 // 精神特性と口調タイプのマッピング
 const SPEECH_TYPE_MAPPING = {
-  "独善的": { male: "クールＭ", female: "クールＦ" },
-  "読書家": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "孤傲": { male: "クールＭ", female: "クールＦ" },
+  "喜愛閱讀 ": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
   "小市民": { male: "普通Ｍ", female: "普通Ｆ" },
   "善人": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
   "強気": { male: "強気Ｍ", female: "強気Ｆ" },
-  "無鉄砲": { male: "乱暴", female: "蓮っ葉" },
-  "知性派": { male: "丁寧Ｍ", female: "中性的" },
-  "働き者": { male: "普通Ｍ", female: "普通Ｆ" },
+  "莽撞 ": { male: "乱暴", female: "蓮っ葉" },
+  "理性派": { male: "丁寧Ｍ", female: "中性" },
+  "努力工作": { male: "普通Ｍ", female: "普通Ｆ" },
   "普通": { male: "普通Ｍ", female: "普通Ｆ" },
-  "庶民的": { male: "普通Ｍ", female: "普通Ｆ" },
-  "内向的": { male: "陰気", female: "内気" },
-  "本の虫": { male: "陰気", female: "内気" },
-  "勉強苦手": { male: "普通Ｍ", female: "普通Ｆ" },
-  "天才肌": { male: "クールＭ", female: "中性的" },
-  "學者肌": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "我慢強い": { male: "普通Ｍ", female: "普通Ｆ" },
-  "正直者": { male: "普通Ｍ", female: "普通Ｆ" },
+  "庶民": { male: "普通Ｍ", female: "普通Ｆ" },
+  "内向": { male: "陰気", female: "内気" },
+  "書蟲": { male: "陰気", female: "内気" },
+  "不擅學習": { male: "普通Ｍ", female: "普通Ｆ" },
+  "天才": { male: "クールＭ", female: "中性" },
+  "天生學者": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "擅長忍耐": { male: "普通Ｍ", female: "普通Ｆ" },
+  "老實人": { male: "普通Ｍ", female: "普通Ｆ" },
   "天然": { male: "お調子者", female: "おっとり" },
-  "おしゃべり": { male: "お調子者", female: "ギャル風" },
-  "怒りっぽい": { male: "乱暴", female: "蓮っ葉" },
-  "残忍": { male: "乱暴", female: "蓮っ葉" },
-  "酷薄": { male: "クールＭ", female: "クールＦ" },
-  "昼行燈": { male: "普通Ｍ", female: "普通Ｆ" },
-  "戦闘狂": { male: "乱暴", female: "強気Ｆ" },
-  "根暗": { male: "陰気", female: "内気" },
-  "無気力": { male: "陰気", female: "内気" },
-  "マジメ": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "怠け者": { male: "陰気", female: "内気" },
-  "ろくでなし": { male: "乱暴", female: "蓮っ葉" },
-  "ワル": { male: "乱暴", female: "蓮っ葉" },
-  "インテリヤクザ": { male: "クールＭ", female: "クールＦ" },
-  "守銭奴": { male: "クールＭ", female: "クールＦ" },
+  "長舌": { male: "お調子者", female: "ギャル風" },
+  "易怒": { male: "乱暴", female: "蓮っ葉" },
+  "殘忍": { male: "乱暴", female: "蓮っ葉" },
+  "殘酷": { male: "クールＭ", female: "クールＦ" },
+  "糊塗": { male: "普通Ｍ", female: "普通Ｆ" },
+  "戰鬥狂": { male: "乱暴", female: "強気Ｆ" },
+  "陰沉": { male: "陰気", female: "内気" },
+  "無力": { male: "陰気", female: "内気" },
+  "認真": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "懶散": { male: "陰気", female: "内気" },
+  "無賴": { male: "乱暴", female: "蓮っ葉" },
+  "惡棍": { male: "乱暴", female: "蓮っ葉" },
+  "黑道": { male: "クールＭ", female: "クールＦ" },
+  "守財奴": { male: "クールＭ", female: "クールＦ" },
   "優等生": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "策士": { male: "クールＭ", female: "クールＦ" },
-  "神経質": { male: "陰気", female: "内気" },
-  "女好き": { male: "お調子者", female: "快活" },
-  "チャラい": { male: "お調子者", female: "ギャル風" },
-  "情熱的": { male: "強気Ｍ", female: "強気Ｆ" },
-  "男嫌い": { male: "陰気", female: "丁寧Ｆ" },
-  "夢見がち": { male: "陰気", female: "ぶりっこ" },
-  "好奇心旺盛": { male: "お調子者", female: "快活" },
-  "冒険好き": { male: "強気Ｍ", female: "強気Ｆ" },
-  "陰キャ": { male: "陰気", female: "内気" },
-  "計算高い": { male: "クールＭ", female: "クールＦ" },
-  "姉御肌": { male: "強気Ｍ", female: "強気Ｆ" },
+  "謀略家": { male: "クールＭ", female: "クールＦ" },
+  "神經質": { male: "陰気", female: "内気" },
+  "喜愛女性": { male: "お調子者", female: "快活" },
+  "輕浮": { male: "お調子者", female: "ギャル風" },
+  "熱情": { male: "強気Ｍ", female: "強気Ｆ" },
+  "厭惡男性": { male: "陰気", female: "丁寧Ｆ" },
+  "白日夢": { male: "陰気", female: "ぶりっこ" },
+  "好奇心旺盛 ": { male: "お調子者", female: "快活" },
+  "喜愛冒險": { male: "強気Ｍ", female: "強気Ｆ" },
+  "陰角": { male: "陰気", female: "内気" },
+  "吝嗇": { male: "クールＭ", female: "クールＦ" },
+  "大姐姐": { male: "強気Ｍ", female: "強気Ｆ" },
   "古風": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "大雑把": { male: "乱暴", female: "蓮っ葉" },
-  "臆病": { male: "陰気", female: "内気" },
-  "寡黙": { male: "陰気", female: "内気" },
-  "不器用": { male: "陰気", female: "内気" },
-  "ぶっきらぼう": { male: "乱暴", female: "蓮っ葉" },
-  "偏屈": { male: "陰気", female: "内気" },
-  "利発": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "抜け目がない": { male: "クールＭ", female: "ぶりっこ" },
-  "職人気質": { male: "普通Ｍ", female: "普通Ｆ" },
+  "隨便": { male: "乱暴", female: "蓮っ葉" },
+  "膽小": { male: "陰気", female: "内気" },
+  "寡言": { male: "陰気", female: "内気" },
+  "笨拙": { male: "陰気", female: "内気" },
+  "粗魯": { male: "乱暴", female: "蓮っ葉" },
+  "偏執": { male: "陰気", female: "内気" },
+  "聰明": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "精明": { male: "クールＭ", female: "ぶりっこ" },
+  "職人精神": { male: "普通Ｍ", female: "普通Ｆ" },
   "狡猾": { male: "クールＭ", female: "クールＦ" },
-  "あざとい": { male: "お調子者", female: "ぶりっこ" },
-  "鈍感": { male: "普通Ｍ", female: "普通Ｆ" },
-  "泣き虫": { male: "陰気", female: "内気" },
-  "おしゃれ": { male: "お調子者", female: "ギャル風" },
+  "耍小聰明": { male: "お調子者", female: "ぶりっこ" },
+  "遲鈍": { male: "普通Ｍ", female: "普通Ｆ" },
+  "愛哭鬼": { male: "陰気", female: "内気" },
+  "時髦": { male: "お調子者", female: "ギャル風" },
   "粗暴": { male: "乱暴", female: "蓮っ葉" },
-  "男勝り": { male: "強気Ｍ", female: "強気Ｆ" },
+  "女強人": { male: "強気Ｍ", female: "強気Ｆ" },
   "潔癖": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "綺麗好き": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "暴れ者": { male: "乱暴", female: "蓮っ葉" },
-  "好戦的": { male: "乱暴", female: "強気Ｆ" },
-  "問題児": { male: "お調子者", female: "快活" },
+  "喜歡乾淨": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "暴力": { male: "乱暴", female: "蓮っ葉" },
+  "好戰": { male: "乱暴", female: "強気Ｆ" },
+  "問題兒童": { male: "お調子者", female: "快活" },
   "草食系": { male: "陰気", female: "内気" },
-  "スケベ": { male: "お調子者", female: "ギャル風" },
-  "遊び人": { male: "お調子者", female: "ギャル風" },
-  "むっつり": { male: "陰気", female: "内気" },
+  "色鬼": { male: "お調子者", female: "ギャル風" },
+  "遊人": { male: "お調子者", female: "ギャル風" },
+  "沉默": { male: "陰気", female: "内気" },
   "勇敢": { male: "強気Ｍ", female: "強気Ｆ" },
-  "勇猛果敢": { male: "強気Ｍ", female: "強気Ｆ" },
+  "果斷": { male: "強気Ｍ", female: "強気Ｆ" },
   "豪傑": { male: "乱暴", female: "強気Ｆ" },
   "箱入り": { male: "丁寧Ｍ", female: "お嬢様" },
-  "惚れっぽい": { male: "お調子者", female: "ぶりっこ" },
+  "迷戀": { male: "お調子者", female: "ぶりっこ" },
   "愚直": { male: "普通Ｍ", female: "普通Ｆ" },
   "夢想家": { male: "お調子者", female: "ぶりっこ" },
-  "堅物": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "ストイック": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
-  "仕事好き": { male: "普通Ｍ", female: "普通Ｆ" },
-  "仕事の鬼": { male: "強気Ｍ", female: "強気Ｆ" },
-  "頭脳派": { male: "クールＭ", female: "クールＦ" },
-  "聡明": { male: "丁寧Ｍ", female: "中性的" },
-  "才気煥発": { male: "丁寧Ｍ", female: "中性的" },
-  "マッド": { male: "クールＭ", female: "中性的" },
-  "享楽的": { male: "お調子者", female: "ギャル風" },
+  "耿直": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "沉穩": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "喜愛工作": { male: "普通Ｍ", female: "普通Ｆ" },
+  "工作狂": { male: "強気Ｍ", female: "強気Ｆ" },
+  "頭腦派": { male: "クールＭ", female: "クールＦ" },
+  "睿智": { male: "丁寧Ｍ", female: "中性" },
+  "才氣煥發": { male: "丁寧Ｍ", female: "中性" },
+  "瘋狂": { male: "クールＭ", female: "中性" },
+  "享樂主義": { male: "お調子者", female: "ギャル風" },
   "悪女": { male: "乱暴", female: "お嬢様" },
-  "筋肉馬鹿": { male: "乱暴", female: "強気Ｆ" },
+  "肌肉笨蛋": { male: "乱暴", female: "強気Ｆ" },
   "熱血": { male: "強気Ｍ", female: "強気Ｆ" },
-  "世渡り上手": { male: "お調子者", female: "ギャル風" },
-  "文武両道": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "圓融": { male: "お調子者", female: "ギャル風" },
+  "文武雙全": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
   "愚鈍": { male: "陰気", female: "内気" },
   "強欲": { male: "クールＭ", female: "クールＦ" },
-  "現実主義": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "現實主義": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
   "才女": { male: "丁寧Ｍ", female: "お嬢様" },
   "才色兼備": { male: "丁寧Ｍ", female: "お嬢様" },
   "肉食系": { male: "強気Ｍ", female: "ギャル風" }
@@ -532,66 +532,66 @@ function determineSpeechType(character) {
  * 肉体/精神特性を判定して付与
  */
 export function assignBodyMindTraits(v) {
-  // 例: "病弱","華奢" など
+  // 例: "病弱","奢華" など
   const bodyTraitDefinitions = [
-    { name: "虚弱", condition: (v) => v.vit <= 10 && v.chr <= 16 },
-    { name: "華やか", condition: (v) => v.bodySex === "女" && v.dex >= 20 && v.chr >= 20 },
-    { name: "やせ型", condition: (v) => v.vit <= 12 && v.vit >= 10 && v.chr <= 16 },
-    { name: "スレンダー", condition: (v) => v.bodySex === "女" && v.vit <= 15 && v.vit >= 11 && v.chr >= 17 && v.chr <= 23},
-    { name: "小太り", condition: (v) => v.vit >= 18 && v.chr <= 12 },
-    { name: "筋肉質", condition: (v) => v.str >= 20 && v.str <= 23 && v.chr <= 20},
+    { name: "虛弱", condition: (v) => v.vit <= 10 && v.chr <= 16 },
+    { name: "華麗", condition: (v) => v.bodySex === "女" && v.dex >= 20 && v.chr >= 20 },
+    { name: "精瘦", condition: (v) => v.vit <= 12 && v.vit >= 10 && v.chr <= 16 },
+    { name: "纖細", condition: (v) => v.bodySex === "女" && v.vit <= 15 && v.vit >= 11 && v.chr >= 17 && v.chr <= 23},
+    { name: "微胖", condition: (v) => v.vit >= 18 && v.chr <= 12 },
+    { name: "肌肉發達", condition: (v) => v.str >= 20 && v.str <= 23 && v.chr <= 20},
     { name: "平凡", condition: (v) => ["vit","str","chr"].every(param => v[param] >= 15 && v[param] <= 18) },
-    { name: "巨躯", condition: (v) => v.vit >= 28 },
+    { name: "巨人", condition: (v) => v.vit >= 28 },
     { name: "巨漢", condition: (v) => v.bodySex === "男" && v.vit >= 24 && v.chr <= 17 },
     { name: "美形", condition: (v) => v.bodySex === "男" && v.chr >= 24 },
-    { name: "太りすぎ", condition: (v) => v.bodySex === "男" && v.vit >= 26 && v.chr <= 10 },
-    { name: "美丈夫", condition: (v) => v.bodySex === "男" && v.vit >= 21 && v.chr >= 20 },
-    { name: "たくましい", condition: (v) => v.bodySex === "男" && v.str >= 18 && v.chr >= 18 },
-    { name: "長身", condition: (v) => v.bodySex === "男" && v.vit >= 18 && v.chr >= 18 },
-    { name: "がっしり", condition: (v) => v.bodySex === "男" && v.vit >= 19  && v.vit <= 23 && v.chr <= 19 && v.chr >= 11 },
-    { name: "中肉中背", condition: (v) => v.bodySex === "男" && v.vit <= 18 && v.vit >= 15 && v.chr <= 19 && v.chr >= 11 },
-    { name: "痩身", condition: (v) => v.bodySex === "男" && v.vit <= 14 && v.chr <= 17 && v.chr >= 13 },
-    { name: "痩せぎす", condition: (v) => v.bodySex === "男" && v.vit <= 14 && v.chr <= 12 },
-    { name: "細身", condition: (v) => v.bodySex === "男" && v.vit <= 16 && v.chr >= 15 &&v.chr <= 19 },
-    { name: "スマート", condition: (v) => v.bodySex === "男" && v.vit <= 16 && v.chr >= 19 && v.vit >= 11 },
-    { name: "中性的", condition: (v) => v.bodySex === "男" && v.vit <= 15 &&v.chr >= 23 },
+    { name: "肥胖", condition: (v) => v.bodySex === "男" && v.vit >= 26 && v.chr <= 10 },
+    { name: "美男子", condition: (v) => v.bodySex === "男" && v.vit >= 21 && v.chr >= 20 },
+    { name: "強壯", condition: (v) => v.bodySex === "男" && v.str >= 18 && v.chr >= 18 },
+    { name: "高個", condition: (v) => v.bodySex === "男" && v.vit >= 18 && v.chr >= 18 },
+    { name: "堅實", condition: (v) => v.bodySex === "男" && v.vit >= 19  && v.vit <= 23 && v.chr <= 19 && v.chr >= 11 },
+    { name: "不胖不瘦", condition: (v) => v.bodySex === "男" && v.vit <= 18 && v.vit >= 15 && v.chr <= 19 && v.chr >= 11 },
+    { name: "瘦身", condition: (v) => v.bodySex === "男" && v.vit <= 14 && v.chr <= 17 && v.chr >= 13 },
+    { name: "乾癟", condition: (v) => v.bodySex === "男" && v.vit <= 14 && v.chr <= 12 },
+    { name: "精細", condition: (v) => v.bodySex === "男" && v.vit <= 16 && v.chr >= 15 &&v.chr <= 19 },
+    { name: "俊俏", condition: (v) => v.bodySex === "男" && v.vit <= 16 && v.chr >= 19 && v.vit >= 11 },
+    { name: "中性", condition: (v) => v.bodySex === "男" && v.vit <= 15 &&v.chr >= 23 },
     { name: "眉目秀麗", condition: (v) => v.bodySex === "男" && v.int >= 20 &&v.chr >= 20 },
     { name: "強面", condition: (v) => v.bodySex === "男" && v.str >= 20 && v.cou >= 20 },
-    { name: "小柄", condition: (v) => v.vit >= 9 && v.vit <= 11  && v.chr <= 16},
-    { name: "癒し系", condition: (v) => v.bodySex === "女" && v.chr >= 20 && v.eth >= 20 },
-    { name: "ガリガリ", condition: (v) => v.bodySex === "男" && v.vit <= 10 && v.chr <= 10 },
-    { name: "大柄", condition: (v) => v.vit >= 20 && v.str >= 18 && v.vit <= 22  && v.chr <= 20},
-    { name: "スタイル抜群", condition: (v) => v.bodySex === "女" && v.vit >= 13 && v.chr >= 24 },
-    { name: "豊満", condition: (v) => v.bodySex === "女" && v.vit >= 16 && v.chr >= 22 },
-    { name: "優男", condition: (v) => v.bodySex === "男" && v.chr >= 20 && v.sexdr >= 18 && v.vit <= 18 },
+    { name: "嬌小", condition: (v) => v.vit >= 9 && v.vit <= 11  && v.chr <= 16},
+    { name: "療癒系", condition: (v) => v.bodySex === "女" && v.chr >= 20 && v.eth >= 20 },
+    { name: "骨感", condition: (v) => v.bodySex === "男" && v.vit <= 10 && v.chr <= 10 },
+    { name: "巨大", condition: (v) => v.vit >= 20 && v.str >= 18 && v.vit <= 22  && v.chr <= 20},
+    { name: "體態優美", condition: (v) => v.bodySex === "女" && v.vit >= 13 && v.chr >= 24 },
+    { name: "豐滿", condition: (v) => v.bodySex === "女" && v.vit >= 16 && v.chr >= 22 },
+    { name: "帥哥", condition: (v) => v.bodySex === "男" && v.chr >= 20 && v.sexdr >= 18 && v.vit <= 18 },
     { name: "地味", condition: (v) => v.vit <= 17 && v.chr <= 15 },
     { name: "魔性", condition: (v) => v.bodySex === "女" && v.chr >= 24 && v.sexdr >= 18 && v.int >= 16 },
     { name: "薄倖", condition: (v) => v.bodySex === "女" && v.vit <= 11 && v.chr >= 20 },
-    { name: "健康的", condition: (v) => v.bodySex === "女" && v.vit >= 16 && v.chr >= 16  && v.chr <= 22 },
+    { name: "健康", condition: (v) => v.bodySex === "女" && v.vit >= 16 && v.chr >= 16  && v.chr <= 22 },
     { name: "神秘的", condition: (v) => v.bodySex === "女" && v.mag >= 20 && v.chr >= 23 && v.sexdr <= 17 },
-    { name: "絶世の美女", condition: (v) => v.bodySex === "女" && v.chr >= 28 },
-    { name: "ミステリアス", condition: (v) => v.mag >= 20 && v.chr >= 21 && v.chr <= 27},
-    { name: "クール", condition: (v) => v.sexdr <= 10 && v.chr >= 20},
+    { name: "絕世美女", condition: (v) => v.bodySex === "女" && v.chr >= 28 },
+    { name: "謎團", condition: (v) => v.mag >= 20 && v.chr >= 21 && v.chr <= 27},
+    { name: "冷酷", condition: (v) => v.sexdr <= 10 && v.chr >= 20},
     { name: "あやしげ", condition: (v) => v.bodySex === "男" && v.mag >= 22 && v.chr <= 15 },
-    { name: "色男", condition: (v) => v.bodySex === "男" && v.mag >= 20 && v.chr >= 20 },
+    { name: "男模", condition: (v) => v.bodySex === "男" && v.mag >= 20 && v.chr >= 20 },
     { name: "怪力", condition: (v) => v.bodySex === "男" && v.str >= 27 },
-    { name: "胡散臭い", condition: (v) => v.bodySex === "男" && v.dex >= 20 && v.eth <= 15 && v.chr <= 12 },
+    { name: "狡詐", condition: (v) => v.bodySex === "男" && v.dex >= 20 && v.eth <= 15 && v.chr <= 12 },
     { name: "悪人顔", condition: (v) => v.bodySex === "男" && v.eth <= 12 && v.chr <= 15 },
-    { name: "マッチョ", condition: (v) => v.bodySex === "男" && v.str >= 24 && v.chr <= 18 },
-    { name: "筋骨隆々", condition: (v) => v.bodySex === "男" && v.str >= 24 && v.chr >= 19 },
-    { name: "威圧的", condition: (v) => v.bodySex === "男" && v.eth <= 12 && v.cou >= 20 && v.str >= 20 },
+    { name: "健壯", condition: (v) => v.bodySex === "男" && v.str >= 24 && v.chr <= 18 },
+    { name: "肌肉結實", condition: (v) => v.bodySex === "男" && v.str >= 24 && v.chr >= 19 },
+    { name: "莊嚴", condition: (v) => v.bodySex === "男" && v.eth <= 12 && v.cou >= 20 && v.str >= 20 },
     { name: "精悍", condition: (v) => v.bodySex === "男" && v.str >= 20 && v.cou >= 18 && v.chr >= 18 },
-    { name: "凛々しい", condition: (v) => v.bodySex === "女" && v.str >= 16 && v.cou >= 18 && v.chr >= 17 && v.chr <= 22},
-    { name: "素朴", condition: (v) => v.eth >= 16 && v.chr <= 18 && v.chr >= 16 },
+    { name: "高冷", condition: (v) => v.bodySex === "女" && v.str >= 16 && v.cou >= 18 && v.chr >= 17 && v.chr <= 22},
+    { name: "質樸", condition: (v) => v.eth >= 16 && v.chr <= 18 && v.chr >= 16 },
     { name: "清楚", condition: (v) => v.bodySex === "女" && v.chr >= 18 && v.eth >= 20 },
-    { name: "しなやか", condition: (v) => v.bodySex === "女" && v.vit <= 17 && v.vit >= 14 && v.chr <= 20 && v.chr >= 16 },
+    { name: "柔軟", condition: (v) => v.bodySex === "女" && v.vit <= 17 && v.vit >= 14 && v.chr <= 20 && v.chr >= 16 },
     { name: "童顔", condition: (v) => v.chr >= 18 && v.sexdr <= 16 && v.vit <= 13 && v.chr <= 27 },
-    { name: "華奢", condition: (v) => v.bodySex === "女" && v.vit <= 12 && v.chr >= 17 },
-    { name: "ふくよか", condition: (v) => v.bodySex === "女" && v.vit >= 18 && v.chr <= 15},
-    { name: "目立たない", condition: (v) => v.bodySex === "女" && v.vit <= 17 && v.chr <= 16},
-    { name: "目立たない", condition: (v) => v.bodySex === "男" && v.vit <= 19 && v.chr <= 15},
-    { name: "小汚い", condition: (v) => v.bodySex === "男" && v.int <=3 && v.chr <= 11 },
-    { name: "冴えない", condition: (v) => v.bodySex === "男" && v.int <= 14 && v.chr <= 13 },
+    { name: "奢華", condition: (v) => v.bodySex === "女" && v.vit <= 12 && v.chr >= 17 },
+    { name: "胖女人", condition: (v) => v.bodySex === "女" && v.vit >= 18 && v.chr <= 15},
+    { name: "不起眼", condition: (v) => v.bodySex === "女" && v.vit <= 17 && v.chr <= 16},
+    { name: "不起眼", condition: (v) => v.bodySex === "男" && v.vit <= 19 && v.chr <= 15},
+    { name: "小汚", condition: (v) => v.bodySex === "男" && v.int <=3 && v.chr <= 11 },
+    { name: "無趣", condition: (v) => v.bodySex === "男" && v.int <= 14 && v.chr <= 13 },
   ];
   let bodyTraitCandidates = [];
   bodyTraitDefinitions.forEach(def => {
@@ -604,104 +604,104 @@ export function assignBodyMindTraits(v) {
     v.bodyTraits.push(chosen);
   }
 
-  // 精神特性例: "独善的","才女"など
+  // 精神特性例: "孤傲","才女"など
   const mindTraitDefinitions = [
-    { name: "独善的", condition: (v) => v.chr <= 13 && v.eth >= 22 },
-    { name: "読書家", condition: (v) => v.int >= 20 && v.ind >= 18 },
+    { name: "孤傲", condition: (v) => v.chr <= 13 && v.eth >= 22 },
+    { name: "喜愛閱讀 ", condition: (v) => v.int >= 20 && v.ind >= 18 },
     { name: "小市民", condition: (v) => v.cou <= 16 && v.ind >= 17 && v.eth >= 17  && v.eth <= 22 },
     { name: "善人", condition: (v) => v.eth >= 20 && v.eth <= 21},
     { name: "強気", condition: (v) => v.cou >= 20 && v.cou <= 21},
-    { name: "無鉄砲", condition: (v) => v.cou >= 22 && v.int <= 16},
-    { name: "知性派", condition: (v) => v.int >= 20 && v.int <= 21},
-    { name: "働き者", condition: (v) => v.ind >= 20 && v.ind <= 22},
+    { name: "莽撞 ", condition: (v) => v.cou >= 22 && v.int <= 16},
+    { name: "理性派", condition: (v) => v.int >= 20 && v.int <= 21},
+    { name: "努力工作", condition: (v) => v.ind >= 20 && v.ind <= 22},
     { name: "普通", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 17) },
-    { name: "庶民的", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 19) },
-    { name: "内向的", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 17) },
-    { name: "本の虫", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 17) },
-    { name: "勉強苦手", condition: (v) => ["cou","eth","ind","sexdr"].every(param => v[param] <= 18) && v.int <= 10 },
-    { name: "天才肌", condition: (v) => v.int >= 24 && v.ind <= 16 },
-    { name: "學者肌", condition: (v) => v.int >= 22 && v.ind >= 18 && v.eth >= 18 },
-    { name: "我慢強い", condition: (v) => v.vit >= 18 && v.ind >= 16 && v.eth >= 16 },
-    { name: "正直者", condition: (v) => v.int <= 16 && v.eth >= 20 },
+    { name: "庶民", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 19) },
+    { name: "内向", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 17) },
+    { name: "書蟲", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 17) },
+    { name: "不擅學習", condition: (v) => ["cou","eth","ind","sexdr"].every(param => v[param] <= 18) && v.int <= 10 },
+    { name: "天才", condition: (v) => v.int >= 24 && v.ind <= 16 },
+    { name: "天生學者", condition: (v) => v.int >= 22 && v.ind >= 18 && v.eth >= 18 },
+    { name: "擅長忍耐", condition: (v) => v.vit >= 18 && v.ind >= 16 && v.eth >= 16 },
+    { name: "老實人", condition: (v) => v.int <= 16 && v.eth >= 20 },
     { name: "天然", condition: (v) => v.chr >= 22 && v.int <= 16 && v.eth >= 16 },
-    { name: "おしゃべり", condition: (v) => v.chr >= 16 && v.ind <= 18 && v.sexdr >= 16 && v.dex >= 18 },
-    { name: "怒りっぽい", condition: (v) => v.eth <= 12 && v.cou >= 18 },
-    { name: "残忍", condition: (v) => v.eth <= 4 && v.cou >= 18 },
-    { name: "酷薄", condition: (v) => v.eth <= 4 && v.int >= 16 },
-    { name: "昼行燈", condition: (v) => v.int >= 20 && v.ind <= 14 && v.cou >= 20 },
-    { name: "戦闘狂", condition: (v) => v.str >= 20 && v.ind <= 12 && v.cou >= 22 },
-    { name: "根暗", condition: (v) => v.chr <= 14 && v.sexdr <= 14 && v.cou <= 15 },
-    { name: "無気力", condition: (v) => v.int <= 14 && v.ind <= 14 && v.eth <= 14 && v.cou <= 14 && v.sexdr <= 14 },
-    { name: "マジメ", condition: (v) => v.ind >= 20 && v.eth >= 16 && v.sexdr <= 16 },
-    { name: "怠け者", condition: (v) => ["int","eth","cou","sexdr"].every(param => v[param] <= 18) && v.ind <= 11 },
-    { name: "ろくでなし", condition: (v) => v.bodySex === "男" && v.ind <= 12 && v.eth <= 12 },
-    { name: "ワル", condition: (v) => v.bodySex === "男" && v.eth <= 9 && v.cou >= 16 },
-    { name: "インテリヤクザ", condition: (v) => v.bodySex === "男" && v.eth <= 9 && v.ind >= 20 },
-    { name: "守銭奴", condition: (v) => v.eth <= 9 && v.ind >= 20 },
+    { name: "長舌", condition: (v) => v.chr >= 16 && v.ind <= 18 && v.sexdr >= 16 && v.dex >= 18 },
+    { name: "易怒", condition: (v) => v.eth <= 12 && v.cou >= 18 },
+    { name: "殘忍", condition: (v) => v.eth <= 4 && v.cou >= 18 },
+    { name: "殘酷", condition: (v) => v.eth <= 4 && v.int >= 16 },
+    { name: "糊塗", condition: (v) => v.int >= 20 && v.ind <= 14 && v.cou >= 20 },
+    { name: "戰鬥狂", condition: (v) => v.str >= 20 && v.ind <= 12 && v.cou >= 22 },
+    { name: "陰沉", condition: (v) => v.chr <= 14 && v.sexdr <= 14 && v.cou <= 15 },
+    { name: "無力", condition: (v) => v.int <= 14 && v.ind <= 14 && v.eth <= 14 && v.cou <= 14 && v.sexdr <= 14 },
+    { name: "認真", condition: (v) => v.ind >= 20 && v.eth >= 16 && v.sexdr <= 16 },
+    { name: "懶散", condition: (v) => ["int","eth","cou","sexdr"].every(param => v[param] <= 18) && v.ind <= 11 },
+    { name: "無賴", condition: (v) => v.bodySex === "男" && v.ind <= 12 && v.eth <= 12 },
+    { name: "惡棍", condition: (v) => v.bodySex === "男" && v.eth <= 9 && v.cou >= 16 },
+    { name: "黑道", condition: (v) => v.bodySex === "男" && v.eth <= 9 && v.ind >= 20 },
+    { name: "守財奴", condition: (v) => v.eth <= 9 && v.ind >= 20 },
     { name: "優等生", condition: (v) => v.int >= 18 && v.ind >= 18 && v.eth >= 18 },
-    { name: "策士", condition: (v) => v.int >= 20 && v.cou >= 20 },
-    { name: "神経質", condition: (v) => v.vit <= 14 && v.chr <= 12 },
-    { name: "女好き", condition: (v) => v.bodySex === "男" && v.sexdr >= 25 },
-    { name: "チャラい", condition: (v) => v.bodySex === "男" && v.sexdr >= 18 && v.chr >=18 },
-    { name: "情熱的", condition: (v) => v.sexdr >= 19 && v.cou >= 19},
-    { name: "男嫌い", condition: (v) => v.bodySex === "女" && v.sexdr <= 7 },
-    { name: "夢見がち", condition: (v) => v.bodySex === "女" && v.sexdr >= 18 && v.int <= 15 },
-    { name: "好奇心旺盛", condition: (v) => v.int >= 18 && v.sexdr >= 20 && v.dex >= 18 },
-    { name: "冒険好き", condition: (v) => v.int >= 18 && v.cou >= 20 },
-    { name: "陰キャ", condition: (v) => v.chr <= 17 && v.cou <= 15 && v.str <= 16 },
-    { name: "計算高い", condition: (v) => v.int >= 22 && v.eth <= 14 },
-    { name: "姉御肌", condition: (v) => v.bodySex === "女" && v.str >= 17 && v.eth >= 16 && v.cou >= 18 },
+    { name: "謀略家", condition: (v) => v.int >= 20 && v.cou >= 20 },
+    { name: "神經質", condition: (v) => v.vit <= 14 && v.chr <= 12 },
+    { name: "喜愛女性", condition: (v) => v.bodySex === "男" && v.sexdr >= 25 },
+    { name: "輕浮", condition: (v) => v.bodySex === "男" && v.sexdr >= 18 && v.chr >=18 },
+    { name: "熱情", condition: (v) => v.sexdr >= 19 && v.cou >= 19},
+    { name: "厭惡男性", condition: (v) => v.bodySex === "女" && v.sexdr <= 7 },
+    { name: "白日夢", condition: (v) => v.bodySex === "女" && v.sexdr >= 18 && v.int <= 15 },
+    { name: "好奇心旺盛 ", condition: (v) => v.int >= 18 && v.sexdr >= 20 && v.dex >= 18 },
+    { name: "喜愛冒險", condition: (v) => v.int >= 18 && v.cou >= 20 },
+    { name: "陰角", condition: (v) => v.chr <= 17 && v.cou <= 15 && v.str <= 16 },
+    { name: "吝嗇", condition: (v) => v.int >= 22 && v.eth <= 14 },
+    { name: "大姐姐", condition: (v) => v.bodySex === "女" && v.str >= 17 && v.eth >= 16 && v.cou >= 18 },
     { name: "古風", condition: (v) => v.bodySex === "女" && v.ind >= 18 && v.eth >= 18 && v.sexdr <= 14 },
-    { name: "大雑把", condition: (v) => v.vit >= 20 && v.dex <= 12 },
-    { name: "臆病", condition: (v) => ["int","eth","ind","sexdr"].every(param => v[param] <= 19) && v.cou <= 10 },
-    { name: "寡黙", condition: (v) => v.dex <= 15 && v.chr <= 15 && v.sexdr <= 17 },
-    { name: "不器用", condition: (v) => ["int","eth","ind","sexdr","cou"].every(param => v[param] <= 19) && v.dex <= 10 },
-    { name: "ぶっきらぼう", condition: (v) => v.dex <= 12 && v.chr <= 16 && v.sexdr <= 12 },
-    { name: "偏屈", condition: (v) => v.dex <= 15 && v.chr <= 12 && v.int >= 18 },
-    { name: "利発", condition: (v) => v.dex >= 18 && v.int >= 20 && v.eth >= 18 },
-    { name: "抜け目がない", condition: (v) => v.dex >= 20 && v.chr >= 16 && v.int >= 18 && v.eth <= 16 },
-    { name: "職人気質", condition: (v) => v.dex >= 20 && v.ind >= 20 },
+    { name: "隨便", condition: (v) => v.vit >= 20 && v.dex <= 12 },
+    { name: "膽小", condition: (v) => ["int","eth","ind","sexdr"].every(param => v[param] <= 19) && v.cou <= 10 },
+    { name: "寡言", condition: (v) => v.dex <= 15 && v.chr <= 15 && v.sexdr <= 17 },
+    { name: "笨拙", condition: (v) => ["int","eth","ind","sexdr","cou"].every(param => v[param] <= 19) && v.dex <= 10 },
+    { name: "粗魯", condition: (v) => v.dex <= 12 && v.chr <= 16 && v.sexdr <= 12 },
+    { name: "偏執", condition: (v) => v.dex <= 15 && v.chr <= 12 && v.int >= 18 },
+    { name: "聰明", condition: (v) => v.dex >= 18 && v.int >= 20 && v.eth >= 18 },
+    { name: "精明", condition: (v) => v.dex >= 20 && v.chr >= 16 && v.int >= 18 && v.eth <= 16 },
+    { name: "職人精神", condition: (v) => v.dex >= 20 && v.ind >= 20 },
     { name: "狡猾", condition: (v) => v.int >= 20 && v.eth <= 9 },
-    { name: "あざとい", condition: (v) => v.bodySex === "女" && v.dex >= 16 && v.chr >= 20 && v.int >= 16 && v.sexdr >= 17 },
-    { name: "鈍感", condition: (v) => v.vit >= 18 && v.mag <= 12 && v.chr <= 16 },
-    { name: "泣き虫", condition: (v) => v.bodySex === "女" && v.vit <= 16 && v.cou <= 9 },
-    { name: "おしゃれ", condition: (v) => v.bodySex === "女" && v.chr >= 20 && v.sexdr >= 16 },
+    { name: "耍小聰明", condition: (v) => v.bodySex === "女" && v.dex >= 16 && v.chr >= 20 && v.int >= 16 && v.sexdr >= 17 },
+    { name: "遲鈍", condition: (v) => v.vit >= 18 && v.mag <= 12 && v.chr <= 16 },
+    { name: "愛哭鬼", condition: (v) => v.bodySex === "女" && v.vit <= 16 && v.cou <= 9 },
+    { name: "時髦", condition: (v) => v.bodySex === "女" && v.chr >= 20 && v.sexdr >= 16 },
     { name: "粗暴", condition: (v) => v.str >= 26 && v.eth <= 10 },
-    { name: "男勝り", condition: (v) => v.bodySex === "女" && v.str >= 16 && v.cou >= 20 },
+    { name: "女強人", condition: (v) => v.bodySex === "女" && v.str >= 16 && v.cou >= 20 },
     { name: "潔癖", condition: (v) => v.eth >= 22 && v.sexdr <= 10 },
-    { name: "綺麗好き", condition: (v) => v.eth >= 18 && v.sexdr <= 16 },
-    { name: "暴れ者", condition: (v) => v.bodySex === "男" && v.str >= 20 && v.eth <= 12 && v.cou >= 20 },
-    { name: "好戦的", condition: (v) => v.str >= 20 && v.eth <= 16 && v.cou >= 20 },
-    { name: "問題児", condition: (v) => v.bodySex === "男" && v.ind <= 12 && v.eth <= 12 },
+    { name: "喜歡乾淨", condition: (v) => v.eth >= 18 && v.sexdr <= 16 },
+    { name: "暴力", condition: (v) => v.bodySex === "男" && v.str >= 20 && v.eth <= 12 && v.cou >= 20 },
+    { name: "好戰", condition: (v) => v.str >= 20 && v.eth <= 16 && v.cou >= 20 },
+    { name: "問題兒童", condition: (v) => v.bodySex === "男" && v.ind <= 12 && v.eth <= 12 },
     { name: "草食系", condition: (v) => v.bodySex === "男" && v.sexdr <= 12 },
-    { name: "スケベ", condition: (v) => v.bodySex === "男" && v.int <= 18 && v.eth <= 16 && v.sexdr >= 20 },
-    { name: "遊び人", condition: (v) => v.bodySex === "男" && v.chr >= 18 && v.eth <= 12 && v.sexdr >= 20 },
-    { name: "むっつり", condition: (v) => v.eth >= 20 && v.sexdr >= 22 },
+    { name: "色鬼", condition: (v) => v.bodySex === "男" && v.int <= 18 && v.eth <= 16 && v.sexdr >= 20 },
+    { name: "遊人", condition: (v) => v.bodySex === "男" && v.chr >= 18 && v.eth <= 12 && v.sexdr >= 20 },
+    { name: "沉默", condition: (v) => v.eth >= 20 && v.sexdr >= 22 },
     { name: "勇敢", condition: (v) => v.str >= 20 && v.cou >= 22 },
-    { name: "勇猛果敢", condition: (v) => v.cou >= 28 },
+    { name: "果斷", condition: (v) => v.cou >= 28 },
     { name: "豪傑", condition: (v) => v.str >= 24 && v.cou >= 24 },
     { name: "箱入り", condition: (v) => v.bodySex === "女" && v.str <= 16 && v.eth >= 20 && v.sexdr <= 12 },
-    { name: "惚れっぽい", condition: (v) => v.bodySex === "女" && v.int <= 18 && v.chr <= 23 && v.sexdr >= 19 },
-    { name: "惚れっぽい", condition: (v) => v.bodySex === "男" && v.sexdr <= 24 && v.sexdr >= 19 },
+    { name: "迷戀", condition: (v) => v.bodySex === "女" && v.int <= 18 && v.chr <= 23 && v.sexdr >= 19 },
+    { name: "迷戀", condition: (v) => v.bodySex === "男" && v.sexdr <= 24 && v.sexdr >= 19 },
     { name: "愚直", condition: (v) => v.int <= 10 && v.ind >= 20 },
     { name: "夢想家", condition: (v) => v.int >= 18 && v.chr >= 16 && v.ind <= 12 },
-    { name: "堅物", condition: (v) => v.ind >= 18 && v.eth >= 20 && v.sexdr <= 15 },
-    { name: "ストイック", condition: (v) => v.ind >= 20 && v.eth >= 16 && v.sexdr <= 15 },
-    { name: "仕事好き", condition: (v) => v.ind >= 23},
-    { name: "仕事の鬼", condition: (v) => v.ind >= 24},
-    { name: "頭脳派", condition: (v) => v.int >= 20 && v.dex >= 18 },
-    { name: "聡明", condition: (v) => v.int >= 20 && v.chr >= 16 && v.dex >= 16 },
-    { name: "才気煥発", condition: (v) => v.int >= 24 && v.dex >= 18 },
-    { name: "マッド", condition: (v) => v.int >= 24 && v.eth <= 9 },
-    { name: "享楽的", condition: (v) => v.ind <= 16 && v.eth <= 16 && v.sexdr >= 18 && v.int <= 19 },
+    { name: "耿直", condition: (v) => v.ind >= 18 && v.eth >= 20 && v.sexdr <= 15 },
+    { name: "沉穩", condition: (v) => v.ind >= 20 && v.eth >= 16 && v.sexdr <= 15 },
+    { name: "喜愛工作", condition: (v) => v.ind >= 23},
+    { name: "工作狂", condition: (v) => v.ind >= 24},
+    { name: "頭腦派", condition: (v) => v.int >= 20 && v.dex >= 18 },
+    { name: "睿智", condition: (v) => v.int >= 20 && v.chr >= 16 && v.dex >= 16 },
+    { name: "才氣煥發", condition: (v) => v.int >= 24 && v.dex >= 18 },
+    { name: "瘋狂", condition: (v) => v.int >= 24 && v.eth <= 9 },
+    { name: "享樂主義", condition: (v) => v.ind <= 16 && v.eth <= 16 && v.sexdr >= 18 && v.int <= 19 },
     { name: "悪女", condition: (v) => v.bodySex === "女" && v.chr >= 20 && v.eth <= 9 },
-    { name: "筋肉馬鹿", condition: (v) => v.int <= 12 && v.str >= 24 },
+    { name: "肌肉笨蛋", condition: (v) => v.int <= 12 && v.str >= 24 },
     { name: "熱血", condition: (v) => v.int <= 14 && v.cou >= 24 },
-    { name: "世渡り上手", condition: (v) => v.chr >= 18 && v.dex >= 18 && v.int >= 18 },
-    { name: "文武両道", condition: (v) => v.str >= 20 && v.int >= 20 },
+    { name: "圓融", condition: (v) => v.chr >= 18 && v.dex >= 18 && v.int >= 18 },
+    { name: "文武雙全", condition: (v) => v.str >= 20 && v.int >= 20 },
     { name: "愚鈍", condition: (v) => v.eth <= 4 && v.int <= 11 },
     { name: "強欲", condition: (v) => v.eth <= 4 && v.ind >= 10 },
-    { name: "現実主義", condition: (v) => v.mag <= 10 && v.ind >= 20 },
+    { name: "現實主義", condition: (v) => v.mag <= 10 && v.ind >= 20 },
     { name: "才女", condition: (v) => v.bodySex === "女" && v.int >= 20 && v.ind >= 18 && v.eth >= 16 },
     { name: "才色兼備", condition: (v) => v.bodySex === "女" && v.int >= 20 && v.chr >= 22 },
     { name: "肉食系", condition: (v) => v.bodySex === "女" && v.chr <= 23 && v.sexdr >= 20},
@@ -720,18 +720,18 @@ export function assignBodyMindTraits(v) {
   // 非排他特性
   const nonExclusiveTraits = [
     { name: "尼特", condition: (v)=>(v.ind<=10), chance:0.3, target:"mind" },
-    { name: "ワーカホリック", condition: (v)=>(v.ind>=23), chance:0.2, target:"mind" },
-    { name: "澄んだ声", condition: (v)=>(v.bodySex==="女" && v.chr>=25), chance:0.1, target:"body" },
-    { name: "通る声", condition: (v)=>(v.chr>=20 && v.cou>=20 && v.eth>=20), chance:0.3, target:"body" },
-    { name: "非戦主義", condition: (v)=>(v.eth>=25), chance:0.5, target:"mind" },
-    { name: "聖女の輝き", condition: (v)=>(v.bodySex==="女" && v.eth>=23 && v.sexdr<=12), chance:0.5, target:"body" },
+    { name: "工作中毒", condition: (v)=>(v.ind>=23), chance:0.2, target:"mind" },
+    { name: "清澈的聲", condition: (v)=>(v.bodySex==="女" && v.chr>=25), chance:0.1, target:"body" },
+    { name: "嘹亮的聲", condition: (v)=>(v.chr>=20 && v.cou>=20 && v.eth>=20), chance:0.3, target:"body" },
+    { name: "不戰主義", condition: (v)=>(v.eth>=25), chance:0.5, target:"mind" },
+    { name: "聖女的光輝", condition: (v)=>(v.bodySex==="女" && v.eth>=23 && v.sexdr<=12), chance:0.5, target:"body" },
     { name: "酒豪", condition: (v)=>(v.vit>=25 && v.chr>=16 && v.sexdr>=18), chance:0.1, target:"body" },
-    { name: "繊細な指", condition: (v)=>(v.dex>=22 && v.chr>=22), chance:0.1, target:"body" },
-    { name: "色白", condition: (v)=>(v.vit<=12 && v.chr>=25), chance:0.1, target:"body" },
-    { name: "寒がり", condition: (v)=>(v.str<=12 && v.vit<=12), chance:0.1, target:"mind" },
+    { name: "細指", condition: (v)=>(v.dex>=22 && v.chr>=22), chance:0.1, target:"body" },
+    { name: "白皙", condition: (v)=>(v.vit<=12 && v.chr>=25), chance:0.1, target:"body" },
+    { name: "怕冷", condition: (v)=>(v.str<=12 && v.vit<=12), chance:0.1, target:"mind" },
     { name: "大食", condition: (v) =>(v.vit >= 22 && v.chr<=16), chance:0.1, target:"mind" },
     { name: "小食", condition: (v) =>(v.vit <= 12), chance:0.1, target:"mind" },
-    { name: "汗かき", condition: (v)=>(v.vit>=24 && v.chr<=12), chance:0.2, target:"mind" },
+    { name: "大汗", condition: (v)=>(v.vit>=24 && v.chr<=12), chance:0.2, target:"mind" },
   ];
   nonExclusiveTraits.forEach(def => {
     if (def.condition(v)) {
@@ -760,14 +760,14 @@ export function assignBodyMindTraits(v) {
  * 特性によるパラメーター修正
  */
 export function applyTraitParameterBonuses(v) {
-  if (v.bodyTraits.includes("聖女の輝き")) {
+  if (v.bodyTraits.includes("聖女的光輝")) {
     v.chr += 10; 
     v.mag += 10;
   }
-  if (v.bodyTraits.includes("巨躯")) {
+  if (v.bodyTraits.includes("巨人")) {
     v.str += 10;
   }
-  if (v.mindTraits.includes("ワーカホリック")) {
+  if (v.mindTraits.includes("工作中毒")) {
     v.ind += 3;
   }
   if (v.mindTraits.includes("尼特")) {
@@ -776,12 +776,12 @@ export function applyTraitParameterBonuses(v) {
   if (v.mindTraits.includes("箱入り")) {
     v.chr += 5;
   }
-  if (v.mindTraits.includes("内向的")) {
+  if (v.mindTraits.includes("内向")) {
     v.int += 4; 
     v.ind += 6; 
     v.eth += 4;
   }
-  if (v.mindTraits.includes("本の虫")) {
+  if (v.mindTraits.includes("書蟲")) {
     v.int += 8;
   }
 

@@ -339,7 +339,7 @@ function healMiracle(p,v) {
           p.vit = round3(p.vit / 0.8);
           p.dex = round3(p.dex / 0.8);
           break;
-        case "過労":
+        case "過勞":
           p.str = round3(p.str / 0.25);  // 25%から回復
           p.vit = round3(p.vit / 0.25);
           p.dex = round3(p.dex / 0.25);
