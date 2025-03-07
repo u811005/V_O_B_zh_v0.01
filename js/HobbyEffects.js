@@ -7,13 +7,13 @@ export class HobbyEffects {
 
     let msg = "";
     switch(h) {
-      case "喧嘩": 
+      case "打架": 
         msg = this.applyFighting(p, v);
         break;
-      case "筋トレ":
+      case "肌肉鍛鍊":
         msg = this.applyTraining(p, v);
         break;
-      case "ドカ食い":
+      case "暴食":
         msg = this.applyEating(p, v);
         break;
       case "露出":
@@ -34,18 +34,18 @@ export class HobbyEffects {
     v.security = clampValue(v.security-10, 0, 100);
     if (Math.random() < 0.5) {
       p.cou++;
-      return "(喧嘩:体力-10,治安-10,勇気+1)";
+      return "(打架:体力-10,治安-10,勇気+1)";
     }
-    return "(喧嘩:体力-10,治安-10)";
+    return "(打架:体力-10,治安-10)";
   }
 
   static applyTraining(p, v) {
     p.hp = clampValue(p.hp-10, 0, 100);
     if (Math.random() < 0.5) {
       p.str++;
-      return "(筋トレ:体力-10,筋力+1)";
+      return "(肌肉鍛鍊:体力-10,筋力+1)";
     }
-    return "(筋トレ:体力-10)";
+    return "(肌肉鍛鍊:体力-10)";
   }
 
   static applyEating(p, v) {
@@ -54,11 +54,11 @@ export class HobbyEffects {
       p.hp = clampValue(p.hp+50, 0, 100);
       if (Math.random() < 0.5) {
         p.vit++;
-        return "(ドカ食い:食料-10,体力+50,耐久+1)";
+        return "(暴食:食料-10,体力+50,耐久+1)";
       }
-      return "(ドカ食い:食料-10,体力+50)";
+      return "(暴食:食料-10,体力+50)";
     }
-    return "(ドカ食いしたが食料不足)";
+    return "(暴食したが食料不足)";
   }
 
   static applyExposure(p, v) {

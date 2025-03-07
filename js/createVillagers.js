@@ -303,7 +303,7 @@ export function createRandomVillager({ sex, minAge, maxAge, params = {}, ranges 
   
   // 顔グラフィックの設定
   // 襲擊者でない場合のみ顔グラフィックを設定
-  if (!params.job || !["野盗", "ゴブリン", "狼", "キュクロプス", "ハーピー"].includes(params.job)) {
+  if (!params.job || !["山賊", "哥布林", "狼", "獨眼巨魔", "哈比"].includes(params.job)) {
     if (sex === "男") {
       // 男性の場合の処理
       let selectedGroup = null;
@@ -729,7 +729,7 @@ export function assignBodyMindTraits(v) {
     { name: "繊細な指", condition: (v)=>(v.dex>=22 && v.chr>=22), chance:0.1, target:"body" },
     { name: "色白", condition: (v)=>(v.vit<=12 && v.chr>=25), chance:0.1, target:"body" },
     { name: "寒がり", condition: (v)=>(v.str<=12 && v.vit<=12), chance:0.1, target:"mind" },
-    { name: "大食い", condition: (v) =>(v.vit >= 22 && v.chr<=16), chance:0.1, target:"mind" },
+    { name: "大食", condition: (v) =>(v.vit >= 22 && v.chr<=16), chance:0.1, target:"mind" },
     { name: "小食", condition: (v) =>(v.vit <= 12), chance:0.1, target:"mind" },
     { name: "汗かき", condition: (v)=>(v.vit>=24 && v.chr<=12), chance:0.2, target:"mind" },
   ];
@@ -804,15 +804,15 @@ export function applyTraitParameterBonuses(v) {
  */
 export function assignHobby(v) {
   const specialHobbyDefs = [
-    { name: "ギャンブル",  condition: (v)=>(v.cou>=20 && v.eth<=15), chance:0.15 },
-    { name: "喧嘩",        condition: (v)=>(v.str>=20 && v.cou>=20 && v.eth<=10), chance:0.15 },
-    { name: "筋トレ",      condition: (v)=>(v.str>=24), chance:0.15 },
-    { name: "ドカ食い",    condition: (v)=>(v.vit>=25), chance:0.1 },
-    { name: "ナンパ",      condition: (v)=>(v.bodySex==="男" && v.eth<=15 && v.sexdr>=25), chance:0.15 },
-    { name: "逆ナン",      condition: (v)=>(v.bodySex==="女" && v.eth<=12 && v.sexdr>=20), chance:0.1 },
+    { name: "賭博",  condition: (v)=>(v.cou>=20 && v.eth<=15), chance:0.15 },
+    { name: "打架",        condition: (v)=>(v.str>=20 && v.cou>=20 && v.eth<=10), chance:0.15 },
+    { name: "肌肉鍛鍊",      condition: (v)=>(v.str>=24), chance:0.15 },
+    { name: "暴食",    condition: (v)=>(v.vit>=25), chance:0.1 },
+    { name: "吊女人",      condition: (v)=>(v.bodySex==="男" && v.eth<=15 && v.sexdr>=25), chance:0.15 },
+    { name: "吊男人",      condition: (v)=>(v.bodySex==="女" && v.eth<=12 && v.sexdr>=20), chance:0.1 },
     { name: "滝行",        condition: (v)=>(v.vit>=25), chance:0.15 },
-    { name: "祈り",        condition: (v)=>(v.eth>=25), chance:0.25 },
-    { name: "手芸",        condition: (v)=>(v.dex>=20), chance:0.1 },
+    { name: "祈禱",        condition: (v)=>(v.eth>=25), chance:0.25 },
+    { name: "手工",        condition: (v)=>(v.dex>=20), chance:0.1 },
     { name: "自由研究",    condition: (v)=>(v.int>=20), chance:0.15 },
     { name: "瞑想",        condition: (v)=>(v.mag>=25), chance:0.15 },
     { name: "自家発電",    condition: (v)=>(v.sexdr>=27), chance:0.1 },
@@ -834,16 +834,16 @@ export function assignHobby(v) {
   // 上記に該当しない場合、汎用リストからランダム
   if (v.bodySex==="男") {
     let maleH = [
-      "大食い","美食","筋トレ","滝行","自由研究","釣り","自家発電","読書",
-      "祈り","ナンパ","ショッピング","散歩","噂話","園芸","詩作","推し活",
-      "瞑想","飲酒","ギャンブル","投資","天体観測","狩獵"
+      "大食","美食","肌肉鍛鍊","滝行","自由研究","垂釣","自家発電","讀書",
+      "祈禱","吊女人","購物","散步","八卦","園藝","作詩","追星",
+      "瞑想","飲酒","賭博","投資","天体観測","狩獵"
     ];
     v.hobby = randChoice(maleH);
   } else {
     let femaleH = [
-      "自由研究","釣り","読書","祈り","ショッピング","散歩","噂話","園芸",
-      "お茶会","オシャレ","詩作","推し活","手芸","瞑想","飲酒","美食",
-      "占い","投資","天体観測","ダンス"
+      "自由研究","垂釣","讀書","祈禱","購物","散步","八卦","園藝",
+      "茶會","時尚","作詩","追星","手工","瞑想","飲酒","美食",
+      "占卜","投資","天体観測","跳舞"
     ];
     v.hobby = randChoice(femaleH);
   }
