@@ -91,7 +91,7 @@ function harvestFestival(v) {
 }
 
 function starsFestival(v) {
-  v.log("【星霜祭】体力+20,メンタル+20 +追加魔素 +恋人判定");
+  v.log("【星霜祭】体力+20,メンタル+20 +追加魔素 +戀人判定");
   v.villagers.forEach(p=>{
     p.hp=clampValue(p.hp+20,0,100);
     p.mp=clampValue(p.mp+20,0,100);

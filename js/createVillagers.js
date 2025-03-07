@@ -1130,7 +1130,7 @@ export function createRandomVisitor() {
   });
 
   // 訪問者の名前を修正
-  visitor.name = `${visitorType.type}の${visitor.name}`;
+  visitor.name = `${visitorType.type} - ${visitor.name}`;
   
   // 行動テーブルを訪問のみに制限
   visitor.actionTable = ["訪問"];

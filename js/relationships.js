@@ -3,21 +3,21 @@
 import { randInt, clampValue } from "./util.js";
 
 /**
- * 恋人チェック (星霜祭などで呼ばれる)
+ * 戀人チェック (星霜祭などで呼ばれる)
  */
 export function doLoverCheck(village) {
   let candF = village.villagers.filter(x=>
     x.bodySex==="女" && x.bodyAge>=16 && x.bodyAge<=30 
-    && !checkHasRelationship(x,"既婚")
-    && !checkHasRelationship(x,"恋人")
+    && !checkHasRelationship(x,"已婚")
+    && !checkHasRelationship(x,"戀人")
   );
   let candM = village.villagers.filter(x=>
     x.bodySex==="男" && x.bodyAge>=16 && x.bodyAge<=39
-    && !checkHasRelationship(x,"既婚")
-    && !checkHasRelationship(x,"恋人")
+    && !checkHasRelationship(x,"已婚")
+    && !checkHasRelationship(x,"戀人")
   );
   if (candF.length===0||candM.length===0) {
-    village.log("恋人判定:未婚男女なし");
+    village.log("戀人判定:無未婚男女");
     return;
   }
   let f = randChoice(candF);
@@ -25,30 +25,30 @@ export function doLoverCheck(village) {
 
   let dAge = m.bodyAge - f.bodyAge;
   if (dAge < -5 || dAge>9) {
-    village.log("年齢差大きすぎ:恋人失敗");
+    village.log("年齡差過大:戀人失敗");
     return;
   }
   let dEth = m.eth - f.eth;
   if (dEth<-9||dEth>9) {
-    village.log("倫理差大きすぎ:恋人失敗");
+    village.log("道德差過大:戀人失敗");
     return;
   }
   let dChr = f.chr - m.chr;
   if (dChr<-12||dChr>12) {
-    village.log("魅力差大きすぎ:恋人失敗");
+    village.log("魅力差過大:戀人失敗");
     return;
   }
   let p1=Math.min(100, m.sexdr*4);
   let p2=Math.min(100, f.sexdr*4);
   let sc = (p1*p2)/10000;  // 例: p1=80, p2=40 => sc= (80*40)/10000=0.32
   if (Math.random()<=sc) {
-    addRelationship(f, `恋人:${m.name}`);
-    addRelationship(m, `恋人:${f.name}`);
+    addRelationship(f, `戀人:${m.name}`);
+    addRelationship(m, `戀人:${f.name}`);
     f.happiness=clampValue(f.happiness+50,0,100);
     m.happiness=clampValue(m.happiness+50,0,100);
-    village.log(`${f.name}と${m.name}恋人成立(成功率${(sc*100).toFixed(1)}%)`);
+    village.log(`${f.name}和${m.name}成為戀人(成功率${(sc*100).toFixed(1)}%)`);
   } else {
-    village.log(`${f.name}と${m.name}恋愛失敗`);
+    village.log(`${f.name}和${m.name}戀愛失敗`);
   }
 }
 
@@ -58,15 +58,15 @@ export function doLoverCheck(village) {
 export function doMarriageCheck(village) {
   let c = village.villagers.filter(x=>
     x.spiritAge>=18
-    && checkHasRelationship(x,"恋人")
-    && !checkHasRelationship(x,"既婚")
+    && checkHasRelationship(x,"戀人")
+    && !checkHasRelationship(x,"已婚")
   );
   if (c.length===0) {
-    village.log("結婚判定:該当者なし");
+    village.log("結婚判定:無適合者");
     return;
   }
   let a = randChoice(c);
-  let bName = getRelationshipTargetName(a, "恋人");
+  let bName = getRelationshipTargetName(a, "戀人");
   if (!bName) return;
 
   let b = village.villagers.find(xx=>xx.name===bName);
@@ -77,10 +77,10 @@ export function doMarriageCheck(village) {
   let sc = (rA*rB)/10000;
 
   if (Math.random()<=sc) {
-    removeRelationship(a,`恋人:${b.name}`);
-    removeRelationship(b,`恋人:${a.name}`);
-    addRelationship(a,"既婚");
-    addRelationship(b,"既婚");
+    removeRelationship(a,`戀人:${b.name}`);
+    removeRelationship(b,`戀人:${a.name}`);
+    addRelationship(a,"已婚");
+    addRelationship(b,"已婚");
     a.happiness=clampValue(a.happiness+50,0,100);
     b.happiness=clampValue(b.happiness+50,0,100);
 
@@ -89,9 +89,9 @@ export function doMarriageCheck(village) {
     if (b.spiritSex==="男") addRelationship(b,`夫:${a.name}`);
     else if (b.spiritSex==="女") addRelationship(b,`妻:${a.name}`);
 
-    village.log(`${a.name}と${b.name}結婚成功`);
+    village.log(`${a.name}和${b.name}結婚成功`);
   } else {
-    village.log(`${a.name}と${b.name}結婚失敗`);
+    village.log(`${a.name}和${b.name}結婚失敗`);
   }
 }
 

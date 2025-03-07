@@ -20,7 +20,7 @@ export const MIRACLES = [
   {id:"7",  name:"戰神の奇蹟(80)", cost:80, desc:"1人受到火星的加護(3個月)"},
   {id:"8",  name:"竈女神の奇蹟(60)", cost:60, desc:"戀人100%結婚(沒有則返回30點)"},
   {id:"9",  name:"常春の奇蹟(300)", cost:300,desc:"村莊特性→春 固定。持續到下個季節"},
-  {id:"10", name:"旅人の奇蹟(60)", cost:60, desc:"隨機的訪客(給予訪問者)"},
+  {id:"10", name:"旅人の奇蹟(60)", cost:60, desc:"隨機的訪問者(給予訪問者)"},
   {id:"11", name:"遠行の奇蹟(20)", cost:20, desc:"1人離開→依照幸福獲得魔素"},
   {id:"14", name:"邁達斯の奇蹟(100)", cost:100, desc:"1個月間、以資金取代獲得的食材"}
 ];
@@ -396,7 +396,7 @@ function warMiracle(p, v) {
 
 /** 竈女神(恋人を結婚100%) */
 function hearthMiracle(v) {
-  let c=v.villagers.filter(x=> x.spiritAge>=18 && checkHasRelationship(x,"恋人") && !checkHasRelationship(x,"既婚"));
+  let c=v.villagers.filter(x=> x.spiritAge>=18 && checkHasRelationship(x,"戀人") && !checkHasRelationship(x,"已婚"));
   if (c.length===0) {
     v.log("【竈女神の奇蹟】沒有可以結婚的戀人→返還30魔素");
     v.mana=clampValue(v.mana+30,0,99999);
@@ -433,8 +433,8 @@ function hearthMiracle(v) {
 import { createRandomVillager } from "./createVillagers.js";
 function travelerMiracle(v) {
   let newV = createRandomVillager();
-  v.log(`【旅人の奇蹟】${newV.name}來了(訪客)`);
-  v.villageTraits.push("訪客");
+  v.log(`【旅人の奇蹟】${newV.name}來了(訪問者)`);
+  v.villageTraits.push("訪問者");
   // ★ここでは村に追加するか不明(訪問のみ?)
   // もし本当に村に加えるなら: v.villagers.push(newV); など
 }
