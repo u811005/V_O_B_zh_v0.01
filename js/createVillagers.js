@@ -590,7 +590,7 @@ export function assignBodyMindTraits(v) {
     { name: "絕世美女", condition: (v) => v.bodySex === "女" && v.chr >= 28 },
     { name: "謎團", condition: (v) => v.mag >= 20 && v.chr >= 21 && v.chr <= 27},
     { name: "冷酷", condition: (v) => v.sexdr <= 10 && v.chr >= 20},
-    { name: "あやしげ", condition: (v) => v.bodySex === "男" && v.mag >= 22 && v.chr <= 15 },
+    { name: "可疑", condition: (v) => v.bodySex === "男" && v.mag >= 22 && v.chr <= 15 },
     { name: "男模", condition: (v) => v.bodySex === "男" && v.mag >= 20 && v.chr >= 20 },
     { name: "怪力", condition: (v) => v.bodySex === "男" && v.str >= 27 },
     { name: "狡詐", condition: (v) => v.bodySex === "男" && v.dex >= 20 && v.eth <= 15 && v.chr <= 12 },
