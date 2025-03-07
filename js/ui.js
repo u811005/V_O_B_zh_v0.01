@@ -4,6 +4,7 @@ import { theVillage } from "./main.js"; // 注意: これにより循環参照�
 // ただし updateUI() の中で theVillage を参照するかどうかによっては構成要再検討
 import { refreshJobTable } from "./createVillagers.js";  // 追加
 import { openConversationModal } from "./conversation.js";
+import { clampValue, round3, getPortraitPath } from "./util.js";
 
 /**
  * メイン画面(村人一覧,資源パネルなど)を更新
@@ -46,8 +47,17 @@ export function updateUI(v) {
   v.villagers.forEach(person=>{
     let tr=document.createElement("tr");
 
+    
+    // let tdImg=document.createElement("td");
+    // tdImg.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}" >`;
+    // tdImg.style.cursor = "pointer";
+    // tdImg.onclick = () => openConversationModal(person);
+    // tr.appendChild(tdImg);
+
     // 名前
     let tdName=document.createElement("td");
+    // tdName.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+    // tdName.backgroundImage = `url(${getPortraitPath(person)})`;
     tdName.textContent=person.name;
     tdName.style.cursor = "pointer";
     tdName.onclick = () => openConversationModal(person);
@@ -55,7 +65,8 @@ export function updateUI(v) {
 
     // 体の持ち主
     let tdOwn=document.createElement("td");
-    tdOwn.textContent=person.bodyOwner;
+    // tdOwn.textContent=person.bodyOwner;
+    tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
     tr.appendChild(tdOwn);
 
     // 種族を追加
@@ -203,7 +214,12 @@ export function updateUI(v) {
     tr.appendChild(tdFold);
 
     // 行スタイル等(例: 性別により色分け)
-    for (let i=0; i<=11; i++) {
+    if (person.spiritSex==="男") {
+      tr.cells[0].classList.add("male-basic");
+    } else {
+      tr.cells[0].classList.add("female-basic");
+    } 
+    for (let i=1; i<=11; i++) {
       if (person.bodySex==="男") {
         tr.cells[i].classList.add("male-basic");
       } else {
@@ -264,7 +280,8 @@ export function updateUI(v) {
 
       // 体の持ち主
       let tdOwn = document.createElement("td");
-      tdOwn.textContent = person.bodyOwner;
+      tdOwn.innerHTML = `<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+      // tdOwn.textContent = person.bodyOwner;
       tr.appendChild(tdOwn);
 
       // 種族を追加
@@ -386,7 +403,12 @@ export function updateUI(v) {
       tr.appendChild(tdFold);
 
       // スタイル適用
-      for (let i = 0; i <= 11; i++) {
+      if (person.spiritSex==="男") {
+        tr.cells[0].classList.add("male-basic");
+      } else {
+        tr.cells[0].classList.add("female-basic");
+      }
+      for (let i = 1; i <= 11; i++) {
         if (person.bodySex === "男") {
           tr.cells[i].classList.add("male-basic");
         } else {
@@ -444,7 +466,8 @@ export function updateUI(v) {
 
         // 体の持ち主
         let tdOwn=document.createElement("td");
-        tdOwn.textContent=person.bodyOwner;
+        // tdOwn.textContent=person.bodyOwner;
+        tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
         tr.appendChild(tdOwn);
 
         // 種族を追加
@@ -566,7 +589,12 @@ export function updateUI(v) {
         tr.appendChild(tdFold);
 
         // 行スタイル等(例: 性別により色分け)
-        for (let i=0; i<=11; i++) {
+        if (person.spiritSex==="男") {
+          tr.cells[0].classList.add("male-basic");
+        } else {
+          tr.cells[0].classList.add("female-basic");
+        }
+        for (let i=1; i<=11; i++) {
           if (person.bodySex==="男") {
             tr.cells[i].classList.add("male-basic");
           } else {
@@ -669,7 +697,11 @@ function sortVillagerTable(colIndex, isAsc) {
     let bVal = b.cells[colIndex].textContent;
 
     // 数値の場合は数値としてソート
-    if ([3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21].includes(colIndex)) {
+    if ([3].includes(colIndex)) {
+      aVal==="男"?aVal=1: aVal=-1;
+      bVal==="男"?bVal=1: bVal=-1;
+    }
+    if ([4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21].includes(colIndex)) {
       aVal = Number(aVal);
       bVal = Number(bVal);
     }
