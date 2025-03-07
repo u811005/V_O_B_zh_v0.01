@@ -336,11 +336,11 @@ const SPEECH_PATTERNS = {
 // 訪問者タイプごとの勧誘成功率係数
 const RECRUITMENT_COEFFICIENTS = {
   "流民": 0.8,    // 最も勧誘しやすい
-  "冒険者": 0.4,  // やや勧誘しにくい
+  "冒險者": 0.4,  // やや勧誘しにくい
   "巡礼者": 0.2,  // 比較的勧誘しやすい
-  "学者": 0.2,    // 勧誘しにくい
-  "観光客": 0.4,  // かなり勧誘しにくい
-  "旅人": 0.4,    // 標準
+  "學者": 0.2,    // 勧誘しにくい
+  "觀光客": 0.4,  // かなり勧誘しにくい
+  "旅者": 0.4,    // 標準
   "行商人": 0.2   // 勧誘しにくい
 };
 
@@ -432,7 +432,7 @@ export function openConversationModal(character) {
     // 襲擊中の村人の場合は迎擊・罠作成ボタンを表示
     actionButtons.innerHTML = `
       <button id="assignDefender" class="${character.action === '迎擊' ? 'active-action' : ''}">迎擊任命</button>
-      <button id="assignTrapMaker" class="${character.action === '陷阱作成' ? 'active-action' : ''}">陷阱作成任命</button>
+      <button id="assignTrapMaker" class="${character.action === '製作陷阱' ? 'active-action' : ''}">製作陷阱任命</button>
     `;
     actionButtons.style.display = "block";
     
@@ -441,7 +441,7 @@ export function openConversationModal(character) {
     });
     
     document.getElementById("assignTrapMaker").addEventListener("click", () => {
-      changeCharacterAction(character, "陷阱作成");
+      changeCharacterAction(character, "製作陷阱");
     });
   } else {
     actionButtons.style.display = "none";
@@ -679,7 +679,7 @@ function getStatusLine(character, status) {
  */
 function getVisitorLine(character) {
   // 訪問者の名前から訪問者タイプを抽出
-  const visitorTypes = ["流民", "冒険者", "巡礼者", "学者", "観光客", "旅人", "行商人"];
+  const visitorTypes = ["流民", "冒險者", "巡礼者", "學者", "觀光客", "旅者", "行商人"];
   let visitorType = "";
   
   for (const type of visitorTypes) {
@@ -698,7 +698,7 @@ function getVisitorLine(character) {
       "長い旅でくたびれました…少し休ませてください。",
       "他の村では追い出されてしまって…ここなら受け入れてくれますか？"
     ],
-    "冒険者": [
+    "冒險者": [
       "この辺りで何か変わったことはありませんか？",
       "冒険の途中で立ち寄りました。情報を交換しませんか？",
       "危険な魔物の噂はありませんか？報酬次第では退治できますよ。",
@@ -712,21 +712,21 @@ function getVisitorLine(character) {
       "神聖な場所を探しています。この村に何かありませんか？",
       "心の安らぎを求めて旅をしています。"
     ],
-    "学者": [
+    "學者": [
       "この地域の歴史について調査しています。何か知っていますか？",
       "珍しい植物や動物を見かけませんでしたか？",
       "古い遺跡や伝承について教えていただけませんか？",
       "研究のためにデータを集めています。協力していただけますか？",
       "この村の成り立ちについて、詳しく知りたいのですが。"
     ],
-    "観光客": [
+    "觀光客": [
       "この村の名物は何ですか？ぜひ体験したいです！",
       "素敵な村ですね！おすすめの場所はありますか？",
       "記念に何か買って帰りたいのですが、お店はありますか？",
       "この景色は最高ですね！しばらく滞在したいです。",
       "地元の料理を食べてみたいです。おすすめはありますか？"
     ],
-    "旅人": [
+    "旅者": [
       "旅の途中で立ち寄りました。良い村ですね。",
       "道中の情報を交換しませんか？",
       "一晩泊めていただけないでしょうか？",
@@ -931,7 +931,7 @@ function changeCharacterAction(character, newAction) {
     
     if (defenderButton && trapMakerButton) {
       defenderButton.className = newAction === "迎擊" ? "active-action" : "";
-      trapMakerButton.className = newAction === "陷阱作成" ? "active-action" : "";
+      trapMakerButton.className = newAction === "製作陷阱" ? "active-action" : "";
     }
     
     // 村のUIを更新
@@ -1000,9 +1000,9 @@ function openRecruitmentModal(visitor) {
     if (Math.random() * 100 < successRate) {
       // 成功
       visitor.mindTraits = visitor.mindTraits.filter(t => t !== "訪問者");
-      visitor.job = "なし";
+      visitor.job = "無";
       visitor.action = "休養";
-      visitor.jobTable = ["なし", "休養"];
+      visitor.jobTable = ["無", "休養"];
       visitor.actionTable = ["休養"];
       
       // 名前から「〜の」を削除
@@ -1058,13 +1058,13 @@ function closeRecruitmentModal() {
 
 // 訪問者タイプを取得する関数
 function getVisitorType(visitor) {
-  const visitorTypes = ["流民", "冒険者", "巡礼者", "学者", "観光客", "旅人", "行商人"];
+  const visitorTypes = ["流民", "冒險者", "巡礼者", "學者", "觀光客", "旅者", "行商人"];
   for (const type of visitorTypes) {
     if (visitor.name.includes(type)) {
       return type;
     }
   }
-  return "旅人"; // デフォルト
+  return "旅者"; // デフォルト
 }
 
 // 誘惑モーダルを開く
@@ -1141,9 +1141,9 @@ function openSeductionModal(visitor) {
     if (Math.random() * 100 < successRate) {
       // 成功
       visitor.mindTraits = visitor.mindTraits.filter(t => t !== "訪問者");
-      visitor.job = "なし";
+      visitor.job = "無";
       visitor.action = "休養";
-      visitor.jobTable = ["なし", "休養"];
+      visitor.jobTable = ["無", "休養"];
       visitor.actionTable = ["休養"];
       
       // 名前から「〜の」を削除

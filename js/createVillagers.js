@@ -419,7 +419,7 @@ const SPEECH_TYPE_MAPPING = {
   "本の虫": { male: "陰気", female: "内気" },
   "勉強苦手": { male: "普通Ｍ", female: "普通Ｆ" },
   "天才肌": { male: "クールＭ", female: "中性的" },
-  "学者肌": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
+  "學者肌": { male: "丁寧Ｍ", female: "丁寧Ｆ" },
   "我慢強い": { male: "普通Ｍ", female: "普通Ｆ" },
   "正直者": { male: "普通Ｍ", female: "普通Ｆ" },
   "天然": { male: "お調子者", female: "おっとり" },
@@ -620,7 +620,7 @@ export function assignBodyMindTraits(v) {
     { name: "本の虫", condition: (v) => ["int","ind","eth","cou","sexdr"].every(param => v[param] <= 17) },
     { name: "勉強苦手", condition: (v) => ["cou","eth","ind","sexdr"].every(param => v[param] <= 18) && v.int <= 10 },
     { name: "天才肌", condition: (v) => v.int >= 24 && v.ind <= 16 },
-    { name: "学者肌", condition: (v) => v.int >= 22 && v.ind >= 18 && v.eth >= 18 },
+    { name: "學者肌", condition: (v) => v.int >= 22 && v.ind >= 18 && v.eth >= 18 },
     { name: "我慢強い", condition: (v) => v.vit >= 18 && v.ind >= 16 && v.eth >= 16 },
     { name: "正直者", condition: (v) => v.int <= 16 && v.eth >= 20 },
     { name: "天然", condition: (v) => v.chr >= 22 && v.int <= 16 && v.eth >= 16 },
@@ -836,7 +836,7 @@ export function assignHobby(v) {
     let maleH = [
       "大食い","美食","筋トレ","滝行","自由研究","釣り","自家発電","読書",
       "祈り","ナンパ","ショッピング","散歩","噂話","園芸","詩作","推し活",
-      "瞑想","飲酒","ギャンブル","投資","天体観測","狩猟"
+      "瞑想","飲酒","ギャンブル","投資","天体観測","狩獵"
     ];
     v.hobby = randChoice(maleH);
   } else {
@@ -855,20 +855,20 @@ export function assignHobby(v) {
 export function refreshJobTable(v) {
   let sa = v.spiritAge;
   if (sa <= 9) {
-    v.jobTable = ["なし"];
-    v.actionTable = ["なし"];
+    v.jobTable = ["無"];
+    v.actionTable = ["無"];
     if (!v.jobTable.includes(v.job)) {
-      v.job = "なし";
+      v.job = "無";
     }
     if (!v.actionTable.includes(v.action)) {
       v.action = v.job;
     }
     return;
   } else if (sa <= 15) {
-    v.jobTable = ["学業","鍛錬","なし"];
-    v.actionTable = ["学業","鍛錬","休養","余暇"];
+    v.jobTable = ["學習","鍛鍊","無"];
+    v.actionTable = ["學習","鍛鍊","休養","休閒"];
     if (!v.jobTable.includes(v.job)) {
-      v.job = "なし";
+      v.job = "無";
     }
     if (!v.actionTable.includes(v.action)) {
       v.action = v.job;
@@ -877,10 +877,10 @@ export function refreshJobTable(v) {
   } else {
     // 基本の仕事テーブル（共通）
     let commonJobs = [
-      "なし",
-      "農作業", "狩猟", "漁",
-      "伐採",
-      "採集", "内職", "行商",
+      "無",
+      "耕作", "狩獵", "捕魚",
+      "伐木",
+      "採集", "家政", "行商",
       "研究", "警備", "看護"
     ];
 
@@ -890,10 +890,10 @@ export function refreshJobTable(v) {
 
     // 建築物によって解放される共通の仕事
     if (buildingFlags.hasClinic) {
-      commonJobs.push("あんま");
+      commonJobs.push("按摩");
     }
     if (buildingFlags.hasLibrary) {
-      commonJobs.push("写本");
+      commonJobs.push("寫書");
     }
     if (buildingFlags.hasBrewery) {
       commonJobs.push("醸造");
@@ -902,7 +902,7 @@ export function refreshJobTable(v) {
       commonJobs.push("錬金術");
     }
     if (buildingFlags.hasWeaving) {
-      commonJobs.push("機織り");
+      commonJobs.push("紡織");
     }
 
     // 性別に応じた仕事テーブル
@@ -914,12 +914,12 @@ export function refreshJobTable(v) {
     } else {
       v.jobTable = [
         ...commonJobs,
-        "踊り子", "シスター"
+        "舞者", "修女"
       ];
 
       // 女性限定の建築物依存の仕事
       if (buildingFlags.hasTavern) {
-        v.jobTable.push("バニー");
+        v.jobTable.push("兔女郎");
       }
       if (buildingFlags.hasChurch) {
         v.jobTable.push("巫女");
@@ -929,20 +929,20 @@ export function refreshJobTable(v) {
     // 性別に応じた行動テーブル
     if (v.bodySex === "男") {
       v.actionTable = [
-        "休養", "余暇",
-        "農作業", "狩猟", "漁",
-        "伐採",
-        "採集", "内職", "行商",
+        "休養", "休閒",
+        "耕作", "狩獵", "捕魚",
+        "伐木",
+        "採集", "家政", "行商",
         "研究", "警備", "看護",
         "詩人", "神官"
       ];
 
       // 建築物によって解放される共通の仕事を行動テーブルにも追加
       if (buildingFlags.hasClinic) {
-        v.actionTable.push("あんま");
+        v.actionTable.push("按摩");
       }
       if (buildingFlags.hasLibrary) {
-        v.actionTable.push("写本");
+        v.actionTable.push("寫書");
       }
       if (buildingFlags.hasBrewery) {
         v.actionTable.push("醸造");
@@ -951,24 +951,24 @@ export function refreshJobTable(v) {
         v.actionTable.push("錬金術");
       }
       if (buildingFlags.hasWeaving) {
-        v.actionTable.push("機織り");
+        v.actionTable.push("紡織");
       }
     } else {
       v.actionTable = [
-        "休養", "余暇",
-        "農作業", "狩猟", "漁",
-        "伐採",
-        "採集", "内職", "行商",
+        "休養", "休閒",
+        "耕作", "狩獵", "捕魚",
+        "伐木",
+        "採集", "家政", "行商",
         "研究", "警備", "看護",
-        "踊り子", "シスター"
+        "舞者", "修女"
       ];
 
       // 建築物によって解放される共通の仕事を行動テーブルにも追加
       if (buildingFlags.hasClinic) {
-        v.actionTable.push("あんま");
+        v.actionTable.push("按摩");
       }
       if (buildingFlags.hasLibrary) {
-        v.actionTable.push("写本");
+        v.actionTable.push("寫書");
       }
       if (buildingFlags.hasBrewery) {
         v.actionTable.push("醸造");
@@ -977,12 +977,12 @@ export function refreshJobTable(v) {
         v.actionTable.push("錬金術");
       }
       if (buildingFlags.hasWeaving) {
-        v.actionTable.push("機織り");
+        v.actionTable.push("紡織");
       }
 
       // 女性限定の建築物依存の仕事を行動テーブルにも追加
       if (buildingFlags.hasTavern) {
-        v.actionTable.push("バニー");
+        v.actionTable.push("兔女郎");
       }
       if (buildingFlags.hasChurch) {
         v.actionTable.push("巫女");
@@ -990,7 +990,7 @@ export function refreshJobTable(v) {
     }
 
     if (!v.jobTable.includes(v.job)) {
-      v.job = "なし";
+      v.job = "無";
     }
     if (!v.actionTable.includes(v.action)) {
       v.action = v.job;
@@ -999,7 +999,7 @@ export function refreshJobTable(v) {
 
   // 襲擊関連の行動追加（状態異常がない場合のみ）
   if (theVillage.villageTraits.includes("襲擊中")) {
-    v.actionTable.unshift("迎擊", "陷阱作成");
+    v.actionTable.unshift("迎擊", "製作陷阱");
   }
 }
 
@@ -1018,11 +1018,11 @@ const VISITOR_TYPES = [
     status: "normal",
   },
   {
-    type: "冒険者",
+    type: "冒險者",
     weight: 10,
     ageRange: { min: 18, max: 35 },
     params: {
-      job: "冒険者",
+      job: "冒險者",
       action: "訪問"
     },
     ranges: {
@@ -1046,11 +1046,11 @@ const VISITOR_TYPES = [
     }
   },
   {
-    type: "学者",
+    type: "學者",
     weight: 10,
     ageRange: { min: 20, max: 65 },
     params: {
-      job: "学者",
+      job: "學者",
       action: "訪問"
     },
     ranges: {
@@ -1060,25 +1060,25 @@ const VISITOR_TYPES = [
      }
   },
   {
-    type: "観光客",
+    type: "觀光客",
     weight: 15,
     ageRange: { min: 16, max: 25 },  // 幅広い年齢層
     params: {
-      job: "観光客",
+      job: "觀光客",
       action: "訪問"
     },
   },
   {
-    type: "旅人",
+    type: "旅者",
     weight: 10,
     ageRange: { min: 18, max: 30 },  // 青年～中年
     params: {
-      job: "旅人",
+      job: "旅者",
       action: "訪問"
     },
   },
   {
-    type: "行商人",
+    type: "旅行商人",
     weight: 10,
     ageRange: { min: 20, max: 35 },
     params: {

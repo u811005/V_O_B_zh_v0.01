@@ -367,7 +367,7 @@ export function openRaidModal(village) {
   const rlog=document.getElementById("raidLogArea");
   rlog.innerHTML="襲擊開始。<br>請按「下一步」。";
 
-  let trapMakers = village.villagers.filter(p=> p.action==="陷阱作成");
+  let trapMakers = village.villagers.filter(p=> p.action==="製作陷阱");
   let defenders  = village.villagers.filter(p=> p.action==="迎擊");
 
   if (trapMakers.length===0 && defenders.length===0) {
@@ -384,7 +384,7 @@ export function openRaidModal(village) {
  * 罠作成(最初の行動)のキューを作成
  */
 function createTrapActionQueue(village) {
-  let trapMakers = village.villagers.filter(p=>p.action==="陷阱作成" && p.hp>0);
+  let trapMakers = village.villagers.filter(p=>p.action==="製作陷阱" && p.hp>0);
   trapMakers = shuffleArray(trapMakers);
 
   village.raidActionQueue=[];
@@ -428,19 +428,19 @@ function doOneTrapAction(action, village) {
   let p=action.actor;
   let logDiv=document.getElementById("raidLogArea");
   if (!p||p.hp<=0) {
-    logDiv.innerHTML+=`<br>【陷阱作成】${p?p.name:"??"} 失去行動能力`;
+    logDiv.innerHTML+=`<br>【製作陷阱】${p?p.name:"??"} 失去行動能力`;
     updateRaidTables(village);
     return;
   }
   if (village.raidEnemies.length===0) {
-    logDiv.innerHTML+=`<br>【陷阱作成】敵人已經全滅`;
+    logDiv.innerHTML+=`<br>【製作陷阱】敵人已經全滅`;
     updateRaidTables(village);
     return;
   }
   let e=randChoice(village.raidEnemies);
   let dmg = Math.floor((p.dex*p.int/400)*30);
   e.hp-=dmg;
-  logDiv.innerHTML+=`<br>【陷阱作成】${p.name}→對${e.name}造成${dmg}點傷害`;
+  logDiv.innerHTML+=`<br>【製作陷阱】${p.name}→對${e.name}造成${dmg}點傷害`;
   if (e.hp<=0) {
     logDiv.innerHTML+=`<br>　　→ ${e.name}被擊倒了！`;
     village.raidEnemies=village.raidEnemies.filter(x=> x!==e);
@@ -456,7 +456,7 @@ export function setupCombatPhase(village) {
   let enemies   = village.raidEnemies.filter(e=> e.hp>0);
 
   if (enemies.length===0) {
-    finalizeRaid(true, "只陷阱作成達成撃退", village);
+    finalizeRaid(true, "只製作陷阱達成撃退", village);
     return;
   }
   if (defenders.length===0) {
@@ -813,7 +813,7 @@ export function updateRaidTables(village) {
   }
   
   // 罠作成部隊
-  let trapMakers = village.villagers.filter(v => v.action === "陷阱作成");
+  let trapMakers = village.villagers.filter(v => v.action === "製作陷阱");
   let defenderTbody = document.querySelector("#defenderTable tbody");
   if (defenderTbody) {
     defenderTbody.innerHTML = "";

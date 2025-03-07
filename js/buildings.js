@@ -23,7 +23,7 @@ export const BUILDINGS = [
     materials: 50,
     funds: 50,
     tech: 0,
-    desc: "娯楽施設。詩人・踊り子の効果1.2倍、訪問者最大2人、女性限定「バニー」解放。規模+20",
+    desc: "娯楽施設。詩人・舞者の効果1.2倍、訪問者最大2人、女性限定「兔女郎」解放。規模+20",
     effect: (village) => {
       village.building += 20;
       // 訪問者の最大人数を2人に設定
@@ -33,7 +33,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasTavern = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("酒場建設完了: 詩人・踊り子の効果1.2倍、訪問者最大2人、女性限定「バニー」解放、規模+20");
+      village.log("酒場建設完了: 詩人・舞者の効果1.2倍、訪問者最大2人、女性限定「兔女郎」解放、規模+20");
     }
   },
   {
@@ -42,7 +42,7 @@ export const BUILDINGS = [
     materials: 50,
     funds: 50,
     tech: 0,
-    desc: "信仰施設。シスター・神官の効果1.2倍、女性限定「巫女」解放。規模+30",
+    desc: "信仰施設。修女・神官の効果1.2倍、女性限定「巫女」解放。規模+30",
     effect: (village) => {
       village.building += 30;
       // 礼拝堂建設フラグを設定
@@ -50,7 +50,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasChurch = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("礼拝堂建設完了: シスター・神官の効果1.2倍、女性限定「巫女」解放、規模+30");
+      village.log("礼拝堂建設完了: 修女・神官の効果1.2倍、女性限定「巫女」解放、規模+30");
     }
   },
   {
@@ -59,7 +59,7 @@ export const BUILDINGS = [
     materials: 50,
     funds: 0,
     tech: 100,
-    desc: "医療施設。看護の効果1.2倍、「あんま」解放。規模+20",
+    desc: "医療施設。看護の効果1.2倍、「按摩」解放。規模+20",
     effect: (village) => {
       village.building += 20;
       // 診療所建設フラグを設定
@@ -67,7 +67,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasClinic = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("診療所建設完了: 看護の効果1.2倍、「あんま」解放、規模+20");
+      village.log("診療所建設完了: 看護の効果1.2倍、「按摩」解放、規模+20");
     }
   },
   {
@@ -76,7 +76,7 @@ export const BUILDINGS = [
     materials: 50,
     funds: 50,
     tech: 100,
-    desc: "教育施設。研究の効果1.2倍、「写本」解放。規模+30",
+    desc: "教育施設。研究の効果1.2倍、「寫書」解放。規模+30",
     effect: (village) => {
       village.building += 30;
       // 図書館建設フラグを設定
@@ -84,7 +84,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasLibrary = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("図書館建設完了: 研究の効果1.2倍、「写本」解放、規模+30");
+      village.log("図書館建設完了: 研究の効果1.2倍、「寫書」解放、規模+30");
     }
   },
   {
@@ -127,7 +127,7 @@ export const BUILDINGS = [
     materials: 50,
     funds: 50,
     tech: 100,
-    desc: "織物施設。「機織り」解放。規模+20",
+    desc: "織物施設。「紡織」解放。規模+20",
     effect: (village) => {
       village.building += 20;
       // 機織小屋建設フラグを設定
@@ -135,7 +135,7 @@ export const BUILDINGS = [
       village.buildingFlags.hasWeaving = true;
       // 村人の仕事テーブルを更新
       village.villagers.forEach(v => refreshJobTable(v));
-      village.log("機織小屋建設完了: 「機織り」解放、規模+20");
+      village.log("機織小屋建設完了: 「紡織」解放、規模+20");
     }
   },
   {

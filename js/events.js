@@ -135,7 +135,7 @@ function doMythicEvent(v) {
   let cands=[];
   v.villagers.forEach(p=>{
     if (p.bodySex==="女" && p.bodyAge>=16 && p.bodyAge<=25 && p.sexdr<=5) {
-      cands.push({type:"狩猟神", vill:p});
+      cands.push({type:"狩獵神", vill:p});
     }
     if (p.bodySex==="女" && p.bodyAge>=16 && p.bodyAge<=25 && p.chr>=25) {
       cands.push({type:"太陽神", vill:p});
@@ -154,7 +154,7 @@ function doMythicEvent(v) {
   let c = randChoice(cands);
   let p = c.vill;
   switch(c.type) {
-    case "狩猟神":
+    case "狩獵神":
       p.bodyTraits.push("月の巫女");
       p.dex+=10; p.chr+=10;
       v.log(`${p.name}は狩女神の祝福を受けた！(器用+10,魅力+10)`);
@@ -598,8 +598,8 @@ export function doMonthStartProcess(v) {
     // ②状態異常特性による行動制限を優先チェック
     if (p.bodyTraits.includes("危篤")) {
       p.actionTable = ["臨終"];
-      p.jobTable = ["なし"];
-      p.job = "なし";
+      p.jobTable = ["無"];
+      p.job = "無";
       p.action = "臨終";
       v.log(`${p.name}は危篤状態のため、行動を「臨終」に設定しました`);
       return;
@@ -626,18 +626,18 @@ export function doMonthStartProcess(v) {
     // 通常の行動テーブル構築
     let sa = p.spiritAge;
     if (sa <= 9) {
-      p.jobTable = ["なし"];
-      p.actionTable = ["なし"];
+      p.jobTable = ["無"];
+      p.actionTable = ["無"];
     } else if (sa <= 15) {
-      p.jobTable = ["学業", "鍛錬", "なし"];
-      p.actionTable = ["学業", "鍛錬", "休養", "余暇"];
+      p.jobTable = ["學習", "鍛鍊", "無"];
+      p.actionTable = ["學習", "鍛鍊", "休養", "休閒"];
     } else {
       // 基本の仕事テーブル（共通）
       let commonJobs = [
-        "なし",
-        "農作業", "狩猟", "漁",
-        "伐採",
-        "採集", "内職", "行商",
+        "無",
+        "耕作", "狩獵", "捕魚",
+        "伐木",
+        "採集", "家政", "行商",
         "研究", "警備", "看護"
       ];
 
@@ -650,19 +650,19 @@ export function doMonthStartProcess(v) {
       } else {
         p.jobTable = [
           ...commonJobs,
-          "踊り子", "シスター"
+          "舞者", "修女"
         ];
       }
 
       // 性別に応じた行動テーブル
       if (p.bodySex === "男") {
         p.actionTable = [
-          "休養", "余暇",
+          "休養", "休閒",
           ...p.jobTable
         ];
       } else {
         p.actionTable = [
-          "休養", "余暇",
+          "休養", "休閒",
           ...p.jobTable
         ];
       }
@@ -695,7 +695,7 @@ export function doMonthStartProcess(v) {
       if (p.hp <= 33 && p.mp <= 33) {
         needsRest = true;
         restReason = "体力とメンタルが低下";
-        p.action = p.hp <= p.mp ? "休養" : "余暇";
+        p.action = p.hp <= p.mp ? "休養" : "休閒";
       } else if (p.hp <= 33) {
 
         needsRest = true;
@@ -704,14 +704,14 @@ export function doMonthStartProcess(v) {
       } else if (p.mp <= 33) {
         needsRest = true;
         restReason = "メンタルが低下";
-        p.action = "余暇";
+        p.action = "休閒";
       }
     } else if (p.ind >= 13) {
       // 中勤勉の場合、体力かメンタルが50以下なら休養
       if (p.hp <= 50 && p.mp <= 50) {
         needsRest = true;
         restReason = "体力とメンタルが低下";
-        p.action = p.hp <= p.mp ? "休養" : "余暇";
+        p.action = p.hp <= p.mp ? "休養" : "休閒";
       } else if (p.hp <= 50) {
         needsRest = true;
         restReason = "体力が低下";
@@ -719,14 +719,14 @@ export function doMonthStartProcess(v) {
       } else if (p.mp <= 50) {
         needsRest = true;
         restReason = "メンタルが低下";
-        p.action = "余暇";
+        p.action = "休閒";
       }
     } else {
       // 低勤勉の場合、体力かメンタルが60以下なら休養
       if (p.hp <= 60 && p.mp <= 60) {
         needsRest = true;
         restReason = "体力とメンタルが低下";
-        p.action = p.hp <= p.mp ? "休養" : "余暇";
+        p.action = p.hp <= p.mp ? "休養" : "休閒";
       } else if (p.hp <= 60) {
         needsRest = true;
         restReason = "体力が低下";
@@ -734,7 +734,7 @@ export function doMonthStartProcess(v) {
       } else if (p.mp <= 60) {
         needsRest = true;
         restReason = "メンタルが低下";
-        p.action = "余暇";
+        p.action = "休閒";
       }
     }
 

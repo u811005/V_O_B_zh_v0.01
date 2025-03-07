@@ -15,7 +15,7 @@ export function handleAllVillagerJobs(village) {
 
     let roll = randInt(1, 100);
     // サボり判定
-    if (roll <= saboProb && p.action !== "休養" && p.action !== "余暇" && p.action !== "なし" && p.action !== "迎擊" && p.action !== "陷阱作成" && p.action !== "療養" && p.action !== "臨終") {
+    if (roll <= saboProb && p.action !== "休養" && p.action !== "休閒" && p.action !== "無" && p.action !== "迎擊" && p.action !== "製作陷阱" && p.action !== "療養" && p.action !== "臨終") {
       doSabori(p, village);
     } else {
       doJobAction(p, village);
@@ -38,37 +38,37 @@ function doSabori(p, v) {
 
 function doJobAction(p, v) {
   switch(p.action) {
-    case "なし":
+    case "無":
       v.log(`${p.name}は行動がない`);
       break;
     case "休養":
       doRestJob(p, v);
       break;
-    case "余暇":
+    case "休閒":
       doLeisureJob(p, v);
       break;
-    case "学業":
+    case "學習":
       doStudy(p, v);
       break;
-    case "鍛錬":
+    case "鍛鍊":
       doTraining(p, v);
       break;
-    case "農作業":
+    case "耕作":
       doFarm(p, v);
       break;
-    case "伐採":
+    case "伐木":
       doLumber(p, v);
       break;
-    case "狩猟":
+    case "狩獵":
       doHunt(p, v);
       break;
-    case "漁":
+    case "捕魚":
       doFish(p, v);
       break;
     case "採集":
       doGather(p, v);
       break;
-    case "内職":
+    case "家政":
       doHandiwork(p, v);
       break;
     case "魔法細工":
@@ -89,7 +89,7 @@ function doJobAction(p, v) {
     case "臨終":
       doLastMomentsJob(p, v);
       break;
-    case "踊り子":
+    case "舞者":
       doDancer(p, v);
       break;
     case "詩人":
@@ -98,7 +98,7 @@ function doJobAction(p, v) {
     case "看護":
       doNurse(p, v);
       break;
-    case "シスター":
+    case "修女":
       doSister(p, v);
       break;
     case "神官":
@@ -107,29 +107,29 @@ function doJobAction(p, v) {
     case "行商":
       doTrading(p, v);
       break;
-    case "あんま":
+    case "按摩":
       doMassage(p, v);
       break;
     case "巫女":
       doMiko(p, v);
       break;
-    case "バニー":
+    case "兔女郎":
       doBunny(p, v);
       break;
     case "錬金術":
       doAlchemy(p, v);
       break;
-    case "写本":
+    case "寫書":
       doCopyBook(p, v);
       break;
-    case "機織り":
+    case "紡織":
       doWeaving(p, v);
       break;
     case "醸造":
       doBrewing(p, v);
       break;
     // "罠作成", "迎撃" は襲擊専用(raid.js)で処理するので、ここはログだけ
-    case "陷阱作成":
+    case "製作陷阱":
     case "迎擊":
       v.log(`${p.name}は${p.action}(襲擊専用フェーズで実行)`);
       break;
@@ -234,7 +234,7 @@ function doLeisureJob(p, v) {
   p.mp=clampValue(p.mp+base,0,100);
 
   let hobbyMsg = HobbyEffects.apply(p, v);
-  v.log(`${p.name}余暇:メンタル+${base}${hobbyMsg}`);
+  v.log(`${p.name}休閒:メンタル+${base}${hobbyMsg}`);
 }
 
 function doStudy(p, v) {
@@ -245,7 +245,7 @@ function doStudy(p, v) {
 
   if (Math.random()<0.3) p.int++;
   if (Math.random()<0.3) p.ind++;
-  v.log(`${p.name}学業:体力-${tc},メンタル-${mc},知力/勤勉上昇`);
+  v.log(`${p.name}學習:体力-${tc},メンタル-${mc},知力/勤勉上昇`);
 }
 
 function doTraining(p, v) {
@@ -257,7 +257,7 @@ function doTraining(p, v) {
   if (Math.random()<0.4) p.str++;
   if (Math.random()<0.3) p.vit++;
   if (Math.random()<0.2) p.cou++;
-  v.log(`${p.name}鍛錬:体力-${tc},メンタル-${mc},筋力/耐久/勇気UP可能`);
+  v.log(`${p.name}鍛鍊:体力-${tc},メンタル-${mc},筋力/耐久/勇気UP可能`);
 }
 
 function doFarm(p, v) {
@@ -281,13 +281,13 @@ function doFarm(p, v) {
   // ミダスの奇跡の効果
   if (v.villageTraits.includes("ミダス")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
-    v.log(`${p.name}農作業:資金+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}耕作:資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
     v.food = clampValue(v.food+amt, 0, 99999);
-    v.log(`${p.name}農作業:食料+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}耕作:食料+${amt},体力-${tc},メンタル-${mc}`);
   }
 
-  let logMsg = `${p.name}農作業:食料+${amt},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}耕作:食料+${amt},体力-${tc},メンタル-${mc}`;
 
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -329,7 +329,7 @@ function doLumber(p, v) {
   let amt=Math.round(base*mul);
   v.materials=clampValue(v.materials+amt,0,99999);
 
-  let logMsg = `${p.name}伐採:資材+${amt},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}伐木:資材+${amt},体力-${tc},メンタル-${mc}`;
 
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -390,34 +390,34 @@ function doHunt(p, v) {
   // ミダスの奇跡の効果
   if (v.villageTraits.includes("ミダス")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
-    v.log(`${p.name}狩猟:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}狩獵:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
     v.food = clampValue(v.food+amt, 0, 99999);
-    v.log(`${p.name}狩猟:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}狩獵:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
   }
 
   // ステータス上昇判定
   if (Math.random() < 0.05) {
     p.str++;
-    v.log(`${p.name}狩猟:${result} 筋力+1`);
+    v.log(`${p.name}狩獵:${result} 筋力+1`);
   }
   if (Math.random() < 0.05) {
     p.cou++;
-    v.log(`${p.name}狩猟:${result} 勇気+1`);
+    v.log(`${p.name}狩獵:${result} 勇気+1`);
   }
 
   // 特性取得判定
   if (p.spiritAge >= 30 && Math.random() < 0.01 && !p.mindTraits.includes("熟練狩人") && !p.mindTraits.includes("達人狩人")) {
     p.mindTraits.push("熟練狩人");
-    v.log(`${p.name}狩猟:${result} 特性[熟練狩人]獲得`);
+    v.log(`${p.name}狩獵:${result} 特性[熟練狩人]獲得`);
   }
   if (p.mindTraits.includes("熟練狩人") && Math.random() < 0.01) {
     p.mindTraits = p.mindTraits.filter(t => t !== "熟練狩人");
     p.mindTraits.push("達人狩人");
-    v.log(`${p.name}狩猟:${result} 特性[達人狩人]獲得`);
+    v.log(`${p.name}狩獵:${result} 特性[達人狩人]獲得`);
   }
 
-  v.log(`${p.name}狩猟:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+  v.log(`${p.name}狩獵:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
 }
 
 function doFish(p, v) {
@@ -446,46 +446,46 @@ function doFish(p, v) {
   if (v.villageTraits.includes("豊穣")) mul *= 2;
   if (p.bodyTraits.includes("水中呼吸")) mul *= 1.5;
   if (p.mindTraits.includes("海の知恵")) mul *= 1.5;
-  if (p.mindTraits.includes("熟練漁師")) mul *= 1.3;
-  if (p.mindTraits.includes("達人漁師")) mul *= 1.5;
+  if (p.mindTraits.includes("熟練捕魚師")) mul *= 1.3;
+  if (p.mindTraits.includes("達人捕魚師")) mul *= 1.5;
 
   let amt = Math.round(base * mul);
 
   // ミダスの奇跡の効果
   if (v.villageTraits.includes("ミダス")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
-    v.log(`${p.name}漁:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}捕魚:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
     v.food = clampValue(v.food+amt, 0, 99999);
-    v.log(`${p.name}漁:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}捕魚:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
   }
 
   // ステータス上昇判定
   if (Math.random() < 0.05) {
     p.vit++;
-    v.log(`${p.name}漁:${result} 耐久+1`);
+    v.log(`${p.name}捕魚:${result} 耐久+1`);
   }
   if (Math.random() < 0.05) {
     p.cou++;
-    v.log(`${p.name}漁:${result} 勇気+1`);
+    v.log(`${p.name}捕魚:${result} 勇気+1`);
   }
 
   // 特性取得判定
   if (p.int >= 20 && Math.random() < 0.03 && !p.mindTraits.includes("海の知恵")) {
     p.mindTraits.push("海の知恵");
-    v.log(`${p.name}漁:${result} 特性[海の知恵]獲得`);
+    v.log(`${p.name}捕魚:${result} 特性[海の知恵]獲得`);
   }
-  if (p.spiritAge >= 30 && Math.random() < 0.01 && !p.mindTraits.includes("熟練漁師") && !p.mindTraits.includes("達人漁師")) {
-    p.mindTraits.push("熟練漁師");
-    v.log(`${p.name}漁:${result} 特性[熟練漁師]獲得`);
+  if (p.spiritAge >= 30 && Math.random() < 0.01 && !p.mindTraits.includes("熟練捕魚師") && !p.mindTraits.includes("達人捕魚師")) {
+    p.mindTraits.push("熟練捕魚師");
+    v.log(`${p.name}捕魚:${result} 特性[熟練捕魚師]獲得`);
   }
-  if (p.mindTraits.includes("熟練漁師") && Math.random() < 0.01) {
-    p.mindTraits = p.mindTraits.filter(t => t !== "熟練漁師");
-    p.mindTraits.push("達人漁師");
-    v.log(`${p.name}漁:${result} 特性[達人漁師]獲得`);
+  if (p.mindTraits.includes("熟練捕魚師") && Math.random() < 0.01) {
+    p.mindTraits = p.mindTraits.filter(t => t !== "熟練捕魚師");
+    p.mindTraits.push("達人捕魚師");
+    v.log(`${p.name}捕魚:${result} 特性[達人捕魚師]獲得`);
   }
 
-  v.log(`${p.name}漁:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+  v.log(`${p.name}捕魚:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
 }
 
 function doGather(p, v) {
@@ -545,7 +545,7 @@ function doHandiwork(p, v) {
   let amt = Math.round(base);
   v.funds = clampValue(v.funds+amt, 0, 99999);
 
-  let logMsg = `${p.name}内職:資金+${amt},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}家政:資金+${amt},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -711,7 +711,7 @@ function doDancer(p, v) {
     }
   });
 
-  let logMsg = `${p.name}踊り子:男性${affected}人の幸福+${inc},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}舞者:男性${affected}人の幸福+${inc},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -827,7 +827,7 @@ function doSister(p, v) {
     affected++;
   });
 
-  let logMsg = `${p.name}シスター:全${affected}人のメンタル+${heal},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}修女:全${affected}人のメンタル+${heal},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -916,7 +916,7 @@ function doMassage(p, v) {
   if (p.bodySex === "男") {
     mc = calcMindCost(20, p.ind);
     heal = Math.round(20 * p.str/20 * p.dex/20);
-    logMsg = `${p.name}あんま:体力-${tc},メンタル-${mc}`;
+    logMsg = `${p.name}按摩:体力-${tc},メンタル-${mc}`;
     
     // ステータス上昇判定
     if (Math.random() < 0.01) {
@@ -930,7 +930,7 @@ function doMassage(p, v) {
   } else {
     mc = calcMindCost(20, p.sexdr);
     heal = Math.round(20 * p.chr/20 * p.sexdr/20);
-    logMsg = `${p.name}あんま:体力-${tc},メンタル-${mc}`;
+    logMsg = `${p.name}按摩:体力-${tc},メンタル-${mc}`;
     
     // ステータス上昇判定
     if (Math.random() < 0.01) {
@@ -1009,7 +1009,7 @@ function doBunny(p, v) {
     }
   });
 
-  let logMsg = `${p.name}バニー:男性${affected}人の幸福+${happinessInc},メンタル+${mentalHeal},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}兔女郎:男性${affected}人の幸福+${happinessInc},メンタル+${mentalHeal},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.01) {
@@ -1063,7 +1063,7 @@ function doCopyBook(p, v) {
   v.funds = clampValue(v.funds + fundsGain, 0, 99999);
   v.tech = clampValue(v.tech + techGain, 0, 99999);
 
-  let logMsg = `${p.name}写本:資金+${fundsGain},技術+${techGain},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}寫書:資金+${fundsGain},技術+${techGain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.01) {
@@ -1087,7 +1087,7 @@ function doWeaving(p, v) {
   let fundsGain = Math.round(30 * p.dex/20 * p.ind/20);
   v.funds = clampValue(v.funds + fundsGain, 0, 99999);
 
-  let logMsg = `${p.name}機織り:資金+${fundsGain},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}紡織:資金+${fundsGain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.01) {
