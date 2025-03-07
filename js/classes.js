@@ -89,7 +89,7 @@ export class Villager {
     this.name = name;
     this.bodySex = bodySex;
     this.bodyAge = bodyAge;
-    this.race = "人間";  // 種族パラメータを追加
+    this.race = "人類";  // 種族パラメータを追加
 
     this.hp = 100;
     this.mp = 100;

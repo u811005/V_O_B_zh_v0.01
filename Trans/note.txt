@@ -8,101 +8,165 @@
 抑鬱 int cou ind eth sexdr 0.25
 
 
-独善的  孤傲 : { male:  クールＭ 冷酷Ｍ  female:  クールＦ 冷酷  Ｆ}
-読書家  喜愛閱讀 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-小市民 : { male:  普通Ｍ  female:  普通Ｆ  }
-善人    善良 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-強気    強硬 : { male:  強気Ｍ  female:  強気Ｆ  }
-無鉄砲  莽撞 : { male:  乱暴  female:  蓮っ葉  }
-知性派  理性派 : { male:  丁寧Ｍ  female:  中性的  }
-働き者  努力工作 : { male:  普通Ｍ  female:  普通Ｆ  }
-普通 : { male:  普通Ｍ  female:  普通Ｆ  }
-庶民的  庶民 : { male:  普通Ｍ  female:  普通Ｆ  }
-内向的  内向 : { male:  陰気  female:  内気  }
-本の虫  書蟲 : { male:  陰気  female:  内気  }
-勉強苦手不擅學習 : { male:  普通Ｍ  female:  普通Ｆ  }
-天才肌  天才 : { male:  クールＭ  female:  中性的  }
-学者肌  天生學者 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-我慢強い擅長忍耐 : { male:  普通Ｍ  female:  普通Ｆ  }
-正直者  老實人 : { male:  普通Ｍ  female:  普通Ｆ  }
-天然    天然 : { male:  お調子者  female:  おっとり  }
-おしゃべり 長舌 : { male:  お調子者  female:  ギャル風  }
-怒りっぽい 易怒: { male:  乱暴  female:  蓮っ葉  }
-残忍    殘忍: { male:  乱暴  female:  蓮っ葉  }
-酷薄    殘酷: { male:  クールＭ  female:  クールＦ  }
-昼行燈  糊塗 : { male:  普通Ｍ  female:  普通Ｆ  }
-戦闘狂  戰鬥狂 : { male:  乱暴  female:  強気Ｆ  }
-根暗    陰沉: { male:  陰気  female:  内気  }
-無気力  無力 : { male:  陰気  female:  内気  }
-マジメ  認真 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-怠け者  懶散 : { male:  陰気  female:  内気  }
-ろくでなし 無賴 : { male:  乱暴  female:  蓮っ葉  }
-ワル    惡棍 : { male:  乱暴  female:  蓮っ葉  }
-インテリヤクザ 黑道: { male:  クールＭ  female:  クールＦ  }
-守銭奴  守財奴 : { male:  クールＭ  female:  クールＦ  }
-優等生  優等生 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-策士 謀略家 : { male:  クールＭ  female:  クールＦ  }
-神経質 神經質 : { male:  陰気  female:  内気  }
-女好き  喜愛女性: { male:  お調子者  female:  快活  }
-チャラい    輕浮 : { male:  お調子者  female:  ギャル風  }
-情熱的  熱情 : { male:  強気Ｍ  female:  強気Ｆ  }
-男嫌い  厭惡男性 : { male:  陰気  female:  丁寧Ｆ  }
-夢見がち    白日夢 : { male:  陰気  female:  ぶりっこ  }
-好奇心旺盛  好奇心旺盛 : { male:  お調子者  female:  快活  }
-冒険好き    喜愛冒險 : { male:  強気Ｍ  female:  強気Ｆ  }
-陰キャ  陰角 : { male:  陰気  female:  内気  }
-計算高い    吝嗇 : { male:  クールＭ  female:  クールＦ  }
-姉御肌  大姐姐 : { male:  強気Ｍ  female:  強気Ｆ  }
-古風 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-大雑把 隨便 : { male:  乱暴  female:  蓮っ葉  }
-臆病    膽小 : { male:  陰気  female:  内気  }
-寡黙    寡言 : { male:  陰気  female:  内気  }
-不器用  笨拙 : { male:  陰気  female:  内気  }
-ぶっきらぼう    粗魯 : { male:  乱暴  female:  蓮っ葉  }
-偏屈    偏執 : { male:  陰気  female:  内気  }
-利発    聰明 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-抜け目がない    精明 : { male:  クールＭ  female:  ぶりっこ  }
-職人気質    工匠精神 : { male:  普通Ｍ  female:  普通Ｆ  }
-狡猾    狡猾 : { male:  クールＭ  female:  クールＦ  }
-あざとい    耍小聰明 : { male:  お調子者  female:  ぶりっこ  }
-鈍感    遲鈍 : { male:  普通Ｍ  female:  普通Ｆ  }
-泣き虫  愛哭鬼 : { male:  陰気  female:  内気  }
-おしゃれ    時髦 : { male:  お調子者  female:  ギャル風  }
-粗暴    粗暴 : { male:  乱暴  female:  蓮っ葉  }
-男勝り  女強人 : { male:  強気Ｍ  female:  強気Ｆ  }
-潔癖    潔癖 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-綺麗好き    喜歡乾淨 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-暴れ者  暴力 : { male:  乱暴  female:  蓮っ葉  }
-好戦的  好戰 : { male:  乱暴  female:  強気Ｆ  }
-問題児  問題兒童 : { male:  お調子者  female:  快活  }
-草食系  草食系 : { male:  陰気  female:  内気  }
-色鬼 : { male:  お調子者  female:  ギャル風  }
-遊び人  玩樂者 : { male:  お調子者  female:  ギャル風  }
-むっつり    沉默 : { male:  陰気  female:  内気  }
-勇敢    勇敢 : { male:  強気Ｍ  female:  強気Ｆ  }
-勇猛果敢    果斷 : { male:  強気Ｍ  female:  強気Ｆ  }
-豪傑    豪傑 : { male:  乱暴  female:  強気Ｆ  }
-箱入り   : { male:  丁寧Ｍ  female:  お嬢様  }
-惚れっぽい  迷戀 : { male:  お調子者  female:  ぶりっこ  }
-愚直    愚直 : { male:  普通Ｍ  female:  普通Ｆ  }
-夢想家  夢想家 : { male:  お調子者  female:  ぶりっこ  }
-堅物    耿直 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-ストイック  沉穩 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-仕事好き 喜愛工作 : { male:  普通Ｍ  female:  普通Ｆ  }
-仕事の鬼 工作狂 : { male:  強気Ｍ  female:  強気Ｆ  }
-頭脳派  頭腦派 : { male:  クールＭ  female:  クールＦ  }
-聡明    聰明 : { male:  丁寧Ｍ  female:  中性的  }
-才気煥発    才氣煥發 : { male:  丁寧Ｍ  female:  中性的  }
-マッド  瘋狂 : { male:  クールＭ  female:  中性的  }
-享楽的 享樂主義 : { male:  お調子者  female:  ギャル風  }
-悪女    惡女 : { male:  乱暴  female:  お嬢様  }
-筋肉馬鹿 肌肉笨蛋 : { male:  乱暴  female:  強気Ｆ  }
-熱血    熱血 : { male:  強気Ｍ  female:  強気Ｆ  }
-世渡り上手  圓融 : { male:  お調子者  female:  ギャル風  }
-文武両道 文武雙全 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-愚鈍    愚鈍: { male:  陰気  female:  内気  }
-強欲 : { male:  クールＭ  female:  クールＦ  }
-現実主義    現實主義 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-才女 : { male:  丁寧Ｍ  female:  お嬢様  }
-才色兼備 : { male:  丁寧Ｍ  female:  お嬢様  }
-肉食系 肉食系: { male:  強気Ｍ  female:  ギャル風  }
+独善的	孤傲 	: { male:  クールＭ 冷酷Ｍ  female:  クールＦ 冷酷  Ｆ}
+読書家	喜愛閱讀 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+小市民 	: { male:  普通Ｍ  female:  普通Ｆ  }
+善人	善良 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+強気	強硬 	: { male:  強気Ｍ  female:  強気Ｆ  }
+無鉄砲	莽撞 	: { male:  乱暴  female:  蓮っ葉  }
+知性派	理性派	 : { male:  丁寧Ｍ  female:  中性的  }
+働き者	努力工作 	: { male:  普通Ｍ  female:  普通Ｆ  }
+普通 	: { male:  普通Ｍ  female:  普通Ｆ  }
+庶民的	庶民 	: { male:  普通Ｍ  female:  普通Ｆ  }
+内向的	内向	 : { male:  陰気  female:  内気  }
+本の虫	書蟲 	: { male:  陰気  female:  内気  }
+勉強苦手	不擅學習 	: { male:  普通Ｍ  female:  普通Ｆ  }
+天才肌	天才 	: { male:  クールＭ  female:  中性的  }
+学者肌	天生學者 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+我慢強い	擅長忍耐 	: { male:  普通Ｍ  female:  普通Ｆ  }
+正直者	老實人	 : { male:  普通Ｍ  female:  普通Ｆ  }
+天然	天然 	: { male:  お調子者  female:  おっとり  }
+おしゃべり	長舌 	: { male:  お調子者  female:  ギャル風  }
+怒りっぽい	 易怒	: { male:  乱暴  female:  蓮っ葉  }
+残忍	殘忍	: { male:  乱暴  female:  蓮っ葉  }
+酷薄	殘酷	: { male:  クールＭ  female:  クールＦ  }
+昼行燈	糊塗 	: { male:  普通Ｍ  female:  普通Ｆ  }
+戦闘狂	戰鬥狂 	: { male:  乱暴  female:  強気Ｆ  }
+根暗	陰沉	: { male:  陰気  female:  内気  }
+無気力	無力 	: { male:  陰気  female:  内気  }
+マジメ	認真 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+怠け者	懶散 	: { male:  陰気  female:  内気  }
+ろくでなし	無賴 	: { male:  乱暴  female:  蓮っ葉  }
+ワル	惡棍 	: { male:  乱暴  female:  蓮っ葉  }
+インテリヤクザ	黑道	: { male:  クールＭ  female:  クールＦ  }
+守銭奴	守財奴 	: { male:  クールＭ  female:  クールＦ  }
+優等生	優等生 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+策士	謀略家 	: { male:  クールＭ  female:  クールＦ  }
+神経質	神經質 	: { male:  陰気  female:  内気  }
+女好き	喜愛女性	: { male:  お調子者  female:  快活  }
+チャラい	輕浮 	: { male:  お調子者  female:  ギャル風  }
+情熱的	熱情 	: { male:  強気Ｍ  female:  強気Ｆ  }
+男嫌い	厭惡男性 	: { male:  陰気  female:  丁寧Ｆ  }
+夢見がち	白日夢 : { male:  陰気  female:  ぶりっこ  }
+好奇心旺盛	好奇心旺盛 	: { male:  お調子者  female:  快活  }
+冒険好き	喜愛冒險 	: { male:  強気Ｍ  female:  強気Ｆ  }
+陰キャ	陰角 	: { male:  陰気  female:  内気  }
+計算高い	吝嗇 	: { male:  クールＭ  female:  クールＦ  }
+姉御肌	大姐姐 : { male:  強気Ｍ  female:  強気Ｆ  }
+古風 		: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+大雑把	隨便 	: { male:  乱暴  female:  蓮っ葉  }
+臆病	膽小 	: { male:  陰気  female:  内気  }
+寡黙	寡言 	: { male:  陰気  female:  内気  }
+不器用	笨拙 	: { male:  陰気  female:  内気  }
+ぶっきらぼう	粗魯 : { male:  乱暴  female:  蓮っ葉  }
+偏屈	偏執 	: { male:  陰気  female:  内気  }
+利発	聰明 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+抜け目がない	精明 	: { male:  クールＭ  female:  ぶりっこ  }
+職人気質	工匠精神 	: { male:  普通Ｍ  female:  普通Ｆ  }
+狡猾	狡猾 	: { male:  クールＭ  female:  クールＦ  }
+あざとい	耍小聰明 	: { male:  お調子者  female:  ぶりっこ  }
+鈍感	遲鈍 	: { male:  普通Ｍ  female:  普通Ｆ  }
+泣き虫	愛哭鬼 	: { male:  陰気  female:  内気  }
+おしゃれ	時髦 	: { male:  お調子者  female:  ギャル風  }
+粗暴	粗暴 	: { male:  乱暴  female:  蓮っ葉  }
+男勝り	女強人 	: { male:  強気Ｍ  female:  強気Ｆ  }
+潔癖	潔癖 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+綺麗好き	喜歡乾淨 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+暴れ者	暴力 	: { male:  乱暴  female:  蓮っ葉  }
+好戦的	好戰 	: { male:  乱暴  female:  強気Ｆ  }
+問題児	問題兒童 : { male:  お調子者  female:  快活  }
+草食系	草食系 : { male:  陰気  female:  内気  }
+色鬼	 	: { male:  お調子者  female:  ギャル風  }
+遊び人	玩樂者 : { male:  お調子者  female:  ギャル風  }
+むっつり	沉默 	: { male:  陰気  female:  内気  }
+勇敢	勇敢 	: { male:  強気Ｍ  female:  強気Ｆ  }
+勇猛果敢	果斷 : { male:  強気Ｍ  female:  強気Ｆ  }
+豪傑	豪傑 	: { male:  乱暴  female:  強気Ｆ  }
+箱入り		: { male:  丁寧Ｍ  female:  お嬢様  }
+惚れっぽい	迷戀 	: { male:  お調子者  female:  ぶりっこ  }
+愚直	愚直 	: { male:  普通Ｍ  female:  普通Ｆ  }
+夢想家	夢想家 	: { male:  お調子者  female:  ぶりっこ  }
+堅物	耿直 	: { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+ストイック	沉穩 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+仕事好き	 喜愛工作 	: { male:  普通Ｍ  female:  普通Ｆ  }
+仕事の鬼	 工作狂 	: { male:  強気Ｍ  female:  強気Ｆ  }
+頭脳派	頭腦派 	: { male:  クールＭ  female:  クールＦ  }
+聡明	聰明 	: { male:  丁寧Ｍ  female:  中性的  }
+才気煥発	才氣煥發 : { male:  丁寧Ｍ  female:  中性的  }
+マッド	 瘋狂 	: 	{ male:  クールＭ  female:  中性的  }
+享楽的	享樂主義	 : { male:  お調子者  female:  ギャル風  }
+悪女	惡女 	: { male:  乱暴  female:  お嬢様  }
+筋肉馬鹿	肌肉笨蛋 : { male:  乱暴  female:  強気Ｆ  }
+熱血	熱血	 : { male:  強気Ｍ  female:  強気Ｆ  }
+世渡り上手	圓融 : { male:  お調子者  female:  ギャル風  }
+文武両道	文武雙全 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+愚鈍	愚鈍	: { male:  陰気  female:  内気  }
+強欲 		: { male:  クールＭ  female:  クールＦ  }
+現実主義	現實主義 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+才女	 	: { male:  丁寧Ｍ  female:  お嬢様  }
+才色兼備	 : { male:  丁寧Ｍ  female:  お嬢様  }
+肉食系	肉食系	: { male:  強気Ｍ  female:  ギャル風  }
+
+
+
+身體特徵
+
+
+虚弱	虛弱  		\t vit <= 10 &&  \t chr <= 16  
+華やか  華麗		\t bodySex === "女" &&  \t dex >= 20 &&  \t chr >= 20  
+やせ型	精瘦		 \t vit <= 12 &&  \t vit >= 10 &&  \t chr <= 16  
+スレンダー	纖細		  \t bodySex === "女" &&  \t vit <= 15 &&  \t vit >= 11 &&  \t chr >= 17 &&  \t chr <= 23 
+小太り	微胖		  \t vit >= 18 &&  \t chr <= 12  
+筋肉質	肌肉發達		  \t str >= 20 &&  \t str <= 23 &&  \t chr <= 20 
+平凡				 ["vit","str","chr"].every(param => v[param] >= 15 && v[param] <= 18)  
+巨人				  \t vit >= 28  
+巨漢				  \t bodySex === "男" &&  \t vit >= 24 &&  \t chr <= 17  
+美形				  \t bodySex === "男" &&  \t chr >= 24  
+太りすぎ		  \t bodySex === "男" &&  \t vit >= 26 &&  \t chr <= 10  
+美丈夫	美男子		  \t bodySex === "男" &&  \t vit >= 21 &&  \t chr >= 20  
+たくましい		  \t bodySex === "男" &&  \t str >= 18 &&  \t chr >= 18  
+長身	高個		  \t bodySex === "男" &&  \t vit >= 18 &&  \t chr >= 18  
+がっしり	堅實		  \t bodySex === "男" &&  \t vit >= 19  &&  \t vit <= 23 &&  \t chr <= 19 &&  \t chr >= 11  
+中肉中背	不胖不瘦		  \t bodySex === "男" &&  \t vit <= 18 &&  \t vit >= 15 &&  \t chr <= 19 &&  \t chr >= 11  
+痩身	瘦身		  \t bodySex === "男" &&  \t vit <= 14 &&  \t chr <= 17 &&  \t chr >= 13  
+痩せぎす	乾癟		  \t bodySex === "男" &&  \t vit <= 14 &&  \t chr <= 12  
+細身	精細		  \t bodySex === "男" &&  \t vit <= 16 &&  \t chr >= 15 && \t chr <= 19  
+スマート	俊俏		  \t bodySex === "男" &&  \t vit <= 16 &&  \t chr >= 19 &&  \t vit >= 11  
+中性的	中性		  \t bodySex === "男" &&  \t vit <= 15 && \t chr >= 23  
+眉目秀麗	眉目秀麗		  \t bodySex === "男" &&  \t int >= 20 && \t chr >= 20  
+強面		  \t bodySex === "男" &&  \t str >= 20 &&  \t cou >= 20  
+小柄	嬌小		  \t vit >= 9 &&  \t vit <= 11  &&  \t chr <= 16 
+癒し系	療癒系		  \t bodySex === "女" &&  \t chr >= 20 &&  \t eth >= 20  
+ガリガリ	骨感		  \t bodySex === "男" &&  \t vit <= 10 &&  \t chr <= 10  
+大柄	巨大		  \t vit >= 20 &&  \t str >= 18 &&  \t vit <= 22  &&  \t chr <= 20 
+スタイル抜群	體態優美		  \t bodySex === "女" &&  \t vit >= 13 &&  \t chr >= 24  
+豊満	豐滿		  \t bodySex === "女" &&  \t vit >= 16 &&  \t chr >= 22  
+優男	帥哥		  \t bodySex === "男" &&  \t chr >= 20 &&  \t sexdr >= 18 &&  \t vit <= 18  
+地味	地味		  \t vit <= 17 &&  \t chr <= 15  
+魔性	魔性		  \t bodySex === "女" &&  \t chr >= 24 &&  \t sexdr >= 18 &&  \t int >= 16  
+薄倖			  \t bodySex === "女" &&  \t vit <= 11 &&  \t chr >= 20  
+健康的	健康		  \t bodySex === "女" &&  \t vit >= 16 &&  \t chr >= 16  &&  \t chr <= 22  
+神秘的	神秘的		  \t bodySex === "女" &&  \t mag >= 20 &&  \t chr >= 23 &&  \t sexdr <= 17  
+絶世の美女	絕世美女		  \t bodySex === "女" &&  \t chr >= 28  
+ミステリアス		  \t mag >= 20 &&  \t chr >= 21 &&  \t chr <= 27 
+クール	冷酷		  \t sexdr <= 10 &&  \t chr >= 20 
+あやしげ	可疑		  \t bodySex === "男" &&  \t mag >= 22 &&  \t chr <= 15  
+色男		  \t bodySex === "男" &&  \t mag >= 20 &&  \t chr >= 20  
+怪力		  \t bodySex === "男" &&  \t str >= 27  
+胡散臭い	狡詐	  \t bodySex === "男" &&  \t dex >= 20 &&  \t eth <= 15 &&  \t chr <= 12  
+悪人顔	悪人顔		  \t bodySex === "男" &&  \t eth <= 12 &&  \t chr <= 15  
+マッチョ	健壯		  \t bodySex === "男" &&  \t str >= 24 &&  \t chr <= 18  
+筋骨隆々	肌肉結實		  \t bodySex === "男" &&  \t str >= 24 &&  \t chr >= 19  
+威圧的	莊嚴		  \t bodySex === "男" &&  \t eth <= 12 &&  \t cou >= 20 &&  \t str >= 20  
+精悍			  \t bodySex === "男" &&  \t str >= 20 &&  \t cou >= 18 &&  \t chr >= 18  
+凛々しい	高冷		  \t bodySex === "女" &&  \t str >= 16 &&  \t cou >= 18 &&  \t chr >= 17 &&  \t chr <= 22 
+素朴	質樸		  \t eth >= 16 &&  \t chr <= 18 &&  \t chr >= 16  
+清楚			  \t bodySex === "女" &&  \t chr >= 18 &&  \t eth >= 20  
+しなやか	柔軟		  \t bodySex === "女" &&  \t vit <= 17 &&  \t vit >= 14 &&  \t chr <= 20 &&  \t chr >= 16  
+童顔			  \t chr >= 18 &&  \t sexdr <= 16 &&  \t vit <= 13 &&  \t chr <= 27  
+華奢	奢華		  \t bodySex === "女" &&  \t vit <= 12 &&  \t chr >= 17  
+ふくよか	胖女人		  \t bodySex === "女" &&  \t vit >= 18 &&  \t chr <= 15 
+目立たない	不起眼	  \t bodySex === "女" &&  \t vit <= 17 &&  \t chr <= 16 
+目立たない	不起眼		  \t bodySex === "男" &&  \t vit <= 19 &&  \t chr <= 15 
+小汚い	小汚		  \t bodySex === "男" &&  \t int <=3 &&  \t chr <= 11  
+冴えない	無趣		  \t bodySex === "男" &&  \t int <= 14 &&  \t chr <= 13

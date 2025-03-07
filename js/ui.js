@@ -400,8 +400,8 @@ export function updateUI(v) {
         <details>
           <summary>詳細</summary>
           <div>精神性別: ${person.spiritSex}</div>
-          <div>精神年齢: ${person.spiritAge}</div>
-          <div>人間関係: ${person.relationships}</div>
+          <div>精神年齡: ${person.spiritAge}</div>
+          <div>人際關系: ${person.relationships}</div>
         </details>
       `;
       tr.appendChild(tdFold);
