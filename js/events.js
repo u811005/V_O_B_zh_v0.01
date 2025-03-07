@@ -670,7 +670,7 @@ export function doMonthStartProcess(v) {
 
     // 襲擊関連の行動追加（状態異常がない場合のみ）
     if (v.villageTraits.includes("襲擊中")) {
-      p.actionTable.push("迎撃", "罠作成");
+      p.actionTable.push("迎擊", "罠作成");
     }
 
     // jobTableに現在のjobが含まれている場合は維持
@@ -896,12 +896,12 @@ export function openRaidModal(village) {
   rlog.innerHTML="襲擊が始まります。<br>「次のステップ」ボタンを押して進めてください。";
 
   let trapMakers = village.villagers.filter(p=> p.action==="罠作成");
-  let defenders  = village.villagers.filter(p=> p.action==="迎撃");
+  let defenders  = village.villagers.filter(p=> p.action==="迎擊");
 
   if (trapMakers.length===0 && defenders.length===0) {
     // 確認ダイアログを表示
-    if (confirm("迎撃および罠作成の村人が一人もいません。このまま進めると襲擊は自動的に失敗します。続けますか？")) {
-      rlog.innerHTML+=`<br>迎撃する者がいません！ → 自動的に襲擊成功(敵側)。`;
+    if (confirm("迎擊および罠作成の村人が一人もいません。このまま進めると襲擊は自動的に失敗します。続けますか？")) {
+      rlog.innerHTML+=`<br>迎擊する者がいません！ → 自動的に襲擊成功(敵側)。`;
       village.raidActionQueue=[ {type:"AUTO_FAIL"} ];
       village.currentActionIndex=0;
     } else {

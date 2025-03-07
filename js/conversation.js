@@ -429,19 +429,19 @@ export function openConversationModal(character) {
       openSeductionModal(character);
     });
   } else if (isUnderRaid && theVillage.villagers.includes(character)) {
-    // 襲擊中の村人の場合は迎撃・罠作成ボタンを表示
+    // 襲擊中の村人の場合は迎擊・罠作成ボタンを表示
     actionButtons.innerHTML = `
-      <button id="assignDefender" class="${character.action === '迎撃' ? 'active-action' : ''}">迎撃任命</button>
-      <button id="assignTrapMaker" class="${character.action === '罠作成' ? 'active-action' : ''}">罠作成任命</button>
+      <button id="assignDefender" class="${character.action === '迎擊' ? 'active-action' : ''}">迎擊任命</button>
+      <button id="assignTrapMaker" class="${character.action === '陷阱作成' ? 'active-action' : ''}">陷阱作成任命</button>
     `;
     actionButtons.style.display = "block";
     
     document.getElementById("assignDefender").addEventListener("click", () => {
-      changeCharacterAction(character, "迎撃");
+      changeCharacterAction(character, "迎擊");
     });
     
     document.getElementById("assignTrapMaker").addEventListener("click", () => {
-      changeCharacterAction(character, "罠作成");
+      changeCharacterAction(character, "陷阱作成");
     });
   } else {
     actionButtons.style.display = "none";
@@ -930,8 +930,8 @@ function changeCharacterAction(character, newAction) {
     const trapMakerButton = document.getElementById("assignTrapMaker");
     
     if (defenderButton && trapMakerButton) {
-      defenderButton.className = newAction === "迎撃" ? "active-action" : "";
-      trapMakerButton.className = newAction === "罠作成" ? "active-action" : "";
+      defenderButton.className = newAction === "迎擊" ? "active-action" : "";
+      trapMakerButton.className = newAction === "陷阱作成" ? "active-action" : "";
     }
     
     // 村のUIを更新
