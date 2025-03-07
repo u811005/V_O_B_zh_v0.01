@@ -13,7 +13,7 @@
 小市民 : { male:  普通Ｍ  female:  普通Ｆ  }
 善人    善良 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 強気    強硬 : { male:  強気Ｍ  female:  強気Ｆ  }
-無鉄砲  魯莽 : { male:  乱暴  female:  蓮っ葉  }
+無鉄砲  莽撞 : { male:  乱暴  female:  蓮っ葉  }
 知性派  理性派 : { male:  丁寧Ｍ  female:  中性的  }
 働き者  努力工作 : { male:  普通Ｍ  female:  普通Ｆ  }
 普通 : { male:  普通Ｍ  female:  普通Ｆ  }
@@ -34,7 +34,7 @@
 戦闘狂  戰鬥狂 : { male:  乱暴  female:  強気Ｆ  }
 根暗    陰沉: { male:  陰気  female:  内気  }
 無気力  無力 : { male:  陰気  female:  内気  }
-マジメ  嚴肅 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+マジメ  認真 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 怠け者  懶散 : { male:  陰気  female:  内気  }
 ろくでなし 無賴 : { male:  乱暴  female:  蓮っ葉  }
 ワル    惡棍 : { male:  乱暴  female:  蓮っ葉  }
@@ -43,66 +43,66 @@
 優等生  優等生 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 策士 謀略家 : { male:  クールＭ  female:  クールＦ  }
 神経質 神經質 : { male:  陰気  female:  内気  }
-女好き : { male:  お調子者  female:  快活  }
-チャラい : { male:  お調子者  female:  ギャル風  }
-情熱的 : { male:  強気Ｍ  female:  強気Ｆ  }
-男嫌い : { male:  陰気  female:  丁寧Ｆ  }
-夢見がち : { male:  陰気  female:  ぶりっこ  }
-好奇心旺盛 : { male:  お調子者  female:  快活  }
-冒険好き : { male:  強気Ｍ  female:  強気Ｆ  }
-陰キャ : { male:  陰気  female:  内気  }
-計算高い : { male:  クールＭ  female:  クールＦ  }
-姉御肌 : { male:  強気Ｍ  female:  強気Ｆ  }
+女好き  喜愛女性: { male:  お調子者  female:  快活  }
+チャラい    輕浮 : { male:  お調子者  female:  ギャル風  }
+情熱的  熱情 : { male:  強気Ｍ  female:  強気Ｆ  }
+男嫌い  厭惡男性 : { male:  陰気  female:  丁寧Ｆ  }
+夢見がち    白日夢 : { male:  陰気  female:  ぶりっこ  }
+好奇心旺盛  好奇心旺盛 : { male:  お調子者  female:  快活  }
+冒険好き    喜愛冒險 : { male:  強気Ｍ  female:  強気Ｆ  }
+陰キャ  陰角 : { male:  陰気  female:  内気  }
+計算高い    吝嗇 : { male:  クールＭ  female:  クールＦ  }
+姉御肌  大姐姐 : { male:  強気Ｍ  female:  強気Ｆ  }
 古風 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-大雑把 : { male:  乱暴  female:  蓮っ葉  }
-臆病 : { male:  陰気  female:  内気  }
-寡黙 : { male:  陰気  female:  内気  }
-不器用 : { male:  陰気  female:  内気  }
-ぶっきらぼう : { male:  乱暴  female:  蓮っ葉  }
-偏屈 : { male:  陰気  female:  内気  }
-利発 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-抜け目がない : { male:  クールＭ  female:  ぶりっこ  }
-職人気質 : { male:  普通Ｍ  female:  普通Ｆ  }
-狡猾 : { male:  クールＭ  female:  クールＦ  }
-あざとい : { male:  お調子者  female:  ぶりっこ  }
-鈍感 : { male:  普通Ｍ  female:  普通Ｆ  }
-泣き虫 : { male:  陰気  female:  内気  }
-おしゃれ : { male:  お調子者  female:  ギャル風  }
-粗暴 : { male:  乱暴  female:  蓮っ葉  }
-男勝り : { male:  強気Ｍ  female:  強気Ｆ  }
-潔癖 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-綺麗好き : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-暴れ者 : { male:  乱暴  female:  蓮っ葉  }
-好戦的 : { male:  乱暴  female:  強気Ｆ  }
-問題児 : { male:  お調子者  female:  快活  }
-草食系 : { male:  陰気  female:  内気  }
-スケベ : { male:  お調子者  female:  ギャル風  }
-遊び人 : { male:  お調子者  female:  ギャル風  }
-むっつり : { male:  陰気  female:  内気  }
-勇敢 : { male:  強気Ｍ  female:  強気Ｆ  }
-勇猛果敢 : { male:  強気Ｍ  female:  強気Ｆ  }
-豪傑 : { male:  乱暴  female:  強気Ｆ  }
-箱入り : { male:  丁寧Ｍ  female:  お嬢様  }
-惚れっぽい : { male:  お調子者  female:  ぶりっこ  }
-愚直 : { male:  普通Ｍ  female:  普通Ｆ  }
-夢想家 : { male:  お調子者  female:  ぶりっこ  }
-堅物 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-ストイック : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-仕事好き 熱愛工作 : { male:  普通Ｍ  female:  普通Ｆ  }
+大雑把 隨便 : { male:  乱暴  female:  蓮っ葉  }
+臆病    膽小 : { male:  陰気  female:  内気  }
+寡黙    寡言 : { male:  陰気  female:  内気  }
+不器用  笨拙 : { male:  陰気  female:  内気  }
+ぶっきらぼう    粗魯 : { male:  乱暴  female:  蓮っ葉  }
+偏屈    偏執 : { male:  陰気  female:  内気  }
+利発    聰明 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+抜け目がない    精明 : { male:  クールＭ  female:  ぶりっこ  }
+職人気質    工匠精神 : { male:  普通Ｍ  female:  普通Ｆ  }
+狡猾    狡猾 : { male:  クールＭ  female:  クールＦ  }
+あざとい    耍小聰明 : { male:  お調子者  female:  ぶりっこ  }
+鈍感    遲鈍 : { male:  普通Ｍ  female:  普通Ｆ  }
+泣き虫  愛哭鬼 : { male:  陰気  female:  内気  }
+おしゃれ    時髦 : { male:  お調子者  female:  ギャル風  }
+粗暴    粗暴 : { male:  乱暴  female:  蓮っ葉  }
+男勝り  女強人 : { male:  強気Ｍ  female:  強気Ｆ  }
+潔癖    潔癖 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+綺麗好き    喜歡乾淨 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+暴れ者  暴力 : { male:  乱暴  female:  蓮っ葉  }
+好戦的  好戰 : { male:  乱暴  female:  強気Ｆ  }
+問題児  問題兒童 : { male:  お調子者  female:  快活  }
+草食系  草食系 : { male:  陰気  female:  内気  }
+色鬼 : { male:  お調子者  female:  ギャル風  }
+遊び人  玩樂者 : { male:  お調子者  female:  ギャル風  }
+むっつり    沉默 : { male:  陰気  female:  内気  }
+勇敢    勇敢 : { male:  強気Ｍ  female:  強気Ｆ  }
+勇猛果敢    果斷 : { male:  強気Ｍ  female:  強気Ｆ  }
+豪傑    豪傑 : { male:  乱暴  female:  強気Ｆ  }
+箱入り   : { male:  丁寧Ｍ  female:  お嬢様  }
+惚れっぽい  迷戀 : { male:  お調子者  female:  ぶりっこ  }
+愚直    愚直 : { male:  普通Ｍ  female:  普通Ｆ  }
+夢想家  夢想家 : { male:  お調子者  female:  ぶりっこ  }
+堅物    耿直 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+ストイック  沉穩 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+仕事好き 喜愛工作 : { male:  普通Ｍ  female:  普通Ｆ  }
 仕事の鬼 工作狂 : { male:  強気Ｍ  female:  強気Ｆ  }
-頭脳派 : { male:  クールＭ  female:  クールＦ  }
-聡明 : { male:  丁寧Ｍ  female:  中性的  }
-才気煥発 : { male:  丁寧Ｍ  female:  中性的  }
-マッド : { male:  クールＭ  female:  中性的  }
+頭脳派  頭腦派 : { male:  クールＭ  female:  クールＦ  }
+聡明    聰明 : { male:  丁寧Ｍ  female:  中性的  }
+才気煥発    才氣煥發 : { male:  丁寧Ｍ  female:  中性的  }
+マッド  瘋狂 : { male:  クールＭ  female:  中性的  }
 享楽的 享樂主義 : { male:  お調子者  female:  ギャル風  }
-悪女 : { male:  乱暴  female:  お嬢様  }
+悪女    惡女 : { male:  乱暴  female:  お嬢様  }
 筋肉馬鹿 肌肉笨蛋 : { male:  乱暴  female:  強気Ｆ  }
-熱血 : { male:  強気Ｍ  female:  強気Ｆ  }
-世渡り上手 : { male:  お調子者  female:  ギャル風  }
+熱血    熱血 : { male:  強気Ｍ  female:  強気Ｆ  }
+世渡り上手  圓融 : { male:  お調子者  female:  ギャル風  }
 文武両道 文武雙全 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
-愚鈍 : { male:  陰気  female:  内気  }
+愚鈍    愚鈍: { male:  陰気  female:  内気  }
 強欲 : { male:  クールＭ  female:  クールＦ  }
-現実主義 現實主義 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
+現実主義    現實主義 : { male:  丁寧Ｍ  female:  丁寧Ｆ  }
 才女 : { male:  丁寧Ｍ  female:  お嬢様  }
 才色兼備 : { male:  丁寧Ｍ  female:  お嬢様  }
 肉食系 肉食系: { male:  強気Ｍ  female:  ギャル風  }
