@@ -997,6 +997,9 @@ window.onLoadFromJsonFile = () => {
     if (newVillage) {
       // 現在の村データを上書きする
       Object.assign(theVillage, newVillage);
+      theVillage.logs.forEach(log => {
+        theVillage.log(log);
+      });
       theVillage.log("從JSON檔案載入。");
       // 画面更新
       updateUI(theVillage);
@@ -1010,6 +1013,10 @@ window.onLoadFromLocalStorage = () => {
   const newVillage = loadVillageFromLocalStorage();
   if (newVillage) {
     Object.assign(theVillage, newVillage);
+    //add log
+    theVillage.logs.forEach(log => {
+      theVillage.log(log);
+    });
     theVillage.log("從本地儲存中載入。");
     updateUI(theVillage);
   } else {

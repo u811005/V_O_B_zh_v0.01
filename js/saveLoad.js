@@ -21,7 +21,7 @@ export function saveVillageToJsonFile(village) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  village.log("JSONファイルとして保存しました");
+  village.log("儲存為 JSON 檔案");
 }
 
 /**
@@ -43,7 +43,7 @@ export function saveVillageToLocalStorage(village) {
   const jsonStr = JSON.stringify(dataObj);
   localStorage.setItem("villageSave", jsonStr);
 
-  village.log("ローカルストレージに保存しました");
+  village.log("儲存至本地儲存區。");
 }
 
 /**
@@ -94,8 +94,11 @@ function convertVillageToObject(village) {
     isRaidProcessDone: village.isRaidProcessDone,
     raidTurnCount: village.raidTurnCount,
     currentActionIndex: village.currentActionIndex,
+    raidActionQueue: [...village.raidActionQueue],
     // raidEnemies (Villager互換配列)
     raidEnemies: village.raidEnemies.map(vill => convertVillagerToObject(vill)),
+    //追加
+    visitors: village.visitors.map(vill => convertVillagerToObject(vill)),
 
     // villagers
     villagers: village.villagers.map(vill => ({
@@ -204,6 +207,7 @@ function convertObjectToVillage(dataObj) {
   v.tech = dataObj.tech;
   v.security = dataObj.security;
   v.building = dataObj.building;
+  v.buildings = dataObj.buildings;
   v.popLimit = dataObj.popLimit;
   if (Array.isArray(dataObj.villageTraits)) {
     v.villageTraits = [...dataObj.villageTraits];
@@ -218,14 +222,23 @@ function convertObjectToVillage(dataObj) {
   v.isRaidProcessDone = !!dataObj.isRaidProcessDone;
   v.raidTurnCount = dataObj.raidTurnCount ?? 0;
   v.currentActionIndex = dataObj.currentActionIndex ?? 0;
+  if (Array.isArray(dataObj.raidActionQueue)) {
+    v.raidActionQueue = dataObj.raidActionQueue;
+  }
   if (Array.isArray(dataObj.raidEnemies)) {
     v.raidEnemies = dataObj.raidEnemies.map(o => convertObjectToVillager(o));
+  }
+
+  if (Array.isArray(dataObj.visitors)) {
+    v.visitors = dataObj.visitors.map(o => convertObjectToVillager(o));
   }
 
   // villagers
   if (Array.isArray(dataObj.villagers)) {
     v.villagers = dataObj.villagers.map(o => convertObjectToVillager(o));
   }
+
+  
 
   return v;
 }

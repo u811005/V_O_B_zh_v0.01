@@ -955,6 +955,10 @@ export function refreshJobTable(v) {
         "詩人", "神官"
       ];
 
+      if (buildingFlags.hasWeaving) {
+        v.actionTable.push("紡織");
+      }
+
       // 建築物によって解放される共通の仕事を行動テーブルにも追加
       if (buildingFlags.hasClinic) {
         v.actionTable.push("按摩");
