@@ -1018,7 +1018,7 @@ function openRecruitmentModal(visitor) {
       // 仕事テーブルを更新
       refreshJobTable(visitor);
       
-      theVillage.log(`$透過{recruiter.name}的招募，${visitor.name}成為了村民。(成功率: ${Math.floor(successRate)}%)`);
+      theVillage.log(`透過${recruiter.name}的招募，${visitor.name}成為了村民。(成功率: ${Math.floor(successRate)}%)`);
       alert(`招募成功！${visitor.name}成為了村民。`);
     } else {
       // 失敗
@@ -1159,7 +1159,7 @@ function openSeductionModal(visitor) {
       // 仕事テーブルを更新
       refreshJobTable(visitor);
       
-      theVillage.log(`$因為{seducer.name}的誘惑，${visitor.name}成為了村民。(成功率: ${Math.floor(successRate)}%)`);
+      theVillage.log(`因為${seducer.name}的誘惑，${visitor.name}成為了村民。(成功率: ${Math.floor(successRate)}%)`);
       alert(`誘惑成功！${visitor.name}成為了村民。`);
     } else {
       // 失敗
