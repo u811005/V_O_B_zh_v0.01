@@ -440,7 +440,7 @@ function doOneTrapAction(action, village) {
   let e=randChoice(village.raidEnemies);
   let dmg = Math.floor((p.dex*p.int/400)*30);
   e.hp-=dmg;
-  logDiv.innerHTML+=`<br>【製作陷阱】${p.name}→對${e.name}造成${dmg}點傷害`;
+  logDiv.innerHTML+=`<br>【製作陷阱】${p.name} → ${e.name} ${dmg}點傷害`;
   if (e.hp<=0) {
     logDiv.innerHTML+=`<br>　　→ ${e.name}被擊倒了！`;
     village.raidEnemies=village.raidEnemies.filter(x=> x!==e);
@@ -515,9 +515,9 @@ function doOneCombatAction(action, village) {
     let dmg=result.damage;
     let atkTypeText = result.isMagic? "魔法攻撃":"物理攻撃";
     target.hp-=dmg;
-    logDiv.innerHTML+=`<br>【敵人的攻撃】${actor.name}的${atkTypeText}→對${target.name}造成 ${dmg}點傷害`;
+    logDiv.innerHTML+=`<br>【敵人的攻撃】${actor.name}的${atkTypeText}→${target.name} ${dmg}點傷害`;
     if (target.hp<=0) {
-      logDiv.innerHTML+=`<br>　　→ ${target.name}は受傷離脱(HP0)`;
+      logDiv.innerHTML+=`<br>　　→ ${target.name}受傷脫離(HP0)`;
       if (!target.bodyTraits.includes("受傷")) target.bodyTraits.push("受傷");
     } else {
       // 反撃
@@ -525,7 +525,7 @@ function doOneCombatAction(action, village) {
       let rdmg=Math.floor(ret.damage*0.5);
       let retTypeText=ret.isMagic? "魔法攻撃":"物理攻撃";
       actor.hp-=rdmg;
-      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):${target.name}→對${actor.name}造成 ${rdmg}點傷害`;
+      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):${target.name} → ${actor.name} ${rdmg}點傷害`;
       if (actor.hp<=0) {
         logDiv.innerHTML+=`<br>　　→ ${actor.name}被擊倒了！`;
         village.raidEnemies=village.raidEnemies.filter(e=> e!==actor);
@@ -543,7 +543,7 @@ function doOneCombatAction(action, village) {
     let dmg=result.damage;
     let atkTypeText=result.isMagic? "魔法攻撃":"物理攻撃";
     target.hp-=dmg;
-    logDiv.innerHTML+=`<br>【迎擊】${actor.name}的${atkTypeText}→對${target.name}造成 ${dmg}點傷害`;
+    logDiv.innerHTML+=`<br>【迎擊】${actor.name}的${atkTypeText} → ${target.name} ${dmg}點傷害`;
     if (target.hp<=0) {
       logDiv.innerHTML+=`<br>　　→ ${target.name}被擊倒了！`;
       village.raidEnemies=village.raidEnemies.filter(e=> e!==target);
@@ -553,7 +553,7 @@ function doOneCombatAction(action, village) {
       let rdmg=Math.floor(ret.damage*0.5);
       let retTypeText=ret.isMagic? "魔法攻撃":"物理攻撃";
       actor.hp-=rdmg;
-      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}):對${target.name}→${actor.name}造成${rdmg}點傷害`;
+      logDiv.innerHTML+=`<br>　　→ 反撃(${retTypeText}): ${target.name} → ${actor.name} ${rdmg}點傷害`;
       if (actor.hp<=0) {
         logDiv.innerHTML+=`<br>　　→ ${actor.name}受傷離開(HP0)`;
         if (!actor.bodyTraits.includes("受傷")) actor.bodyTraits.push("受傷");

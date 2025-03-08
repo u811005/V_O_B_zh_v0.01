@@ -415,8 +415,8 @@ export function openConversationModal(character) {
   if (isVisitor && !hasFailedRecruitment) {
     // 訪問者で、かつ勧誘失敗フラグがない場合は勧誘と誘惑ボタンを表示
     actionButtons.innerHTML = `
-      <button id="recruitButton">勧誘する</button>
-      <button id="seduceButton">誘惑する</button>
+      <button id="recruitButton">招募</button>
+      <button id="seduceButton">誘惑</button>
     `;
     actionButtons.style.display = "block";
     
@@ -1340,7 +1340,7 @@ function openSeductionModal(visitor) {
   
   modal.innerHTML = `
     <h3 style="margin-top:0;">選擇要進行誘惑的村民</h3>
-    <p style="margin-bottom:15px;">$誘惑{visitor.name}。</p>
+    <p style="margin-bottom:15px;">誘惑${visitor.name}。</p>
     <select id="seducerSelect" style="width:100%;padding:5px;margin-bottom:15px;">
       <option value="">請選擇要進行誘惑的村民</option>
       ${theVillage.villagers.map(v => `
