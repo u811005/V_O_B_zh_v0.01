@@ -208,6 +208,7 @@ function convertObjectToVillage(dataObj) {
   v.security = dataObj.security;
   v.building = dataObj.building;
   v.buildings = dataObj.buildings;
+  v.buildingFlags = dataObj.buildingFlags;
   v.popLimit = dataObj.popLimit;
   if (Array.isArray(dataObj.villageTraits)) {
     v.villageTraits = [...dataObj.villageTraits];
