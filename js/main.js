@@ -17,11 +17,11 @@ updateUI(theVillage);
  */
 export function onNextTurn() {
   if (theVillage.gameOver) {
-    theVillage.log("ゲームオーバー済みです。操作不可");
+    theVillage.log("GameOver。無法操作");
     return;
   }
   // もし襲撃中かつ未完了なら先に迎撃モーダル
-  if (theVillage.villageTraits.includes("襲撃中") && !theVillage.isRaidProcessDone) {
+  if (theVillage.villageTraits.includes("襲擊中") && !theVillage.isRaidProcessDone) {
     import("./raid.js").then(m=>{
       m.openRaidModal(theVillage);
     });
