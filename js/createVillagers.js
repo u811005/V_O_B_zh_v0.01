@@ -255,7 +255,8 @@ export function createInitialVillagers() {
       femaleCount++;
     }
   }
-
+  // villagers.forEach(v => refreshJobTable(v));
+  // console.log(villagers);
   return villagers;
 }
 
@@ -329,7 +330,7 @@ export function generateRandomName(sex) {
     "洛恩", "卡羅爾", "馬可", "阿基爾", "波里斯", "以利亞斯", "參孫", "布萊德", "西蒙", "艾瑞克",
     "基爾伯特", "埃德蒙", "洛塔爾", "巴爾薩澤", "西奧多", "萊因哈特", "沃爾夫岡", "亞瑟", "蘭斯洛特", "高文",
     "帕西瓦爾", "貝迪維爾", "凱", "特里斯特拉姆",
-    "阿斯特拉", "法伊亞爾", "索拉里斯", "魯米納斯", "塞萊斯特", "德拉戈", "艾俄斯", "獵戶", "阿爾特彌斯", "克洛諾斯",
+    "阿斯特拉", "法伊亞爾", "索拉里斯", "魯米納斯", "塞萊斯特", "德拉戈", "艾俄斯", "獵戶", "克洛諾斯",
     "艾奧洛斯", "特拉斯", "布拉吉",
     // 日式名字
     "拓真", "翔太", "健一", "悠人", "直樹", "涼介", "誠", "晴広", "隆之介", 
@@ -903,8 +904,12 @@ export function refreshJobTable(v) {
     ];
 
     // 建築物によって解放される仕事
-    const village = import("./main.js").then(m => m.theVillage);
-    const buildingFlags = village.buildingFlags || {};
+    // const village = import("./main.js").then(m => m.theVillage);
+    // const buildingFlags = village.buildingFlags || {};
+
+    // 同步修正 buildingFlagsLoad Fix
+    const buildingFlags = theVillage.buildingFlags || {};
+ 
 
     // 建築物によって解放される共通の仕事
     if (buildingFlags.hasClinic) {
@@ -1003,11 +1008,14 @@ export function refreshJobTable(v) {
       }
 
       // 女性限定の建築物依存の仕事を行動テーブルにも追加
-      if (buildingFlags.hasTavern) {
+      if (buildingFlags.hasTavern===true) {
         v.actionTable.push("兔女郎");
       }
       if (buildingFlags.hasChurch) {
         v.actionTable.push("巫女");
+      }
+      if (buildingFlags.hasTavern) {
+        v.actionTable.push("兔女郎");
       }
     }
 
@@ -1024,6 +1032,85 @@ export function refreshJobTable(v) {
     v.actionTable.unshift("迎擊", "製作陷阱");
   }
 }
+
+
+// async await 替換
+// export async function refreshJobTable(v) {
+//   let sa = v.spiritAge;
+//   if (sa <= 9) {
+//     v.jobTable = ["無"];
+//     v.actionTable = ["無"];
+//     if (!v.jobTable.includes(v.job)) v.job = "無";
+//     if (!v.actionTable.includes(v.action)) v.action = v.job;
+//     return;
+//   } else if (sa <= 15) {
+//     v.jobTable = ["無", "學習", "鍛鍊"];
+//     v.actionTable = ["學習", "鍛鍊", "休養", "休閒"];
+//     if (!v.jobTable.includes(v.job)) v.job = "無";
+//     if (!v.actionTable.includes(v.action)) v.action = v.job;
+//     return;
+//   }
+
+//   // ✅ 使用 `await` 確保 `theVillage` 被正確解析
+//   const { theVillage } = await import("./main.js");
+//   const buildingFlags = theVillage.buildingFlags || {}; // ✅ 確保 `buildingFlags` 不是 undefined
+
+//   // 基本的工作清單
+//   let commonJobs = [
+//     "無",
+//     "耕作", "狩獵", "捕魚",
+//     "伐木",
+//     "採集", "家政", "行商", 
+//     "研究", "警備", "看護"
+//   ];
+
+//   // 建築物解鎖工作
+//   if (buildingFlags.hasClinic) commonJobs.push("按摩");
+//   if (buildingFlags.hasLibrary) commonJobs.push("寫書");
+//   if (buildingFlags.hasBrewery) commonJobs.push("醸造");
+//   if (buildingFlags.hasAlchemy) commonJobs.push("錬金術");
+//   if (buildingFlags.hasWeaving) commonJobs.push("紡織");
+
+//   // **處理性別**
+//   if (v.bodySex === "男") {
+//     v.jobTable = [...commonJobs, "詩人", "神官"];
+//     v.actionTable = [
+//       "休養", "休閒",
+//       "耕作", "狩獵", "捕魚",
+//       "伐木",
+//       "採集", "家政", "行商", 
+//       "研究", "警備", "看護",
+//       "詩人", "神官"
+//     ];
+//   } else {
+//     v.jobTable = [...commonJobs, "舞者", "修女"];
+//     v.actionTable =    v.actionTable = [
+//       "休養", "休閒",
+//       "耕作", "狩獵", "捕魚",
+//       "伐木",
+//       "採集", "家政", "行商", 
+//       "研究", "警備", "看護",
+//       , "舞者", "修女"
+//     ];
+
+//     // 女性限定職業
+//     if (buildingFlags.hasTavern) v.jobTable.push("兔女郎");
+//     if (buildingFlags.hasChurch) v.jobTable.push("巫女");
+
+//     if (buildingFlags.hasTavern) v.actionTable.push("兔女郎");
+//     if (buildingFlags.hasChurch) v.actionTable.push("巫女");
+//   }
+
+//   // **檢查當前職業是否合法**
+//   if (!v.jobTable.includes(v.job)) v.job = "無";
+//   if (!v.actionTable.includes(v.action)) v.action = v.job;
+
+//   // **處理襲擊事件**
+//   if (theVillage.villageTraits.includes("襲擊中")) {
+//     v.actionTable.unshift("迎擊", "製作陷阱");
+//   }
+// }
+
 
 /**
  * 訪問者タイプの定義
