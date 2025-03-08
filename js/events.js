@@ -126,7 +126,7 @@ function doRandomEventMain(v, phase) {
   } else if (r<=40) {
     doBadEvent(v);
   } else {
-    v.log(`[${phase}イベント] 何も起こらず`);
+    v.log(`[${phase}事件] 無事發生`);
   }
 }
 
@@ -148,7 +148,7 @@ function doMythicEvent(v) {
     }
   });
   if (cands.length===0) {
-    v.log("ミシックイベ:該当者なし");
+    v.log("ミシックイベ:沒有目標");
     return;
   }
   let c = randChoice(cands);
@@ -187,20 +187,20 @@ function doGoodEvent(v) {
         let t=randChoice(v.villagers);
         let inc=randInt(20,30);
         t.happiness=clampValue(t.happiness+inc,0,100);
-        v.log(`子猫イベント:${t.name}幸福+${inc}`);
+        v.log(`小貓事件:${t.name}幸福+${inc}`);
       }
       break;
     }
     case "gold": {
       let amt=randInt(50,100);
       v.funds=clampValue(v.funds+amt,0,99999);
-      v.log(`金貨発見:資金+${amt}`);
+      v.log(`發現金幣:資金+${amt}`);
       break;
     }
     case "strangeRain": {
       let amt=randInt(10,60);
       v.food=clampValue(v.food+amt,0,99999);
-      v.log(`空から魚が降り注いだ:食料+${amt}`);
+      v.log(`天空降下了魚:食材+${amt}`);
       break;
     }
     case "fireworks": {
@@ -208,7 +208,7 @@ function doGoodEvent(v) {
       v.villagers.forEach(p=>{
         p.happiness=clampValue(p.happiness+inc,0,100);
       });
-      v.log(`花火師来訪:村全体幸福+${inc}`);
+      v.log(`煙火師來訪:村民全體幸福+${inc}`);
       break;
     }
     case "menFriendship": {
@@ -221,9 +221,9 @@ function doGoodEvent(v) {
         m2.happiness=clampValue(m2.happiness+incc,0,100);
         addRelationship(m1,`親友:${m2.name}`);
         addRelationship(m2,`親友:${m1.name}`);
-        v.log(`男の友情:${m1.name}と${m2.name}は酒を酌み交わし友情を深めた。幸福+${incc}`);
+        v.log(`男人的友情:${m1.name}和${m2.name}透過酒增進了友情。幸福+${incc}`);
       } else {
-        v.log("男の友情:該当者(男2名以上)いない");
+        v.log("男人的友情:沒有目標(2名男性以上)");
       }
       break;
     }

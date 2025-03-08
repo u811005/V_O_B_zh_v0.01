@@ -956,17 +956,17 @@ function openRecruitmentModal(visitor) {
   const coefficient = RECRUITMENT_COEFFICIENTS[visitorType] || 1.0;
   
   modal.innerHTML = `
-    <h3 style="margin-top:0;">勧誘する村人を選択</h3>
-    <p style="margin-bottom:15px;">${visitor.name}を勧誘します。</p>
+    <h3 style="margin-top:0;">選擇要進行招募的村民</h3>
+    <p style="margin-bottom:15px;">召募${visitor.name}。</p>
     <select id="recruiterSelect" style="width:100%;padding:5px;margin-bottom:15px;">
-      <option value="">勧誘する村人を選択してください</option>
+      <option value="">選擇要進行招募的村民</option>
       ${theVillage.villagers.map(v => `
-        <option value="${v.name}">${v.name} (魅力:${Math.floor(v.chr)} 知力:${Math.floor(v.int)})</option>
+        <option value="${v.name}">${v.name} (魅力:${Math.floor(v.chr)} 智力:${Math.floor(v.int)})</option>
       `).join('')}
     </select>
     <div style="display:flex;justify-content:flex-end;gap:10px;">
-      <button id="cancelRecruitment" style="padding:5px 15px;">キャンセル</button>
-      <button id="doRecruitment" style="padding:5px 15px;">勧誘する</button>
+      <button id="cancelRecruitment" style="padding:5px 15px;">取消</button>
+      <button id="doRecruitment" style="padding:5px 15px;">招募</button>
     </div>
   `;
   
@@ -977,14 +977,14 @@ function openRecruitmentModal(visitor) {
   document.getElementById("doRecruitment").addEventListener("click", () => {
     const recruiterName = document.getElementById("recruiterSelect").value;
     if (!recruiterName) {
-      alert("勧誘する村人を選択してください。");
+      alert("請選擇要進行招募的村民");
       return;
     }
     
     // 人口上限チェックを追加
     if (theVillage.villagers.length >= theVillage.popLimit) {
-      alert("村の人口上限に達しています。新たな村人を受け入れるには、家屋を建設して人口上限を増やしてください。");
-      theVillage.log(`勧誘失敗: 人口上限(${theVillage.popLimit}人)に達しています`);
+      alert("已達到村莊的人口上限。 若要招募新的村民，請建造民宅並增加人口上限。");
+      theVillage.log(`招募失敗: 到達人口上限(${theVillage.popLimit}人)`);
       return;
     }
     
@@ -1007,8 +1007,8 @@ function openRecruitmentModal(visitor) {
       
       // 名前から「〜の」を削除
       const visitorType = getVisitorType(visitor);
-      if (visitor.name.includes(`${visitorType}の`)) {
-        visitor.name = visitor.name.replace(`${visitorType}の`, "");
+      if (visitor.name.includes(`${visitorType}`)) {
+        visitor.name = visitor.name.replace(`${visitorType}–`, "");
       }
       
       // 訪問者リストから削除し、村人リストに追加
@@ -1018,13 +1018,13 @@ function openRecruitmentModal(visitor) {
       // 仕事テーブルを更新
       refreshJobTable(visitor);
       
-      theVillage.log(`${recruiter.name}の勧誘により、${visitor.name}が村人になりました。(成功率: ${Math.floor(successRate)}%)`);
-      alert(`勧誘成功！${visitor.name}が村人になりました。`);
+      theVillage.log(`$透過{recruiter.name}的招募，${visitor.name}成為了村民。(成功率: ${Math.floor(successRate)}%)`);
+      alert(`招募成功！${visitor.name}成為了村民。`);
     } else {
       // 失敗
-      visitor.mindTraits.push("勧誘失敗");
-      theVillage.log(`${recruiter.name}の勧誘は失敗しました。(成功率: ${Math.floor(successRate)}%)`);
-      alert("勧誘に失敗しました。");
+      visitor.mindTraits.push("招募失敗");
+      theVillage.log(`$對{recruiter.name}的招募失敗了。(成功率: ${Math.floor(successRate)}%)`);
+      alert("招募失敗了。");
     }
     
     closeRecruitmentModal();
@@ -1082,17 +1082,17 @@ function openSeductionModal(visitor) {
   const coefficient = RECRUITMENT_COEFFICIENTS[visitorType] || 1.0;
   
   modal.innerHTML = `
-    <h3 style="margin-top:0;">誘惑する村人を選択</h3>
-    <p style="margin-bottom:15px;">${visitor.name}を誘惑します。</p>
+    <h3 style="margin-top:0;">選擇要進行誘惑的村民</h3>
+    <p style="margin-bottom:15px;">$誘惑{visitor.name}。</p>
     <select id="seducerSelect" style="width:100%;padding:5px;margin-bottom:15px;">
-      <option value="">誘惑する村人を選択してください</option>
+      <option value="">請選擇要進行誘惑的村民</option>
       ${theVillage.villagers.map(v => `
         <option value="${v.name}">${v.name} (魅力:${Math.floor(v.chr)} 好色:${Math.floor(v.sexdr)})</option>
       `).join('')}
     </select>
     <div style="display:flex;justify-content:flex-end;gap:10px;">
-      <button id="cancelSeduction" style="padding:5px 15px;">キャンセル</button>
-      <button id="doSeduction" style="padding:5px 15px;">誘惑する</button>
+      <button id="cancelSeduction" style="padding:5px 15px;">取消</button>
+      <button id="doSeduction" style="padding:5px 15px;">誘惑</button>
     </div>
   `;
   
@@ -1103,14 +1103,14 @@ function openSeductionModal(visitor) {
   document.getElementById("doSeduction").addEventListener("click", () => {
     const seducerName = document.getElementById("seducerSelect").value;
     if (!seducerName) {
-      alert("誘惑する村人を選択してください。");
+      alert("選擇要進行誘惑的村民。");
       return;
     }
     
     // 人口上限チェックを追加
     if (theVillage.villagers.length >= theVillage.popLimit) {
-      alert("村の人口上限に達しています。新たな村人を受け入れるには、家屋を建設して人口上限を増やしてください。");
-      theVillage.log(`誘惑失敗: 人口上限(${theVillage.popLimit}人)に達しています`);
+      alert("已達到村莊的人口上限。 若要招募新的村民，請建造民宅並增加人口上限。");
+      theVillage.log(`誘惑失敗: 到達人口上限(${theVillage.popLimit}人)`);
       return;
     }
     
@@ -1121,14 +1121,14 @@ function openSeductionModal(visitor) {
     // 1. 精神性別と肉体性別が異なるか
     // 2. 誘惑者の好色が21以上か
     if (visitor.spiritSex === seducer.bodySex) {
-      alert("誘惑者の肉体性別と訪問者の精神性別が同じです。誘惑できません。");
-      theVillage.log(`${seducer.name}の誘惑は失敗しました。(理由: 性別の不一致)`);
+      alert("誘惑者的身體性別和訪問者的精神性別相同。無法誘惑。");
+      theVillage.log(`對${seducer.name}的誘惑失敗。(理由: 性別不一致)`);
       return;
     }
     
     if (seducer.sexdr < 21) {
-      alert("誘惑者の好色が足りません。誘惑できません。");
-      theVillage.log(`${seducer.name}の誘惑は失敗しました。(理由: 誘惑者の好色不足)`);
+      alert("誘惑者的好色不足。無法誘惑。");
+      theVillage.log(`對${seducer.name}的誘惑失敗。(理由: 誘惑者的好色不足)`);
       return;
     }
     
@@ -1148,8 +1148,8 @@ function openSeductionModal(visitor) {
       
       // 名前から「〜の」を削除
       const visitorType = getVisitorType(visitor);
-      if (visitor.name.includes(`${visitorType}の`)) {
-        visitor.name = visitor.name.replace(`${visitorType}の`, "");
+      if (visitor.name.includes(`${visitorType}–`)) {
+        visitor.name = visitor.name.replace(`${visitorType}–`, "");
       }
       
       // 訪問者リストから削除し、村人リストに追加
@@ -1159,13 +1159,13 @@ function openSeductionModal(visitor) {
       // 仕事テーブルを更新
       refreshJobTable(visitor);
       
-      theVillage.log(`${seducer.name}の誘惑により、${visitor.name}が村人になりました。(成功率: ${Math.floor(successRate)}%)`);
-      alert(`誘惑成功！${visitor.name}が村人になりました。`);
+      theVillage.log(`$因為{seducer.name}的誘惑，${visitor.name}成為了村民。(成功率: ${Math.floor(successRate)}%)`);
+      alert(`誘惑成功！${visitor.name}成為了村民。`);
     } else {
       // 失敗
-      visitor.mindTraits.push("勧誘失敗");
-      theVillage.log(`${seducer.name}の誘惑は失敗しました。(成功率: ${Math.floor(successRate)}%)`);
-      alert("誘惑に失敗しました。");
+      visitor.mindTraits.push("招募失敗");
+      theVillage.log(`對${seducer.name}的誘惑失敗了。(成功率: ${Math.floor(successRate)}%)`);
+      alert("誘惑失敗了。");
     }
     
     closeSeductionModal();

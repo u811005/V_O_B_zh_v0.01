@@ -257,7 +257,7 @@ function doTraining(p, v) {
   if (Math.random()<0.4) p.str++;
   if (Math.random()<0.3) p.vit++;
   if (Math.random()<0.2) p.cou++;
-  v.log(`${p.name}鍛鍊:體力-${tc},精神-${mc},力量/耐力/勇気UP可能`);
+  v.log(`${p.name}鍛鍊:體力-${tc},精神-${mc},力量/耐力/勇氣UP可能`);
 }
 
 function doFarm(p, v) {
@@ -271,23 +271,23 @@ function doFarm(p, v) {
   if (v.villageTraits.includes("秋")) mul*=1.5;
   if (v.villageTraits.includes("冬")) mul*=0.5;
   if (v.villageTraits.includes("冷夏")) mul*=0.5;
-  if (v.villageTraits.includes("豊穣")) mul*=2;
+  if (v.villageTraits.includes("豐收")) mul*=2;
   if (p.mindTraits.includes("熟練農夫")) mul*=1.3;
   if (p.mindTraits.includes("達人農夫")) mul*=1.5;
   if (p.bodyTraits.includes("大地の巫女")) mul*=1.5;
 
   let amt=Math.round(base*mul);
   
+  let logMsg = `${p.name}耕作:食材+${amt},體力-${tc},精神-${mc}`;
+
   // ミダスの奇跡の効果
-  if (v.villageTraits.includes("ミダス")) {
+  if (v.villageTraits.includes("邁達斯")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
-    v.log(`${p.name}耕作:資金+${amt},體力-${tc},精神-${mc}`);
+    logMsg =  `${p.name}耕作:資金+${amt},體力-${tc},精神-${mc}`;
   } else {
     v.food = clampValue(v.food+amt, 0, 99999);
-    v.log(`${p.name}耕作:食料+${amt},體力-${tc},精神-${mc}`);
+    logMsg = `${p.name}耕作:食材+${amt},體力-${tc},精神-${mc}`;
   }
-
-  let logMsg = `${p.name}耕作:食料+${amt},體力-${tc},精神-${mc}`;
 
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -321,7 +321,7 @@ function doLumber(p, v) {
 
   let base=10+20*((p.vit/20)*(p.str/20));
   let mul=1;
-  if (v.villageTraits.includes("豊穣")) mul*=2;
+  if (v.villageTraits.includes("豐收")) mul*=2;
   if (v.villageTraits.includes("冷夏")) mul*=0.5;
   if (p.mindTraits.includes("熟練木樵")) mul*=1.3;
   if (p.mindTraits.includes("達人木樵")) mul*=1.5;
@@ -378,7 +378,7 @@ function doHunt(p, v) {
   
   let base = x * ((p.str/20) * (p.cou/20));
   let mul = 1;
-  if (v.villageTraits.includes("豊穣")) mul *= 2;
+  if (v.villageTraits.includes("豐收")) mul *= 2;
   if (v.villageTraits.includes("冬")) mul *= 1.2;
   if (p.bodyTraits.includes("月の巫女")) mul *= 1.5;
   if (p.bodyTraits.includes("飛行")) mul *= 1.2;
@@ -388,12 +388,12 @@ function doHunt(p, v) {
   let amt = Math.round(base * mul);
 
   // ミダスの奇跡の効果
-  if (v.villageTraits.includes("ミダス")) {
+  if (v.villageTraits.includes("邁達斯")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
     v.log(`${p.name}狩獵:${result} 資金+${amt},體力-${tc},精神-${mc}`);
   } else {
     v.food = clampValue(v.food+amt, 0, 99999);
-    v.log(`${p.name}狩獵:${result} 食料+${amt},體力-${tc},精神-${mc}`);
+    v.log(`${p.name}狩獵:${result} 食材+${amt},體力-${tc},精神-${mc}`);
   }
 
   // ステータス上昇判定
@@ -403,7 +403,7 @@ function doHunt(p, v) {
   }
   if (Math.random() < 0.05) {
     p.cou++;
-    v.log(`${p.name}狩獵:${result} 勇気+1`);
+    v.log(`${p.name}狩獵:${result} 勇氣+1`);
   }
 
   // 特性取得判定
@@ -417,7 +417,7 @@ function doHunt(p, v) {
     v.log(`${p.name}狩獵:${result} 特性[達人狩人]獲得`);
   }
 
-  v.log(`${p.name}狩獵:${result} 食料+${amt},體力-${tc},精神-${mc}`);
+  // v.log(`${p.name}狩獵:${result} 食材+${amt},體力-${tc},精神-${mc}`);
 }
 
 function doFish(p, v) {
@@ -443,7 +443,7 @@ function doFish(p, v) {
   
   let base = x * ((p.vit/20) * (p.cou/20));
   let mul = 1;
-  if (v.villageTraits.includes("豊穣")) mul *= 2;
+  if (v.villageTraits.includes("豐收")) mul *= 2;
   if (p.bodyTraits.includes("水中呼吸")) mul *= 1.5;
   if (p.mindTraits.includes("海の知恵")) mul *= 1.5;
   if (p.mindTraits.includes("熟練捕魚師")) mul *= 1.3;
@@ -452,12 +452,12 @@ function doFish(p, v) {
   let amt = Math.round(base * mul);
 
   // ミダスの奇跡の効果
-  if (v.villageTraits.includes("ミダス")) {
+  if (v.villageTraits.includes("邁達斯")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
     v.log(`${p.name}捕魚:${result} 資金+${amt},體力-${tc},精神-${mc}`);
   } else {
     v.food = clampValue(v.food+amt, 0, 99999);
-    v.log(`${p.name}捕魚:${result} 食料+${amt},體力-${tc},精神-${mc}`);
+    v.log(`${p.name}捕魚:${result} 食材+${amt},體力-${tc},精神-${mc}`);
   }
 
   // ステータス上昇判定
@@ -467,7 +467,7 @@ function doFish(p, v) {
   }
   if (Math.random() < 0.05) {
     p.cou++;
-    v.log(`${p.name}捕魚:${result} 勇気+1`);
+    v.log(`${p.name}捕魚:${result} 勇氣+1`);
   }
 
   // 特性取得判定
@@ -485,7 +485,7 @@ function doFish(p, v) {
     v.log(`${p.name}捕魚:${result} 特性[達人捕魚師]獲得`);
   }
 
-  v.log(`${p.name}捕魚:${result} 食料+${amt},體力-${tc},精神-${mc}`);
+  // v.log(`${p.name}捕魚:${result} 食材+${amt},體力-${tc},精神-${mc}`);
 }
 
 function doGather(p, v) {
@@ -497,7 +497,7 @@ function doGather(p, v) {
   let baseF = 5 + 10*((p.dex/20)*(p.int/20));
   let baseM = randInt(1,3);
   let mul=1;
-  if (v.villageTraits.includes("豊穣")) mul*=2;
+  if (v.villageTraits.includes("豐收")) mul*=2;
   if (v.villageTraits.includes("秋"))   mul*=1.5;
   if (p.bodyTraits.includes("飛行")) mul*=1.2;
   if (p.mindTraits.includes("森の知恵")) mul*=1.5;
@@ -513,7 +513,7 @@ function doGather(p, v) {
   } else {
     v.food = clampValue(v.food+f, 0, 99999);
     v.materials = clampValue(v.materials+mm, 0, 99999);
-    v.log(`${p.name}採集:食料+${f},建材+${mm},體力-${tc},精神-${mc}`);
+    v.log(`${p.name}採集:食材+${f},建材+${mm},體力-${tc},精神-${mc}`);
   }
 
   // ステータス上昇判定
@@ -532,7 +532,7 @@ function doGather(p, v) {
     v.log(`${p.name}採集:特性[森の知恵]獲得`);
   }
 
-  v.log(`${p.name}採集:食料+${f},建材+${mm},體力-${tc},精神-${mc}`);
+  // v.log(`${p.name}採集:食材+${f},建材+${mm},體力-${tc},精神-${mc}`);
 }
 
 function doHandiwork(p, v) {
@@ -682,7 +682,7 @@ function doHealingJob(p, v) {
 }
 
 function doLastMomentsJob(p, v) {
-  v.log(`${p.name}は静かに迎えの時を待った`);
+  v.log(`${p.name}靜靜地等待迎接他的時間。`);
 }
 
 function doDancer(p, v) {
@@ -699,7 +699,7 @@ function doDancer(p, v) {
   }
   
   // 澄んだ声または通る声の特性があれば効果1.2倍
-  if (p.bodyTraits.includes("澄んだ声") || p.bodyTraits.includes("通る声")) {
+  if (p.bodyTraits.includes("清澈的聲") || p.bodyTraits.includes("嘹亮的聲")) {
     inc = Math.round(inc * 1.2);
   }
   
@@ -711,7 +711,7 @@ function doDancer(p, v) {
     }
   });
 
-  let logMsg = `${p.name}舞者:男性${affected}人の幸福+${inc},體力-${tc},精神-${mc}`;
+  let logMsg = `${p.name}舞者:男性${affected}人的幸福+${inc},體力-${tc},精神-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -740,7 +740,7 @@ function doPoet(p, v) {
   }
   
   // 澄んだ声または通る声の特性があれば効果1.2倍
-  if (p.bodyTraits.includes("澄んだ声") || p.bodyTraits.includes("通る声")) {
+  if (p.bodyTraits.includes("清澈的聲") || p.bodyTraits.includes("嘹亮的聲")) {
     inc = Math.round(inc * 1.2);
   }
   
@@ -752,7 +752,7 @@ function doPoet(p, v) {
     }
   });
 
-  let logMsg = `${p.name}詩人:女性${affected}人の幸福+${inc},體力-${tc},精神-${mc}`;
+  let logMsg = `${p.name}詩人:女性${affected}人的幸福+${inc},體力-${tc},精神-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.05) {
@@ -785,9 +785,9 @@ function doNurse(p, v) {
     let target = targets[Math.floor(Math.random() * targets.length)];
     let heal = Math.round(20 * p.mag * p.eth / 400);
     target.hp = clampValue(target.hp + heal, 0, 100);
-    logMsg = `${p.name}看護:${target.name}の體力+${heal},體力-${tc},精神-${mc}`;
+    logMsg = `${p.name}看護:${target.name}的體力+${heal},體力-${tc},精神-${mc}`;
   } else {
-    logMsg = `${p.name}看護:対象なし,體力-${tc},精神-${mc}`;
+    logMsg = `${p.name}看護:沒有對象,體力-${tc},精神-${mc}`;
   }
   
   // ステータス上昇判定
@@ -817,7 +817,7 @@ function doSister(p, v) {
   }
   
   // 澄んだ声または通る声の特性があれば効果1.2倍
-  if (p.bodyTraits.includes("澄んだ声") || p.bodyTraits.includes("通る声")) {
+  if (p.bodyTraits.includes("清澈的聲") || p.bodyTraits.includes("嘹亮的聲")) {
     heal = Math.round(heal * 1.2);
   }
   
@@ -856,7 +856,7 @@ function doPriest(p, v) {
   }
   
   // 澄んだ声または通る声の特性があれば効果1.2倍
-  if (p.bodyTraits.includes("澄んだ声") || p.bodyTraits.includes("通る声")) {
+  if (p.bodyTraits.includes("清澈的聲") || p.bodyTraits.includes("嘹亮的聲")) {
     heal = Math.round(heal * 1.2);
   }
   
@@ -1114,7 +1114,7 @@ function doBrewing(p, v) {
   v.food = clampValue(v.food + foodGain, 0, 99999);
   v.mana = clampValue(v.mana + manaGain, 0, 99999);
 
-  let logMsg = `${p.name}醸造:食料+${foodGain},魔素+${manaGain},體力-${tc},精神-${mc}`;
+  let logMsg = `${p.name}醸造:食材+${foodGain},魔素+${manaGain},體力-${tc},精神-${mc}`;
   
   // ステータス上昇判定
   if (Math.random() < 0.01) {
