@@ -1280,7 +1280,7 @@ function openRecruitmentModal(visitor) {
     } else {
       // 失敗
       visitor.mindTraits.push("招募失敗");
-      theVillage.log(`$對{recruiter.name}的招募失敗了。(成功率: ${Math.floor(successRate)}%)`);
+      theVillage.log(`對${recruiter.name}的招募失敗了。(成功率: ${Math.floor(successRate)}%)`);
       alert("招募失敗了。");
     }
     

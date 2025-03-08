@@ -66,7 +66,7 @@ export function updateUI(v) {
     // 体の持ち主
     let tdOwn=document.createElement("td");
     // tdOwn.textContent=person.bodyOwner;
-    tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+    tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.bodyOwner}"><br>${person.bodyOwner}`;
     tdOwn.style.cursor = "pointer";
     tdOwn.onclick = () => openConversationModal(person);
     tr.appendChild(tdOwn);

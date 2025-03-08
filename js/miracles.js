@@ -253,7 +253,7 @@ export function performMiracle(village) {
           break;
         case "12": // 交換
           if (!vA||!vB||vA===vB) {
-            village.log("【交換の奇蹟】選擇了2人");
+            village.log("【交換の奇蹟】必須選擇2人");
             village.mana+=cost;
             return;
           }
@@ -271,7 +271,7 @@ export function performMiracle(village) {
           break;
         case "13": // 交換(強)
           if (!vA||!vB||vA===vB) {
-            village.log("【交換の奇蹟・強】選擇了2人");
+            village.log("【交換の奇蹟・強】必須選擇2人");
             village.mana+=cost;
             return;
           }
