@@ -8,7 +8,7 @@ import { doFixedEventPre, doFixedEventPost, doRandomEventPre, doRandomEventPost,
 import { handleAllVillagerJobs } from "./jobs.js";
 
 // Villageインスタンスを生成
-export const theVillage = new Village();
+export let theVillage = new Village();
 theVillage.villagers = createInitialVillagers();
 updateUI(theVillage);
 

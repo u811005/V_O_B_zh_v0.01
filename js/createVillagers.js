@@ -960,10 +960,6 @@ export function refreshJobTable(v) {
         "詩人", "神官"
       ];
 
-      if (buildingFlags.hasWeaving) {
-        v.actionTable.push("紡織");
-      }
-
       // 建築物によって解放される共通の仕事を行動テーブルにも追加
       if (buildingFlags.hasClinic) {
         v.actionTable.push("按摩");
@@ -1008,15 +1004,13 @@ export function refreshJobTable(v) {
       }
 
       // 女性限定の建築物依存の仕事を行動テーブルにも追加
-      if (buildingFlags.hasTavern===true) {
+      if (buildingFlags.hasTavern) {
         v.actionTable.push("兔女郎");
       }
       if (buildingFlags.hasChurch) {
         v.actionTable.push("巫女");
       }
-      if (buildingFlags.hasTavern) {
-        v.actionTable.push("兔女郎");
-      }
+
     }
 
     if (!v.jobTable.includes(v.job)) {
@@ -1031,6 +1025,10 @@ export function refreshJobTable(v) {
   if (theVillage.villageTraits.includes("襲擊中")) {
     v.actionTable.unshift("迎擊", "製作陷阱");
   }
+
+  // console.log(buildingFlags);
+  // console.log(v.jobTable);
+
 }
 
 

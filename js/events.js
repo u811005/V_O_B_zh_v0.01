@@ -2,7 +2,7 @@
 
 import { randInt, clampValue, round3 } from "./util.js";
 import { doLoverCheck, doMarriageCheck } from "./relationships.js";
-import { createRandomVillager, createRandomVisitor } from "./createVillagers.js";
+import { createRandomVillager, createRandomVisitor} from "./createVillagers.js";
 import { startRaidEvent } from "./raid.js";
 import { theVillage } from "./main.js";
 
@@ -455,8 +455,6 @@ export function endOfMonthProcess(v) {
 export function doMonthStartProcess(v) {
   v.log("【月初處理】");
 
-
-
   // 幸福度由来の魔素増加
   let tot=0;
   v.villagers.forEach(p=>{
@@ -578,7 +576,6 @@ export function doMonthStartProcess(v) {
 
 
 
-
   // 既に"襲擊中"でなければ、20%で襲擊開始
   if (!v.villageTraits.includes("襲擊中")) {
     if (Math.random()<0.2) {
@@ -622,56 +619,136 @@ export function doMonthStartProcess(v) {
       v.log(`${p.name}因為${selected}，行動設定成「療養」`);
       return;
     }
-    
-    // 通常の行動テーブル構築
-    let sa = p.spiritAge;
-    if (sa <= 9) {
-      p.jobTable = ["無"];
-      p.actionTable = ["無"];
-    } else if (sa <= 15) {
-      p.jobTable = ["學習", "鍛鍊", "無"];
-      p.actionTable = ["學習", "鍛鍊", "休養", "休閒"];
-    } else {
-      // 基本の仕事テーブル（共通）
-      let commonJobs = [
-        "無",
-        "耕作", "狩獵", "捕魚",
-        "伐木",
-        "採集", "家政", "行商",
-        "研究", "警備", "看護"
-      ];
+    // // refreshJobTable(p);
+    // // 通常の行動テーブル構築
+    // let sa = p.spiritAge;
+    // if (sa <= 9) {
+    //   p.jobTable = ["無"];
+    //   p.actionTable = ["無"];
+    // } else if (sa <= 15) {
+    //   p.jobTable = ["學習", "鍛鍊", "無"];
+    //   p.actionTable = ["學習", "鍛鍊", "休養", "休閒"];
+    // } else {
+    //   // 基本の仕事テーブル（共通）
+    //   let commonJobs = [
+    //     "無",
+    //     "耕作", "狩獵", "捕魚",
+    //     "伐木",
+    //     "採集", "家政", "行商",
+    //     "研究", "警備", "看護"
+    //   ];
+    //   const buildingFlags = theVillage.buildingFlags || {};
 
-      // 性別に応じた仕事テーブル
-      if (p.bodySex === "男") {
-        p.jobTable = [
-          ...commonJobs,
-          "詩人", "神官"
-        ];
-      } else {
-        p.jobTable = [
-          ...commonJobs,
-          "舞者", "修女"
-        ];
-      }
+    //       // 建築物によって解放される共通の仕事
+    //   if (buildingFlags.hasClinic) {
+    //     commonJobs.push("按摩");
+    //   }
+    //   if (buildingFlags.hasLibrary) {
+    //     commonJobs.push("寫書");
+    //   }
+    //   if (buildingFlags.hasBrewery) {
+    //     commonJobs.push("醸造");
+    //   }
+    //   if (buildingFlags.hasAlchemy) {
+    //     commonJobs.push("錬金術");
+    //   }
+    //   if (buildingFlags.hasWeaving) {
+    //     commonJobs.push("紡織");
+    //   }
 
-      // 性別に応じた行動テーブル
-      if (p.bodySex === "男") {
-        p.actionTable = [
-          "休養", "休閒",
-          ...p.jobTable
-        ];
-      } else {
-        p.actionTable = [
-          "休養", "休閒",
-          ...p.jobTable
-        ];
-      }
-    }
+    //   // 性別に応じた仕事テーブル
+    //   if (p.bodySex === "男") {
+    //     p.jobTable = [
+    //       ...commonJobs,
+    //       "詩人", "神官"
+    //     ];
+    //   } else {
+    //     p.jobTable = [
+    //       ...commonJobs,
+    //       "舞者", "修女"
+    //     ];
+    //     // 女性限定の建築物依存の仕事
+    //     if (buildingFlags.hasTavern) {
+    //       p.jobTable.push("兔女郎");
+    //     }
+    //     if (buildingFlags.hasChurch) {
+    //       p.jobTable.push("巫女");
+    //     }
+    //   }
 
-    // 襲擊関連の行動追加（状態異常がない場合のみ）
-    if (v.villageTraits.includes("襲擊中")) {
-      p.actionTable.push("迎擊", "製作陷阱");
-    }
+    //     // 性別に応じた行動テーブル
+    //     if (p.bodySex === "男") {
+    //       p.actionTable = [
+    //         "休養", "休閒",
+    //         "耕作", "狩獵", "捕魚",
+    //         "伐木",
+    //         "採集", "家政", "行商",
+    //         "研究", "警備", "看護",
+    //         "詩人", "神官"
+    //       ];
+
+    //       // 建築物によって解放される共通の仕事を行動テーブルにも追加
+    //       if (buildingFlags.hasClinic) {
+    //         p.actionTable.push("按摩");
+    //       }
+    //       if (buildingFlags.hasLibrary) {
+    //         p.actionTable.push("寫書");
+    //       }
+    //       if (buildingFlags.hasBrewery) {
+    //         p.actionTable.push("醸造");
+    //       }
+    //       if (buildingFlags.hasAlchemy) {
+    //         p.actionTable.push("錬金術");
+    //       }
+    //       if (buildingFlags.hasWeaving) {
+    //         p.actionTable.push("紡織");
+    //       }
+    //     } else {
+    //       p.actionTable = [
+    //         "休養", "休閒",
+    //         "耕作", "狩獵", "捕魚",
+    //         "伐木",
+    //         "採集", "家政", "行商",
+    //         "研究", "警備", "看護",
+    //         "舞者", "修女"
+    //       ];
+
+    //       // 建築物によって解放される共通の仕事を行動テーブルにも追加
+    //       if (buildingFlags.hasClinic) {
+    //         p.actionTable.push("按摩");
+    //       }
+    //       if (buildingFlags.hasLibrary) {
+    //         p.actionTable.push("寫書");
+    //       }
+    //       if (buildingFlags.hasBrewery) {
+    //         v.actionTable.push("醸造");
+    //       }
+    //       if (buildingFlags.hasAlchemy) {
+    //         p.actionTable.push("錬金術");
+    //       }
+    //       if (buildingFlags.hasWeaving) {
+    //         p.actionTable.push("紡織");
+    //       }
+
+    //       // 女性限定の建築物依存の仕事を行動テーブルにも追加
+    //       if (buildingFlags.hasTavern) {
+    //         p.actionTable.push("兔女郎");
+    //       }
+    //       if (buildingFlags.hasChurch) {
+    //         p.actionTable.push("巫女");
+    //       }
+
+    //     }
+    // }
+
+
+
+    // // 襲擊関連の行動追加（状態異常がない場合のみ）
+    // if (v.villageTraits.includes("襲擊中")) {
+    //   p.actionTable.push("迎擊", "製作陷阱");
+    // }
+
+    refreshJobTable(p);
 
     // jobTableに現在のjobが含まれている場合は維持
     if (p.jobTable.includes(currentJob)) {
