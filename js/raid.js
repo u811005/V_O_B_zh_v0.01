@@ -1,7 +1,7 @@
 // raid.js
 
 import { createRandomVillager } from "./createVillagers.js";
-import { randInt, randChoice, clampValue, shuffleArray } from "./util.js";
+import { randInt, randChoice, clampValue, shuffleArray ,getPortraitPath } from "./util.js";
 import { endOfMonthProcess, doFixedEventPre, doFixedEventPost, doRandomEventPre, doRandomEventPost, doMonthStartProcess, doAgingProcess, updateSeason } from "./events.js";
 import { handleAllVillagerJobs } from "./jobs.js";
 import { updateUI } from "./ui.js";
@@ -811,7 +811,10 @@ export function updateRaidTables(village) {
     village.raidEnemies.forEach(e => {
       let tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${e.name}</td>
+        <td>
+          <img src="${getPortraitPath(e)}" style="height:2em;">
+          ${e.name}
+        </td>
         <td>${Math.floor(e.hp)}</td>
         <td>${e.action}</td>
         <td>${Math.floor(e.str)}</td>
@@ -831,7 +834,10 @@ export function updateRaidTables(village) {
     trapMakers.forEach(v => {
       let tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${v.name}</td>
+        <td>
+          <img src="${getPortraitPath(v)}" style="height:2em;">
+        
+        ${v.name}</td>
         <td>${Math.floor(v.hp)}</td>
         <td>${v.action}</td>
         <td>${Math.floor(v.str)}</td>
@@ -851,7 +857,9 @@ export function updateRaidTables(village) {
     raiders.forEach(v => {
       let tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${v.name}</td>
+        <td>
+          <img src="${getPortraitPath(v)}" style="height:2em;">
+          ${v.name}</td>
         <td>${Math.floor(v.hp)}</td>
         <td>${Math.floor(v.str)}</td>
         <td>${Math.floor(v.vit)}</td>
