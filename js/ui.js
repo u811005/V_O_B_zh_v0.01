@@ -653,6 +653,9 @@ function setupTableSort() {
   
   // ソート可能な列のインデックスを修正
   const sortableColumns = [
+    0,  // 名前
+    1,  // 体の持ち主
+    2,  // 種族
     3,  // 性別
     4,  // 年齢
     5,  // 体力
@@ -674,9 +677,9 @@ function setupTableSort() {
   sortableColumns.forEach(colIndex => {
     const header = headers[colIndex];
     header.style.cursor = "pointer";
-    header.addEventListener("click", () => {
+    header.onclick = () => {
       // 同じ列をクリックした場合は昇順/降順を切り替え
-      if (sortState.column === colIndex) {
+      if (sortState.column == colIndex) {
         sortState.isAsc = !sortState.isAsc;
       } else {
         sortState.column = colIndex;
@@ -688,7 +691,7 @@ function setupTableSort() {
       // ソート方向を表示
       headers.forEach(h => h.textContent = h.textContent.replace(" ▲", "").replace(" ▼", ""));
       header.textContent += sortState.isAsc ? " ▲" : " ▼";
-    });
+    };
   });
 }
 
@@ -700,20 +703,57 @@ function sortVillagerTable(colIndex, isAsc) {
   const tbody = table.querySelector("tbody");
   const rows = Array.from(tbody.querySelectorAll("tr"));
 
+  /* SORT 改
+  rows.sort((a, b) => {
+    let aVal = a.cells[colIndex].textContent;
+    let bVal = b.cells[colIndex].textContent;
+
+    // // 数値の場合は数値としてソート
+    // if ([3].includes(colIndex)) {
+    //   aVal==="男"?aVal=1: aVal=-1;
+    //   bVal==="男"?bVal=1: bVal=-1;
+    // }
+    // if ([4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21].includes(colIndex)) {
+    //   aVal = Number(aVal);
+    //   bVal = Number(bVal);
+    // }
+
+    // 数値の場合は数値としてソート
+
+    if ([0,1,2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21].includes(colIndex)) {
+      aVal = aVal.localeCompare(bVal);
+      bVal = bVal.localeCompare(aVal);
+      console.log("aVal",aVal);
+      // console.log("bVal",bVal);
+    }
+    return aVal;
+
+    if (aVal < bVal) return isAsc ? -1 : 1;
+    if (aVal > bVal) return isAsc ? 1 : -1;
+    return 0;
+  });
+  */
+
   rows.sort((a, b) => {
     let aVal = a.cells[colIndex].textContent;
     let bVal = b.cells[colIndex].textContent;
 
     // 数値の場合は数値としてソート
-    if ([3].includes(colIndex)) {
-      aVal==="男"?aVal=1: aVal=-1;
-      bVal==="男"?bVal=1: bVal=-1;
-    }
-    if ([4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21].includes(colIndex)) {
+    if ([4,5,6,7,10,11,12,14,16,17,18,19,20].includes(colIndex)) {
       aVal = Number(aVal);
       bVal = Number(bVal);
     }
 
+    if ([9].includes(colIndex)) {
+      
+      aVal = a.cells[colIndex].querySelector("select");
+      aVal = a.cells[colIndex].querySelector("select").options[aVal.selectedIndex].value;
+      bVal = b.cells[colIndex].querySelector("select");
+      bVal = b.cells[colIndex].querySelector("select").options[bVal.selectedIndex].value;
+
+    }
+
+    // console.log("aVal",aVal);
     if (aVal < bVal) return isAsc ? -1 : 1;
     if (aVal > bVal) return isAsc ? 1 : -1;
     return 0;

@@ -5,6 +5,8 @@ import { doLoverCheck, doMarriageCheck } from "./relationships.js";
 import { createRandomVillager, createRandomVisitor} from "./createVillagers.js";
 import { startRaidEvent } from "./raid.js";
 import { theVillage } from "./main.js";
+import { addRelationship} from "./relationships.js";
+
 
 /**
  * 固定イベント(前半) - 新年祭など
