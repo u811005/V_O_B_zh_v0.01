@@ -139,6 +139,8 @@ function convertVillageToObject(village) {
       race: vill.race,
       ares: vill.ares,
       portraitFile: vill.portraitFile,
+      SportraitFile: vill.SportraitFile,
+
       speechType: vill.speechType
 
     }))
@@ -187,6 +189,7 @@ function convertVillagerToObject(vill) {
     race: vill.race,
     ares: vill.ares,
     portraitFile: vill.portraitFile,
+    SportraitFile: vill.SportraitFile,
     speechType: vill.speechType
   };
 }
@@ -283,6 +286,7 @@ function convertObjectToVillager(obj) {
   vill.race = obj.race;
   vill.ares = obj.ares;
   vill.portraitFile = obj.portraitFile;
+  vill.SportraitFile = obj.SportraitFile;
   vill.speechType = obj.speechType;
 
 

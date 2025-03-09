@@ -4,7 +4,7 @@ import { theVillage } from "./main.js"; // 注意: これにより循環参照�
 // ただし updateUI() の中で theVillage を参照するかどうかによっては構成要再検討
 import { refreshJobTable } from "./createVillagers.js";  // 追加
 import { openConversationModal } from "./conversation.js";
-import { clampValue, round3, getPortraitPath } from "./util.js";
+import { clampValue, round3, getPortraitPath, getSPortraitPath } from "./util.js";
 
 /**
  * メイン画面(村人一覧,資源パネルなど)を更新
@@ -56,9 +56,9 @@ export function updateUI(v) {
 
     // 名前
     let tdName=document.createElement("td");
-    // tdName.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+    tdName.innerHTML=`<img src="${getSPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
     // tdName.backgroundImage = `url(${getPortraitPath(person)})`;
-    tdName.textContent=person.name;
+    // tdName.textContent=person.name;
     tdName.style.cursor = "pointer";
     tdName.onclick = () => openConversationModal(person);
     tr.appendChild(tdName);

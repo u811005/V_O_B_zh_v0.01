@@ -137,6 +137,9 @@ export class Villager {
     /** 顔グラフィックのファイル名 */
     this.portraitFile = "default.png";
 
+    // 靈魂頭像
+    this.SportraitFile = "default.png";
+    
     /** 口調タイプ */
     this.speechType = "";
   }

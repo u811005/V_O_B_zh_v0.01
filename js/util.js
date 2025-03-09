@@ -76,3 +76,7 @@ export function getPortraitPath(character) {
   if (!character) return 'images/portraits/default.png';
   return `images/portraits/${character.portraitFile || "default.png"}`;
 }
+export function getSPortraitPath(character) {
+  if (!character) return 'images/portraits/default.png';
+  return `images/portraits/${character.SportraitFile || "default.png"}`;
+}
