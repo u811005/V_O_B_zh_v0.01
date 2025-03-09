@@ -241,6 +241,7 @@ export function createInitialVillagers() {
       assignHobby(male);
       refreshJobTable(male);
       male.portraitFile = selectPortraitByCharacter(male);
+      male.SportraitFile = male.portraitFile;
       villagers.push(male);
       maleCount++;
     } else {
@@ -251,6 +252,7 @@ export function createInitialVillagers() {
       assignHobby(female);
       refreshJobTable(female);
       female.portraitFile = selectPortraitByCharacter(female);
+      female.SportraitFile = female.portraitFile;
       villagers.push(female);
       femaleCount++;
     }
@@ -1247,6 +1249,7 @@ export function createRandomVisitor() {
 
   // 顔グラフィックを設定
   visitor.portraitFile = selectPortraitByCharacter(visitor);
+  visitor.SportraitFile = visitor.portraitFile;
   
   // 精神性別が設定されていない場合は肉体性別と同じに設定
   if (!visitor.spiritSex) {

@@ -275,14 +275,15 @@ export function updateUI(v) {
 
       // 名前
       let tdName = document.createElement("td");
-      tdName.textContent = person.name;
+      // tdName.textContent = person.name;
+      tdName.innerHTML = `<img src="${getSPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
       tdName.style.cursor = "pointer";
       tdName.onclick = () => openConversationModal(person);
       tr.appendChild(tdName);
 
       // 体の持ち主
       let tdOwn = document.createElement("td");
-      tdOwn.innerHTML = `<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+      tdOwn.innerHTML = `<img src="${getPortraitPath(person)}" alt="${person.bodyOwner}"><br>${person.bodyOwner}`;
       // tdOwn.textContent = person.bodyOwner;
       tdOwn.style.cursor = "pointer";
       tdOwn.onclick = () => openConversationModal(person);
@@ -461,7 +462,8 @@ export function updateUI(v) {
 
         // 名前
         let tdName=document.createElement("td");
-        tdName.textContent=person.name;
+        // tdName.textContent=person.name;
+        tdName.innerHTML=`<img src="${getSPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
         tdName.style.cursor = "pointer";
         tdName.onclick = () => {
           openConversationModal(person);
@@ -471,7 +473,7 @@ export function updateUI(v) {
         // 体の持ち主
         let tdOwn=document.createElement("td");
         // tdOwn.textContent=person.bodyOwner;
-        tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.name}"><br>${person.name}`;
+        tdOwn.innerHTML=`<img src="${getPortraitPath(person)}" alt="${person.bodyOwner}"><br>${person.bodyOwner}`;
         tdOwn.style.cursor = "pointer";
         tdOwn.onclick = () => openConversationModal(person);
         tr.appendChild(tdOwn);

@@ -264,6 +264,7 @@ export function startRaidEvent(village) {
         name: e.name,
         type: raiderType.type,
         portrait: e.portraitFile,
+        Sportrait: e.portraitFile,
         mindTraits: e.mindTraits
       });
     }
@@ -325,7 +326,9 @@ export function startRaidEvent(village) {
   console.log('Created raiders:', village.raidEnemies.map(e => ({
     name: e.name,
     type: e.job,
-    portrait: e.portraitFile
+    portrait: e.portraitFile,
+    SportraitFile: e.portraitFile
+
   })));
 
   village.isRaidProcessDone = false;
