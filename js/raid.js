@@ -429,11 +429,13 @@ function doOneTrapAction(action, village) {
   let logDiv=document.getElementById("raidLogArea");
   if (!p||p.hp<=0) {
     logDiv.innerHTML+=`<br>【製作陷阱】${p?p.name:"??"} 失去行動能力`;
+    logDiv.scrollTop = logDiv.scrollHeight;
     updateRaidTables(village);
     return;
   }
   if (village.raidEnemies.length===0) {
     logDiv.innerHTML+=`<br>【製作陷阱】敵人已經全滅`;
+    logDiv.scrollTop = logDiv.scrollHeight; 
     updateRaidTables(village);
     return;
   }
@@ -445,6 +447,7 @@ function doOneTrapAction(action, village) {
     logDiv.innerHTML+=`<br>　　→ ${e.name}被擊倒了！`;
     village.raidEnemies=village.raidEnemies.filter(x=> x!==e);
   }
+  logDiv.scrollTop = logDiv.scrollHeight;
   updateRaidTables(village);
 }
 
@@ -472,6 +475,7 @@ export function setupCombatPhase(village) {
 
   village.raidActionQueue=createCombatActions(defenders, village.raidEnemies);
   village.currentActionIndex=0;
+  logDiv.scrollTop = logDiv.scrollHeight;
   updateRaidTables(village);
 }
 
@@ -495,6 +499,7 @@ function doOneCombatAction(action, village) {
   let logDiv=document.getElementById("raidLogArea");
   if (!actor||actor.hp<=0) {
     logDiv.innerHTML+=`<br>【迎擊】${actor?actor.name:"??"}失去行動能力`;
+    logDiv.scrollTop = logDiv.scrollHeight;
     updateRaidTables(village);
     return;
   }
@@ -507,6 +512,7 @@ function doOneCombatAction(action, village) {
     // 敵の攻撃
     if (defenders.length===0) {
       logDiv.innerHTML+=`<br>【敵人的攻撃】迎擊方全滅...`;
+      logDiv.scrollTop = logDiv.scrollHeight;
       updateRaidTables(village);
       return;
     }
@@ -535,6 +541,7 @@ function doOneCombatAction(action, village) {
     // 村人の攻撃
     if (village.raidEnemies.length===0) {
       logDiv.innerHTML+=`<br>【村民的攻撃】敵人已全滅`;
+      logDiv.scrollTop = logDiv.scrollHeight;
       updateRaidTables(village);
       return;
     }
@@ -560,6 +567,7 @@ function doOneCombatAction(action, village) {
       }
     }
   }
+  logDiv.scrollTop = logDiv.scrollHeight;
   updateRaidTables(village);
 }
 
@@ -631,7 +639,7 @@ function finalizeRaid(isSuccess, reason, village) {
   village.log(`【襲擊結果】${isSuccess?"防衛成功":"防衛失敗"} : ${reason}`);
   let rlog=document.getElementById("raidLogArea");
   rlog.innerHTML+=`<br>→ 襲擊結果: ${isSuccess?"防衛成功":"失敗"} (${reason})<br>モーダルを閉じます...`;
-
+  rlog.scrollTop = rlog.scrollHeight;
   endRaidProcess(isSuccess, false, village);
 }
 
@@ -640,7 +648,7 @@ function finalizeRaidPartSuccess(village) {
   village.log("【襲擊結果】3回合後敵人撤退→部分成功");
   let rlog=document.getElementById("raidLogArea");
   rlog.innerHTML+=`<br>→ 襲擊結果: 敵撤退(部分成功)<br>モーダルを閉じます...`;
-
+  rlog.scrollTop = rlog.scrollHeight;
   endRaidProcess(true,true,village);
 }
 
@@ -850,6 +858,9 @@ export function updateRaidTables(village) {
       raidersTbody.appendChild(tr);
     });
   }
+  let logDiv = document.getElementById("raidLogArea");
+  logDiv.scrollTop = logDiv.scrollHeight;
+
 }
 
 // 戦闘ダメージを受けた際の処理を追加
@@ -887,6 +898,7 @@ function executeCombatAction(action, village) {
       if (def.hp <= 0) {
         rlog.innerHTML += `<br>${def.name}失去戰鬥能力！`;
       }
+      rlog.scrollTop = rlog.scrollHeight;
       break;
     }
     // ... 他のケース ...
