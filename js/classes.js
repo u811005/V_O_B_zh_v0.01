@@ -15,32 +15,39 @@ export class Village {
     this.materials = 120;
     this.funds = 0;
     this.mana = 40;
-    this.fame = 0;
     this.tech = 0;
     this.security = 60;
     this.building = 0;
+    this.heresy = 0;
+    this.scaleTitleStage = 0;
 
     this.villagers = [];
-    this.popLimit = 6;
+    this.pendingGoldenRainPregnancies = [];
+    this.popLimit = 8;
     this.villageTraits = ["春"];
+    this.secretTreasures = [];
 
     this.logs = [];
     this.gameOver = false;
     this.hasDonePreEvent = false;
     this.hasDonePostEvent = false;
 
-    // 襲擊イベント用フラグ/データ
+    // 襲撃イベント用フラグ/データ
     this.raidEnemies = [];
     this.isRaidProcessDone = false;
+    this.isRaidFinalizing = false;
     this.raidTurnCount = 0;
     this.raidActionQueue = [];
     this.currentActionIndex = 0;
 
     // 訪問者配列を追加
     this.visitors = [];
+    this.visitorLimit = 1;
 
     // 建築物配列を追加
     this.buildings = [];
+    // 建築物フラグを追加
+    this.buildingFlags = {};
 
     // ソート状態の保存
     this.tableSort = {
@@ -52,21 +59,11 @@ export class Village {
     this.modalStates = {
       miracle: false,
       building: false,
+      secretTreasure: false,
       conversation: false,
       exchange: false,
       raid: false
     };
-
-    this.buildingFlags = {
-      hasTavern: false,
-      hasWeaving: false,
-      hasAlchemy: false,
-      hasBrewery: false,
-      hasLibrary: false,
-      hasClinic: false,
-      hasChurch : false
-    };
-
   }
 
   /**
@@ -87,9 +84,10 @@ export class Villager {
   constructor(name, bodySex, bodyAge) {
     /** 基本情報 */
     this.name = name;
+    // 肉体側の識別子。精神側の spiritSex/spiritAge とは統合しない。
     this.bodySex = bodySex;
     this.bodyAge = bodyAge;
-    this.race = "人類";  // 種族パラメータを追加
+    this.race = "人間";  // 種族パラメータを追加
 
     this.hp = 100;
     this.mp = 100;
@@ -109,7 +107,7 @@ export class Villager {
     this.cou = 10;
     this.sexdr = 10;
 
-    /** 精神情報(魂側) */
+    /** 精神情報(魂側)。bodyAge/bodySex とは別軸のゲーム仕様。 */
     this.spiritAge = bodyAge;
     this.spiritSex = bodySex;
 
@@ -124,6 +122,7 @@ export class Villager {
     /** 仕事関連 */
     this.job = "休養";
     this.jobTable = [];
+    this.assignmentLocked = false;
 
     /** 行動関連 */
     this.action = "休養";
@@ -133,15 +132,31 @@ export class Villager {
     this.bodyOwner = name;
     // アレス変数を初期化（戦神の加護効果期間管理用）
     this.ares = 0;
+    // ニケ効果期間管理用
+    this.nikeMonths = 0;
 
     /** 顔グラフィックのファイル名 */
     this.portraitFile = "default.png";
 
-    // 靈魂頭像
-    this.SportraitFile = "default.png";
-    
     /** 口調タイプ */
     this.speechType = "";
+
+    /** 妊娠・出産・成長関連 */
+    this.pregnancy = null;
+    this.postpartumMonths = 0;
+    this.potentialStats = null;
+    this.bodyPotentialStats = null;
+    this.mindPotentialStats = null;
+    this.adultBodyTraits = [];
+    this.adultMindTraits = [];
+    this.adultHobby = "";
+    this.adultPortraitFile = "";
+    this.toddlerPortraitFile = "";
+    this.toddlerPortraitGroup = "";
+    this.childMindTrait = "";
+    this.adultBodyReached = false;
+    this.adultMindReached = false;
+    this.adultModalShown = false;
   }
 
   setPortrait(portraitFile) {

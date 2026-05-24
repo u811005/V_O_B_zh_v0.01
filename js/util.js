@@ -73,10 +73,43 @@ export function randNormalInRange(min, max, mean = (min + max) / 2, stddev = (ma
  * @returns {string} 顔グラフィックのパス
  */
 export function getPortraitPath(character) {
-  if (!character) return 'images/portraits/default.png';
-  return `images/portraits/${character.portraitFile || "default.png"}`;
+  const fileName = String(character?.portraitFile || "").trim();
+  const normalizedFileName = !fileName || fileName.toLowerCase() === "default.png"
+    ? "default.png"
+    : fileName;
+  return `images/portraits/${normalizedFileName}`;
 }
-export function getSPortraitPath(character) {
-  if (!character) return 'images/portraits/default.png';
-  return `images/portraits/${character.SportraitFile || "default.png"}`;
+
+/**
+ * 療養に行動制限される状態かどうか
+ */
+export function isForcedHealingAction(character) {
+  if (!character) return false;
+  const bodyTraits = Array.isArray(character.bodyTraits) ? character.bodyTraits : [];
+  const mindTraits = Array.isArray(character.mindTraits) ? character.mindTraits : [];
+  return bodyTraits.includes("病気") ||
+    bodyTraits.includes("疫病") ||
+    bodyTraits.includes("負傷") ||
+    bodyTraits.includes("過労") ||
+    bodyTraits.includes("産褥") ||
+    mindTraits.includes("抑鬱");
+}
+
+export function getVillagerFoodConsumption(character) {
+  const bodyTraits = Array.isArray(character?.bodyTraits) ? character.bodyTraits : [];
+  const mindTraits = Array.isArray(character?.mindTraits) ? character.mindTraits : [];
+  if (bodyTraits.includes("赤子")) return 2;
+  if (bodyTraits.includes("子供")) return 6;
+  if (bodyTraits.includes("少年") || bodyTraits.includes("少女")) return 8;
+  if (mindTraits.includes("大食い")) return 12;
+  if (mindTraits.includes("小食")) return 8;
+  return 10;
+}
+
+export function getVillagerWinterMaterialConsumption(character) {
+  const bodyTraits = Array.isArray(character?.bodyTraits) ? character.bodyTraits : [];
+  if (bodyTraits.includes("赤子")) return 2;
+  if (bodyTraits.includes("子供")) return 6;
+  if (bodyTraits.includes("少年") || bodyTraits.includes("少女")) return 8;
+  return 10;
 }
