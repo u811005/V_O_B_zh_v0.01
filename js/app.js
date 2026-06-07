@@ -1,10 +1,12 @@
 import { autoAssignJobs, autoAssignRaidActions } from "./autoAssign.js";
 import { openBuildingModal, closeBuildingModal } from "./buildings.js";
 import "./dictionary.js";
+import { closeHistoryModal, closePersonalHistoryModal, openHistoryModal } from "./history.js";
 import { theVillage, onNextTurn } from "./main.js";
 import {
   closeExchangeModal,
   closeMiracleModal,
+  closePanFluteExchangeModal,
   onSelectMiracleChange,
   openMiracleModal,
   performMiracle
@@ -16,7 +18,7 @@ import {
   saveVillageToJsonFile,
   saveVillageToLocalStorage
 } from "./saveLoad.js";
-import { closeSecretTreasureModal, openSecretTreasureModal, useSelectedSecretTreasure } from "./secretTreasures.js";
+import { closeSecretTreasureModal, openSecretTreasureModal, SECRET_TREASURES, sellSelectedSecretTreasure, useSelectedSecretTreasure } from "./secretTreasures.js";
 import { updateUI } from "./ui.js";
 
 const VIEW_MODE_STORAGE_KEY = "vob.viewMode";
@@ -53,6 +55,33 @@ function loadFromLocalStorage() {
   replaceVillageState(loadedVillage, "ローカルストレージからロードしました");
 }
 
+function runDebugAction() {
+  if (window.prompt("パスワードを入力してください") !== "VOB") {
+    alert("パスワードが違います。");
+    return;
+  }
+
+  theVillage.food = 10000;
+  theVillage.materials = 10000;
+  theVillage.funds = 10000;
+  theVillage.tech = 10000;
+
+  if (!Array.isArray(theVillage.secretTreasures)) theVillage.secretTreasures = [];
+  const ownedTreasureKeys = new Set(theVillage.secretTreasures.flatMap(entry => {
+    if (typeof entry === "string") return [entry];
+    return [entry?.id, entry?.name].filter(Boolean);
+  }));
+  SECRET_TREASURES.forEach(secretTreasure => {
+    if (!ownedTreasureKeys.has(secretTreasure.id) && !ownedTreasureKeys.has(secretTreasure.name)) {
+      theVillage.secretTreasures.push({ id: secretTreasure.id });
+      ownedTreasureKeys.add(secretTreasure.id);
+    }
+  });
+
+  theVillage.log("【デバッグ】食料・資材・資金・技術を10000にし、全秘宝を入手しました");
+  updateUI(theVillage);
+}
+
 function runUtilityAction() {
   const select = document.getElementById("utilityActionSelect");
   const action = select ? select.value : "";
@@ -72,6 +101,8 @@ function runUtilityAction() {
     }
   } else if (action === "readme") {
     window.open("Readme.txt", "_blank");
+  } else if (action === "debug") {
+    runDebugAction();
   }
 
   if (select) select.value = "";
@@ -147,7 +178,11 @@ function bindGlobalHandlers() {
     closeBuildingModal,
     openSecretTreasureModal: () => openSecretTreasureModal(theVillage),
     closeSecretTreasureModal,
+    openHistoryModal: () => openHistoryModal(theVillage),
+    closeHistoryModal,
+    closePersonalHistoryModal,
     useSelectedSecretTreasure: () => useSelectedSecretTreasure(theVillage),
+    sellSelectedSecretTreasure: () => sellSelectedSecretTreasure(theVillage),
     onAutoAssignJobs: () => {
       autoAssignJobs(theVillage);
       updateUI(theVillage);
@@ -162,7 +197,8 @@ function bindGlobalHandlers() {
       const { closeConversationModal } = await import("./conversation.js");
       closeConversationModal();
     },
-    closeExchangeModal
+    closeExchangeModal,
+    closePanFluteExchangeModal
   });
 }
 

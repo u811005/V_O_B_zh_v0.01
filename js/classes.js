@@ -1,5 +1,7 @@
 // classes.js
 
+import { createStatMap, STAT_LAYER_VERSION } from "./domain/statLayers.js";
+
 /**
  * VillageクラスとVillagerクラス
  * - データ構造を持つクラス
@@ -20,6 +22,8 @@ export class Village {
     this.building = 0;
     this.heresy = 0;
     this.scaleTitleStage = 0;
+    this.lastHeadmanElectionYear = null;
+    this.nextHeadmanElectionYear = null;
 
     this.villagers = [];
     this.pendingGoldenRainPregnancies = [];
@@ -28,16 +32,22 @@ export class Village {
     this.secretTreasures = [];
 
     this.logs = [];
+    this.historyEvents = [];
     this.gameOver = false;
     this.hasDonePreEvent = false;
     this.hasDonePostEvent = false;
 
     // 襲撃イベント用フラグ/データ
     this.raidEnemies = [];
+    this.currentRaid = null;
+    this.monthsSinceRaid = 0;
+    this.raidCooldown = 0;
+    this.pendingRaid = null;
     this.isRaidProcessDone = false;
     this.isRaidFinalizing = false;
     this.raidTurnCount = 0;
     this.raidActionQueue = [];
+    this.raidPhase = "";
     this.currentActionIndex = 0;
 
     // 訪問者配列を追加
@@ -93,14 +103,18 @@ export class Villager {
     this.mp = 100;
     this.happiness = 50;
 
-    /** 肉体パラメーター */
+    this.baseStats = createStatMap(10);
+    this.acquiredStatMods = createStatMap(0);
+    this.statLayerVersion = STAT_LAYER_VERSION;
+
+    /** 肉体パラメーター（実効値キャッシュ） */
     this.str = 10;
     this.vit = 10;
     this.dex = 10;
     this.mag = 10;
     this.chr = 10;
 
-    /** 精神パラメーター */
+    /** 精神パラメーター（実効値キャッシュ） */
     this.int = 10;
     this.ind = 10;
     this.eth = 10;
@@ -118,14 +132,19 @@ export class Villager {
 
     /** 人間関係(文字列格納) */
     this.relationships = [];
+    this.socialAttemptedThisMonth = false;
+    this.titleIds = [];
+    this.titleStats = {};
 
-    /** 仕事関連 */
-    this.job = "休養";
+    /** 行動割り当て関連 */
+    // preferredAction は通常時の復帰先。job は旧セーブ・旧コード互換の別名として同期する。
+    this.preferredAction = "なし";
+    this.job = "なし";
     this.jobTable = [];
     this.assignmentLocked = false;
 
-    /** 行動関連 */
-    this.action = "休養";
+    /** 今月実行する行動 */
+    this.action = "なし";
     this.actionTable = [];
 
     /** この肉体の元の持ち主 */
@@ -134,6 +153,9 @@ export class Villager {
     this.ares = 0;
     // ニケ効果期間管理用
     this.nikeMonths = 0;
+    // 肖像効果期間・倫理低下量管理用
+    this.portraitMonths = 0;
+    this.portraitEthLoss = 0;
 
     /** 顔グラフィックのファイル名 */
     this.portraitFile = "default.png";

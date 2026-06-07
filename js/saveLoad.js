@@ -1,8 +1,11 @@
 // saveLoad.js
 import { Village, Villager } from "./classes.js";
 import { determineSpeechType, registerUsedName } from "./createVillagers.js";
-import { refreshJobTable } from "./domain/jobTables.js";
+import { ACTION_NONE, isPreferredActionCandidate, refreshJobTable, setPreferredAction } from "./domain/jobTables.js";
+import { getPermanentStat, hydrateStatLayersFromObject, syncEffectiveStats } from "./domain/statLayers.js";
+import { createArchiveGapHistoryEvent, normalizeHistoryEvents } from "./history.js";
 import { normalizeRelationships } from "./relationships.js";
+import { ensureTitleState, evaluateTitles } from "./titles.js";
 import { getInitialScaleStageIndex } from "./villageScale.js";
 
 function normalizeBodyTraitName(trait) {
@@ -16,6 +19,10 @@ function normalizeBodyTraitList(traits) {
 
 function cloneNullableObject(value) {
   return value == null ? null : { ...value };
+}
+
+function cloneNullableDeepObject(value) {
+  return value == null ? null : JSON.parse(JSON.stringify(value));
 }
 
 function hasOwn(obj, key) {
@@ -41,6 +48,12 @@ function normalizeSecretTreasures(source) {
   if (Array.isArray(source?.secretTreasures)) return cloneArray(source.secretTreasures);
   if (Array.isArray(source?.treasures)) return cloneArray(source.treasures);
   return [];
+}
+
+function migratePreferredAction(obj) {
+  const candidates = [obj?.preferredAction, obj?.job, obj?.action];
+  const preferred = candidates.find(isPreferredActionCandidate);
+  return preferred || ACTION_NONE;
 }
 
 /**
@@ -122,10 +135,17 @@ function convertVillageToObject(village) {
     scaleTitleStage: Number.isInteger(village.scaleTitleStage)
       ? village.scaleTitleStage
       : getInitialScaleStageIndex(village.building),
+    lastHeadmanElectionYear: village.lastHeadmanElectionYear != null && Number.isFinite(Number(village.lastHeadmanElectionYear))
+      ? Number(village.lastHeadmanElectionYear)
+      : null,
+    nextHeadmanElectionYear: village.nextHeadmanElectionYear != null && Number.isFinite(Number(village.nextHeadmanElectionYear))
+      ? Number(village.nextHeadmanElectionYear)
+      : null,
     popLimit: village.popLimit,
     villageTraits: [...village.villageTraits],
     secretTreasures: normalizeSecretTreasures(village),
     logs: [...village.logs],
+    historyEvents: normalizeHistoryEvents(village.historyEvents),
     gameOver: village.gameOver,
     hasDonePreEvent: village.hasDonePreEvent,
     hasDonePostEvent: village.hasDonePostEvent,
@@ -139,6 +159,10 @@ function convertVillageToObject(village) {
     isRaidProcessDone: village.isRaidProcessDone,
     raidTurnCount: village.raidTurnCount,
     currentActionIndex: village.currentActionIndex,
+    currentRaid: cloneNullableObject(village.currentRaid),
+    monthsSinceRaid: normalizeFiniteNumber(village.monthsSinceRaid, 0),
+    raidCooldown: normalizeFiniteNumber(village.raidCooldown, 0),
+    pendingRaid: cloneNullableDeepObject(village.pendingRaid),
     // raidEnemies (Villager互換配列)
     raidEnemies: village.raidEnemies.map(vill => convertVillagerToObject(vill)),
 
@@ -157,6 +181,15 @@ function convertVillageToObject(village) {
  * villager(Villager) → object
  */
 function convertVillagerToObject(vill) {
+  syncEffectiveStats(vill);
+  const bodyTraits = normalizeBodyTraitList(vill.bodyTraits);
+  const mindTraits = Array.isArray(vill.mindTraits) ? [...vill.mindTraits] : [];
+  if (bodyTraits.includes("火星の加護")) {
+    bodyTraits.splice(bodyTraits.indexOf("火星の加護"), 1);
+    if (!mindTraits.includes("火星の加護")) {
+      mindTraits.push("火星の加護");
+    }
+  }
   return {
     name: vill.name,
     bodySex: vill.bodySex,
@@ -178,14 +211,22 @@ function convertVillagerToObject(vill) {
     cou: vill.cou,
     sexdr: vill.sexdr,
 
+    baseStats: vill.baseStats ? { ...vill.baseStats } : undefined,
+    acquiredStatMods: vill.acquiredStatMods ? { ...vill.acquiredStatMods } : undefined,
+    statLayerVersion: vill.statLayerVersion,
+
     spiritAge: vill.spiritAge,
     spiritSex: vill.spiritSex,
 
-    bodyTraits: normalizeBodyTraitList(vill.bodyTraits),
-    mindTraits: [...vill.mindTraits],
+    bodyTraits,
+    mindTraits,
     hobby: vill.hobby,
     relationships: [...normalizeRelationships(vill)],
+    socialAttemptedThisMonth: !!vill.socialAttemptedThisMonth,
+    titleIds: Array.isArray(vill.titleIds) ? [...vill.titleIds] : [],
+    titleStats: vill.titleStats ? { ...vill.titleStats } : {},
 
+    preferredAction: vill.preferredAction || vill.job || "なし",
     job: vill.job,
     jobTable: [...vill.jobTable],
     assignmentLocked: !!vill.assignmentLocked,
@@ -201,6 +242,8 @@ function convertVillagerToObject(vill) {
     postpartumMonths: vill.postpartumMonths || 0,
     ares: normalizeFiniteNumber(vill.ares, 0),
     nikeMonths: normalizeFiniteNumber(vill.nikeMonths, 0),
+    portraitMonths: normalizeFiniteNumber(vill.portraitMonths, 0),
+    portraitEthLoss: normalizeFiniteNumber(vill.portraitEthLoss, 0),
     potentialStats: vill.potentialStats ? { ...vill.potentialStats } : null,
     bodyPotentialStats: vill.bodyPotentialStats ? { ...vill.bodyPotentialStats } : null,
     mindPotentialStats: vill.mindPotentialStats ? { ...vill.mindPotentialStats } : null,
@@ -212,6 +255,10 @@ function convertVillagerToObject(vill) {
     toddlerPortraitFile: vill.toddlerPortraitFile || "",
     toddlerPortraitGroup: vill.toddlerPortraitGroup || "",
     childMindTrait: vill.childMindTrait || "",
+    ...(vill.raiderType ? { raiderType: vill.raiderType } : {}),
+    ...(vill.raiderRole ? { raiderRole: vill.raiderRole } : {}),
+    ...(vill.raidPosition ? { raidPosition: vill.raidPosition } : {}),
+    ...(vill.raidTargeting ? { raidTargeting: vill.raidTargeting } : {}),
     adultBodyReached: vill.adultBodyReached !== undefined
       ? !!vill.adultBodyReached
       : !!(vill.potentialStats && Number(vill.bodyAge) >= 16),
@@ -241,12 +288,23 @@ function convertObjectToVillage(dataObj) {
   v.scaleTitleStage = Number.isInteger(dataObj.scaleTitleStage)
     ? dataObj.scaleTitleStage
     : getInitialScaleStageIndex(v.building);
+  v.lastHeadmanElectionYear = dataObj.lastHeadmanElectionYear != null && Number.isFinite(Number(dataObj.lastHeadmanElectionYear))
+    ? Number(dataObj.lastHeadmanElectionYear)
+    : null;
+  v.nextHeadmanElectionYear = dataObj.nextHeadmanElectionYear != null && Number.isFinite(Number(dataObj.nextHeadmanElectionYear))
+    ? Number(dataObj.nextHeadmanElectionYear)
+    : null;
   v.popLimit = dataObj.popLimit;
   if (Array.isArray(dataObj.villageTraits)) {
     v.villageTraits = [...dataObj.villageTraits];
   }
   v.secretTreasures = normalizeSecretTreasures(dataObj);
   v.logs = Array.isArray(dataObj.logs) ? [...dataObj.logs] : [];
+  if (hasOwn(dataObj, "historyEvents")) {
+    v.historyEvents = normalizeHistoryEvents(dataObj.historyEvents);
+  } else {
+    v.historyEvents = [createArchiveGapHistoryEvent(v.year, v.month)];
+  }
   v.gameOver = !!dataObj.gameOver;
   v.hasDonePreEvent = !!dataObj.hasDonePreEvent;
   v.hasDonePostEvent = !!dataObj.hasDonePostEvent;
@@ -262,6 +320,10 @@ function convertObjectToVillage(dataObj) {
   if (v.buildingFlags.hasTavern || v.buildings.includes("tavern")) {
     v.visitorLimit = Math.max(v.visitorLimit, 2);
   }
+  if ((Number(v.building) || 0) >= 250) {
+    const baseLimit = (v.buildingFlags.hasTavern || v.buildings.includes("tavern")) ? 2 : 1;
+    v.visitorLimit = Math.max(v.visitorLimit, baseLimit + 1);
+  }
   v.pendingGoldenRainPregnancies = Array.isArray(dataObj.pendingGoldenRainPregnancies)
     ? JSON.parse(JSON.stringify(dataObj.pendingGoldenRainPregnancies))
     : [];
@@ -270,6 +332,10 @@ function convertObjectToVillage(dataObj) {
   v.isRaidProcessDone = !!dataObj.isRaidProcessDone;
   v.raidTurnCount = dataObj.raidTurnCount ?? 0;
   v.currentActionIndex = dataObj.currentActionIndex ?? 0;
+  v.currentRaid = cloneNullableObject(dataObj.currentRaid);
+  v.monthsSinceRaid = Math.max(0, Math.floor(normalizeFiniteNumber(dataObj.monthsSinceRaid, 0)));
+  v.raidCooldown = Math.max(0, Math.floor(normalizeFiniteNumber(dataObj.raidCooldown, 0)));
+  v.pendingRaid = cloneNullableDeepObject(dataObj.pendingRaid);
   if (Array.isArray(dataObj.raidEnemies)) {
     v.raidEnemies = dataObj.raidEnemies.map(o => convertObjectToVillager(o));
   }
@@ -277,7 +343,7 @@ function convertObjectToVillage(dataObj) {
   // villagers
   if (Array.isArray(dataObj.villagers)) {
     v.villagers = dataObj.villagers.map(o => convertObjectToVillager(o));
-    // 全村人の仕事テーブルを更新
+    // 全村人の行動テーブルを更新
     v.villagers.forEach(villager => {
       refreshJobTable(villager, v);
     });
@@ -318,6 +384,10 @@ function convertObjectToVillager(obj) {
 
   vill.bodyTraits = normalizeBodyTraitList(obj.bodyTraits);
   vill.mindTraits = Array.isArray(obj.mindTraits) ? [...obj.mindTraits] : [];
+  const migrateBodyAresToMind = vill.bodyTraits.includes("火星の加護");
+  if (vill.bodyTraits.includes("火星の加護")) {
+    vill.bodyTraits = vill.bodyTraits.filter(trait => trait !== "火星の加護");
+  }
   if (obj.hobby === "大食い") {
     vill.hobby = "ドカ食い";
   } else if (obj.hobby === "狩猟") {
@@ -327,12 +397,16 @@ function convertObjectToVillager(obj) {
   }
   vill.relationships = Array.isArray(obj.relationships) ? [...obj.relationships] : [];
   normalizeRelationships(vill);
+  vill.socialAttemptedThisMonth = !!obj.socialAttemptedThisMonth;
+  vill.titleIds = Array.isArray(obj.titleIds) ? [...obj.titleIds] : [];
+  vill.titleStats = obj.titleStats && typeof obj.titleStats === "object" ? { ...obj.titleStats } : {};
+  ensureTitleState(vill);
   registerUsedName(vill.name);
 
-  vill.job = obj.job;
+  setPreferredAction(vill, migratePreferredAction(obj));
   vill.jobTable = Array.isArray(obj.jobTable) ? [...obj.jobTable] : [];
   vill.assignmentLocked = !!obj.assignmentLocked;
-  vill.action = obj.action;
+  vill.action = obj.action || ACTION_NONE;
   vill.actionTable = Array.isArray(obj.actionTable) ? [...obj.actionTable] : [];
   vill.bodyOwner = obj.bodyOwner || obj.name;
   
@@ -351,6 +425,8 @@ function convertObjectToVillager(obj) {
   vill.postpartumMonths = obj.postpartumMonths || 0;
   vill.ares = normalizeFiniteNumber(obj.ares, 0);
   vill.nikeMonths = normalizeFiniteNumber(obj.nikeMonths, 0);
+  vill.portraitMonths = normalizeFiniteNumber(obj.portraitMonths, 0);
+  vill.portraitEthLoss = normalizeFiniteNumber(obj.portraitEthLoss, 0);
   vill.potentialStats = obj.potentialStats ? { ...obj.potentialStats } : null;
   vill.bodyPotentialStats = hasOwn(obj, "bodyPotentialStats")
     ? cloneNullableObject(obj.bodyPotentialStats)
@@ -360,6 +436,18 @@ function convertObjectToVillager(obj) {
     : cloneNullableObject(obj.potentialStats);
   if (Array.isArray(obj.raiderDialogues)) {
     vill.raiderDialogues = [...obj.raiderDialogues];
+  }
+  if (obj.raiderType) {
+    vill.raiderType = obj.raiderType;
+  }
+  if (obj.raiderRole) {
+    vill.raiderRole = obj.raiderRole;
+  }
+  if (obj.raidPosition) {
+    vill.raidPosition = obj.raidPosition;
+  }
+  if (obj.raidTargeting) {
+    vill.raidTargeting = obj.raidTargeting;
   }
   vill.adultBodyTraits = normalizeBodyTraitList(obj.adultBodyTraits);
   vill.adultMindTraits = Array.isArray(obj.adultMindTraits) ? [...obj.adultMindTraits] : [];
@@ -375,6 +463,13 @@ function convertObjectToVillager(obj) {
     ? !!obj.adultMindReached
     : !!(vill.potentialStats && Number(vill.spiritAge) >= 16);
   vill.adultModalShown = !!obj.adultModalShown;
+
+  hydrateStatLayersFromObject(vill, obj);
+  if (migrateBodyAresToMind && !vill.mindTraits.includes("火星の加護")) {
+    vill.mindTraits.push("火星の加護");
+    syncEffectiveStats(vill);
+  }
+  evaluateTitles(vill, { getPermanentStat });
 
   return vill;
 }

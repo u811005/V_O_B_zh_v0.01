@@ -7,12 +7,14 @@ import { updateUI } from "./ui.js";
 import { doFixedEventPost, endOfMonthProcess, doAgingProcess, runMonthStartPhase } from "./events.js";
 import { applyForcedActionRestriction, refreshJobTable } from "./domain/jobTables.js";
 import { handleAllVillagerJobs } from "./jobs.js";
-import { isRestrictedNoJobVillager } from "./domain/rules.js";
+import { recordGameStartHistory } from "./history.js";
+import { isUnassignedActionVillager } from "./domain/rules.js";
 import { getRaidReadiness } from "./raidRules.js";
 
 // Villageインスタンスを生成
 export const theVillage = new Village();
 theVillage.villagers = createInitialVillagers();
+recordGameStartHistory(theVillage);
 updateUI(theVillage);
 
 function applyTurnStartRestrictions(village) {
@@ -24,10 +26,57 @@ function applyTurnStartRestrictions(village) {
   });
 }
 
+const TURN_BLOCKING_MODAL_SELECTORS = [
+  "#actionPhaseModal",
+  "#randomEventModal",
+  "#festivalModal",
+  "#seasonChangeDialog",
+  "#raidWarningModal",
+  "#secretTreasureEventModal",
+  ".effect-result-modal",
+  "#recruitmentModal",
+  "#seductionModal",
+  "#merchantTradeModal",
+  "#miracleModal",
+  "#buildingModal",
+  "#secretTreasureModal",
+  "#historyModal",
+  "#personalHistoryModal",
+  "#conversationModal",
+  "#exchangeModal",
+  "#panFluteExchangeModal",
+  "#raidModal",
+  "#villageScaleModal",
+  "#headmanElectionModal",
+  "[data-close-relationship-modal]",
+  "[data-close-reproduction-modal]"
+];
+
+function isVisibleElement(element) {
+  if (!element || !element.isConnected || typeof window === "undefined") return false;
+  let current = element;
+  while (current && current !== document.body) {
+    const style = window.getComputedStyle(current);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    current = current.parentElement;
+  }
+  return true;
+}
+
+function isTurnBlockingModalOpen() {
+  if (typeof document === "undefined") return false;
+  return TURN_BLOCKING_MODAL_SELECTORS.some(selector => {
+    const element = document.querySelector(selector);
+    return isVisibleElement(element);
+  });
+}
+
 /**
  * 「次の月へ」ボタン
  */
 export function onNextTurn() {
+  if (isTurnBlockingModalOpen()) return;
+
   if (theVillage.gameOver) {
     theVillage.log("ゲームオーバー済みです。操作不可");
     return;
@@ -40,10 +89,10 @@ export function onNextTurn() {
   if (theVillage.villageTraits.includes("襲撃中") && !theVillage.isRaidProcessDone) {
     theVillage.villagers.forEach(person => refreshJobTable(person, theVillage));
     const raidReadiness = getRaidReadiness(theVillage);
-    if (raidReadiness.defenders.length === 0 && typeof window !== "undefined") {
+    if (raidReadiness.combatants.length === 0 && typeof window !== "undefined") {
       const message = raidReadiness.trapMakers.length > 0
-        ? `迎撃に出る村人がいません。\n罠作成だけでは敵を倒しきれない場合、防衛失敗になります。\nこのまま迎撃を開始しますか？`
-        : `迎撃に出る村人がいません。\nこのまま開始すると防衛失敗になります。\nこのまま迎撃を開始しますか？`;
+        ? `戦闘に残る村人がいません。\n罠作成だけでは敵を倒しきれない場合、防衛失敗になります。\nこのまま防衛を開始しますか？`
+        : `戦闘に残る村人がいません。\nこのまま開始すると防衛失敗になります。\nこのまま防衛を開始しますか？`;
       if (!window.confirm(message)) return;
     }
     import("./raid.js").then(m=>{
@@ -54,20 +103,7 @@ export function onNextTurn() {
 
   applyTurnStartRestrictions(theVillage);
 
-  const noJobVillagers = theVillage.villagers.filter(person => {
-    const job = String(person.job || "").trim();
-    return (job === "" || job === "なし") && !isRestrictedNoJobVillager(person);
-  });
-  if (noJobVillagers.length > 0 && typeof window !== "undefined") {
-    const names = noJobVillagers.map(person => person.name).join("、");
-    const ok = window.confirm(`仕事が未設定の村人がいます。\n${names}\nこのまま月を進めますか？`);
-    if (!ok) return;
-  }
-
-  const noActionVillagers = theVillage.villagers.filter(person => {
-    const action = String(person.action || "").trim();
-    return (action === "" || action === "なし") && !isRestrictedNoJobVillager(person);
-  });
+  const noActionVillagers = theVillage.villagers.filter(isUnassignedActionVillager);
   if (noActionVillagers.length > 0 && typeof window !== "undefined") {
     const names = noActionVillagers.map(person => person.name).join("、");
     const ok = window.confirm(`行動が未設定の村人がいます。\n${names}\nこのまま月を進めますか？`);

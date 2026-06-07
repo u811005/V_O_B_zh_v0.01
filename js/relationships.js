@@ -1,61 +1,78 @@
 // relationships.js
 
 import { randInt, clampValue, getPortraitPath } from "./util.js";
+import { recordLoverHistory, recordMarriageHistory } from "./history.js";
+import { runAfterFestivalModals } from "./festivalModal.js";
 
 /**
  * 恋人チェック (星霜祭などで呼ばれる)
  */
-export function doLoverCheck(village) {
-  let candF = village.villagers.filter(x=>
-    x.bodySex==="女" && x.bodyAge>=16 && x.bodyAge<=30 
-    && !checkHasRelationship(x,"既婚")
-    && !checkHasRelationship(x,"恋人")
+export function doLoverCheck(village, options = {}) {
+  let candidatesA = village.villagers.filter(x=>
+    x.spiritAge >= 16
+    && isSingle(x)
   );
-  let candM = village.villagers.filter(x=>
-    x.bodySex==="男" && x.bodyAge>=16 && x.bodyAge<=39
-    && !checkHasRelationship(x,"既婚")
-    && !checkHasRelationship(x,"恋人")
-  );
-  if (candF.length===0||candM.length===0) {
-    village.log("恋人判定:未婚男女なし");
+  if (candidatesA.length===0) {
+    village.log("恋人判定:対象者なし");
     return false;
   }
-  let f = randChoice(candF);
-  let m = randChoice(candM);
 
-  let dAge = m.bodyAge - f.bodyAge;
-  if (dAge < -5 || dAge>9) {
-    village.log("年齢差大きすぎ:恋人失敗");
+  let a = randChoice(candidatesA);
+  let candidatesB = village.villagers.filter(b=>isLoverCandidate(a, b));
+  if (candidatesB.length===0) {
+    village.log(`恋人判定:${a.name}の相手候補なし`);
     return false;
   }
-  let dEth = m.eth - f.eth;
-  if (dEth<-9||dEth>9) {
-    village.log("倫理差大きすぎ:恋人失敗");
-    return false;
-  }
-  let dChr = f.chr - m.chr;
-  if (dChr<-12||dChr>12) {
-    village.log("魅力差大きすぎ:恋人失敗");
-    return false;
-  }
-  let p1=Math.min(100, m.sexdr*4);
-  let p2=Math.min(100, f.sexdr*4);
-  let sc = (p1*p2)/10000;  // 例: p1=80, p2=40 => sc= (80*40)/10000=0.32
+
+  let b = randChoice(candidatesB);
+  let sc = getLoverSuccessRate(a, b);
   if (Math.random()<=sc) {
-    addRelationship(f, `恋人:${m.name}`);
-    addRelationship(m, `恋人:${f.name}`);
-    f.happiness=clampValue(f.happiness+50,0,100);
-    m.happiness=clampValue(m.happiness+50,0,100);
-    village.log(`${f.name}と${m.name}恋人成立(成功率${(sc*100).toFixed(1)}%)`);
-    showRelationshipModal("恋人成立", `${f.name}と${m.name}が恋人になりました。`, [
-      [f, getLoverLine(f, m)],
-      [m, getLoverLine(m, f)]
+    addRelationship(a, `恋人:${b.name}`);
+    addRelationship(b, `恋人:${a.name}`);
+    a.happiness=clampValue(a.happiness+50,0,100);
+    b.happiness=clampValue(b.happiness+50,0,100);
+    recordLoverHistory(village, a, b, { source: options.source || "縁結び" });
+    village.log(`${a.name}と${b.name}恋人成立(成功率${(sc*100).toFixed(1)}%)`);
+    showRelationshipModal("恋人成立", `${a.name}と${b.name}が恋人になりました。`, [
+      [a, getLoverLine(a, b)],
+      [b, getLoverLine(b, a)]
     ]);
     return true;
   } else {
-    village.log(`${f.name}と${m.name}恋愛失敗`);
+    village.log(`${a.name}と${b.name}恋愛失敗`);
     return false;
   }
+}
+
+function isSingle(person) {
+  return !checkHasRelationship(person,"既婚") &&
+    !checkHasRelationship(person,"恋人") &&
+    !hasRelationshipPrefix(person, SPOUSE_RELATION_PREFIXES);
+}
+
+function getOppositeSex(sex) {
+  if (sex === "男") return "女";
+  if (sex === "女") return "男";
+  return null;
+}
+
+function isLoverCandidate(a, b) {
+  if (!a || !b || a === b) return false;
+  const expectedBodySex = getOppositeSex(a.spiritSex);
+  if (!expectedBodySex) return false;
+  return isSingle(b)
+    && !hasLoverBlockingRelationship(a, b)
+    && b.bodySex === expectedBodySex
+    && b.bodyAge >= 16
+    && b.bodyAge >= a.bodyAge - 10
+    && b.bodyAge <= a.spiritAge + 8
+    && Math.abs(a.eth - b.eth) + Math.abs(a.chr - b.chr) <= 16;
+}
+
+function getLoverSuccessRate(a, b) {
+  let pA=Math.min(100, (Number(a.sexdr) || 0)*4);
+  let pB=Math.min(100, (Number(b.sexdr) || 0)*4);
+  return clampValue((pA*pB)/10000, 0.1, 0.5);
 }
 
 /**
@@ -91,6 +108,7 @@ export function doMarriageCheck(village) {
     b.happiness=clampValue(b.happiness+50,0,100);
 
     addSpouseRelationships(a, b);
+    recordMarriageHistory(village, a, b, { source: "夏至祭" });
 
     village.log(`${a.name}と${b.name}結婚成功`);
     showRelationshipModal("結婚", `${a.name}と${b.name}が結婚しました。`, [
@@ -108,6 +126,13 @@ export function doMarriageCheck(village) {
 const FRIEND_RELATION_PREFIXES = new Set(["恋人", "親友", "天敵"]);
 const FAMILY_RELATION_PREFIXES = new Set(["夫", "妻", "母", "父", "子"]);
 const GENETIC_RELATION_PREFIXES = new Set(["遺伝母", "遺伝父"]);
+const SPOUSE_RELATION_PREFIXES = new Set(["夫", "妻"]);
+const PARENT_CHILD_RELATION_PREFIXES = new Set(["母", "父", "子"]);
+const LOVER_BLOCKING_RELATION_PREFIXES = new Set([
+  ...SPOUSE_RELATION_PREFIXES,
+  ...PARENT_CHILD_RELATION_PREFIXES,
+  "天敵"
+]);
 
 function getRelationshipCategory(prefix) {
   if (FRIEND_RELATION_PREFIXES.has(prefix) || String(prefix).endsWith("仲間")) return "交友関係";
@@ -155,6 +180,35 @@ export function normalizeRelationships(person) {
   const source = Array.isArray(person.relationships) ? person.relationships : [];
   person.relationships = [...new Set(source.map(normalizeRelationship).filter(Boolean))];
   return person.relationships;
+}
+
+function getParsedRelationships(person) {
+  return normalizeRelationships(person)
+    .map(parseRelationship)
+    .filter(Boolean);
+}
+
+function hasRelationshipPrefix(person, prefixes) {
+  return getParsedRelationships(person).some(parsed => prefixes.has(parsed.prefix));
+}
+
+function hasRelationshipTo(person, targetName, prefixes) {
+  return getParsedRelationships(person).some(parsed =>
+    parsed.target === targetName && prefixes.has(parsed.prefix)
+  );
+}
+
+function hasLoverBlockingRelationship(a, b) {
+  return hasRelationshipTo(a, b.name, LOVER_BLOCKING_RELATION_PREFIXES) ||
+    hasRelationshipTo(b, a.name, LOVER_BLOCKING_RELATION_PREFIXES);
+}
+
+export function hasNonEnemyRelationship(person) {
+  return getParsedRelationships(person).some(parsed => {
+    if (parsed.prefix === "天敵") return false;
+    if (parsed.flag === "既婚") return true;
+    return Boolean(parsed.raw);
+  });
 }
 
 export function formatRelationshipsForDisplay(person) {
@@ -262,6 +316,10 @@ function getMarriageLine(person, partner) {
 }
 
 function showRelationshipModal(title, message, entries) {
+  runAfterFestivalModals(() => showRelationshipModalNow(title, message, entries));
+}
+
+function showRelationshipModalNow(title, message, entries) {
   if (typeof document === "undefined") return;
   const overlay = document.createElement("div");
   overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9998;";

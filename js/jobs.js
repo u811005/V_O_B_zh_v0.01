@@ -4,6 +4,7 @@ import { randInt, randFloat, clampValue, round3 } from "./util.js";
 import { HobbyEffects } from "./HobbyEffects.js";
 import {
   calculateAlchemyYield,
+  calculateApprenticeYield,
   calculateBrewingYield,
   calculateBunnySupport,
   calculateCopyBookYield,
@@ -15,12 +16,12 @@ import {
   calculateHandiworkYield,
   calculateHuntYield,
   calculateLumberYield,
-  calculateMagicCraftYield,
   calculateMassageHeal,
   calculateMikoMana,
   calculateNurseHeal,
   calculatePoetHappiness,
   calculatePriestMindHeal,
+  calculateResearchAssistantYield,
   calculateResearchYield,
   calculateTradingYield,
   calculateWeavingYield,
@@ -29,16 +30,49 @@ import {
   rollMindCost,
 } from "./domain/jobMath.js";
 import { refreshJobTable } from "./domain/jobTables.js";
+import { addStoredResource } from "./domain/resourceLimits.js";
+import { addAcquiredStat, getPermanentStat, syncEffectiveStats } from "./domain/statLayers.js";
 import { rollSecretTreasureJobEvents, showSecretTreasureEventModals } from "./secretTreasureEvents.js";
+import { incrementTitleCounter, TITLE_COUNTER_KEYS } from "./titles.js";
 
 const HEALING_RECOVERABLE_BODY_TRAITS = ["負傷", "疫病"];
+const BASE_JOB_STAT_GROWTH_CHANCE = 0.05;
+const PHYSICAL_JOB_GROWTH_STATS = new Set(["str", "vit", "dex", "mag", "chr"]);
+const MENTAL_JOB_GROWTH_STATS = new Set(["int", "ind", "eth", "cou", "sexdr"]);
+const HELP_JOB_GROWTH_STATS = [
+  { key: "dex", label: "器用" },
+  { key: "int", label: "知力" },
+  { key: "ind", label: "勤勉" },
+  { key: "cou", label: "勇気" },
+  { key: "eth", label: "倫理" }
+];
+
+function hasBodyTrait(person, trait) {
+  return Array.isArray(person?.bodyTraits) && person.bodyTraits.includes(trait);
+}
+
+function hasMindTrait(person, trait) {
+  return Array.isArray(person?.mindTraits) && person.mindTraits.includes(trait);
+}
+
+function getJobStatGrowthChance(person, stat, baseChance = BASE_JOB_STAT_GROWTH_CHANCE) {
+  let chance = baseChance;
+  if (MENTAL_JOB_GROWTH_STATS.has(stat) && hasMindTrait(person, "思春期")) {
+    chance *= 1.5;
+  }
+  if (PHYSICAL_JOB_GROWTH_STATS.has(stat) && (hasBodyTrait(person, "少年") || hasBodyTrait(person, "少女"))) {
+    chance *= 1.5;
+  }
+  return chance;
+}
+
+function rollJobStatGrowth(person, stat, baseChance = BASE_JOB_STAT_GROWTH_CHANCE) {
+  return Math.random() < getJobStatGrowthChance(person, stat, baseChance);
+}
 
 function restoreRecoveredBodyTraitStats(person, trait) {
   if (trait !== "疫病") return;
   person.hp = clampValue(round3((Number(person.hp) || 0) / 0.5), 0, 100);
-  person.str = round3((Number(person.str) || 0) / 0.5);
-  person.vit = round3((Number(person.vit) || 0) / 0.5);
-  person.dex = round3((Number(person.dex) || 0) / 0.5);
 }
 
 /**
@@ -65,7 +99,7 @@ export function handleAllVillagerJobs(village) {
 
       let roll = randInt(1, 100);
       // サボり判定
-      if (roll <= saboProb && p.action !== "休養" && p.action !== "余暇" && p.action !== "なし" && p.action !== "迎撃" && p.action !== "罠作成" && p.action !== "療養" && p.action !== "臨終") {
+      if (roll <= saboProb && p.action !== "休養" && p.action !== "余暇" && p.action !== "なし" && p.action !== "揺籃" && p.action !== "迎撃" && p.action !== "籠城" && p.action !== "射撃" && p.action !== "罠作成" && p.action !== "療養" && p.action !== "臨終") {
         doSabori(p, village);
       } else {
         doJobAction(p, village, secretTreasureFlags);
@@ -172,6 +206,7 @@ function showActionPhaseResultModal(village, messages, afterClose = null) {
   modal.appendChild(footer);
   document.body.appendChild(overlay);
   document.body.appendChild(modal);
+  closeButton.focus();
 }
 
 function doSabori(p, v) {
@@ -195,17 +230,17 @@ function doJobAction(p, v, secretTreasureFlags = null) {
     case "休養":
       doRestJob(p, v);
       break;
+    case "揺籃":
+      doCradleJob(p, v);
+      break;
     case "余暇":
       doLeisureJob(p, v);
       break;
     case "遊び":
       doPlayJob(p, v);
       break;
-    case "学業":
-      doStudy(p, v);
-      break;
-    case "鍛錬":
-      doTraining(p, v);
+    case "お手伝い":
+      doHelpJob(p, v);
       break;
     case "農作業":
       doFarm(p, v);
@@ -227,14 +262,14 @@ function doJobAction(p, v, secretTreasureFlags = null) {
     case "内職":
       doHandiwork(p, v);
       break;
-    case "魔法細工":
-      doMagicCraft(p, v);
+    case "丁稚":
+      doApprentice(p, v);
       break;
     case "研究":
       doResearchJob(p, v);
       break;
-    case "教育":
-      doEducationJob(p, v);
+    case "研究助手":
+      doResearchAssistantJob(p, v);
       break;
     case "警備":
       doGuardJob(p, v);
@@ -285,9 +320,11 @@ function doJobAction(p, v, secretTreasureFlags = null) {
       doBrewing(p, v);
       if (secretTreasureFlags) secretTreasureFlags.field = true;
       break;
-    // "罠作成", "迎撃" は襲撃専用(raid.js)で処理するので、ここはログだけ
+    // "罠作成", "射撃", "迎撃", "籠城" は襲撃専用(raid.js)で処理するので、ここはログだけ
     case "罠作成":
+    case "射撃":
     case "迎撃":
+    case "籠城":
       v.log(`${p.name}は${p.action}(襲撃専用フェーズで実行)`);
       break;
 
@@ -316,6 +353,13 @@ function calcJobMindCost(job, stat, person, village) {
 // 各ジョブの具体処理
 // -------------------------
 
+function doCradleJob(p, v) {
+  p.hp = clampValue(p.hp + 30, 0, 100);
+  p.mp = clampValue(p.mp + 30, 0, 100);
+  p.happiness = clampValue(p.happiness + 30, 0, 100);
+  v.log(`${p.name}揺籃:体力+30,メンタル+30,幸福+30`);
+}
+
 function doRestJob(p, v) {
   let r = randInt(1,100);
   let hpG = 0;
@@ -340,13 +384,6 @@ function doRestJob(p, v) {
   hpG=Math.floor(hpG*multi);
   mpG=Math.floor(mpG*multi);
 
-  if (v.buildingFlags && v.buildingFlags.hasPublicBath) {
-    const bathBonus = 10 + (Number(v.buildingFlags.publicBathRecoveryBonus) || 0);
-    hpG += bathBonus;
-    mpG += bathBonus;
-    msg += "(公衆浴場)";
-  }
-
   p.hp=clampValue(p.hp+hpG,0,100);
   p.mp=clampValue(p.mp+mpG,0,100);
 
@@ -366,17 +403,10 @@ function hasCurrentHobbyMate(p) {
 
 function doLeisureJob(p, v) {
   let base=50;
-  let bathMsg = "";
   let hobbyMateMsg = "";
   if (p.mindTraits.includes("ニート")) {
     base=100;
     p.happiness=clampValue(p.happiness+20,0,100);
-  }
-  if (v.buildingFlags && v.buildingFlags.hasPublicBath) {
-    const bathBonus = 10 + (Number(v.buildingFlags.publicBathRecoveryBonus) || 0);
-    base += bathBonus;
-    p.hp=clampValue(p.hp+bathBonus,0,100);
-    bathMsg = `,体力+${bathBonus}(公衆浴場)`;
   }
   if (hasCurrentHobbyMate(p)) {
     base = Math.round(base * 1.5);
@@ -385,7 +415,7 @@ function doLeisureJob(p, v) {
   p.mp=clampValue(p.mp+base,0,100);
 
   let hobbyMsg = HobbyEffects.apply(p, v);
-  v.log(`${p.name}余暇:メンタル+${base}${bathMsg}${hobbyMateMsg}${hobbyMsg}`);
+  v.log(`${p.name}余暇:メンタル+${base}${hobbyMateMsg}${hobbyMsg}`);
 }
 
 function doPlayJob(p, v) {
@@ -396,27 +426,22 @@ function doPlayJob(p, v) {
   v.log(`${p.name}遊び:体力-${tc},メンタル+20,幸福+15`);
 }
 
-function doStudy(p, v) {
-  let tc=calcJobBodyCost("学業", p, v);
-  let mc=calcJobMindCost("学業", p.ind, p, v);
-  p.hp=clampValue(p.hp-tc,0,100);
-  p.mp=clampValue(p.mp-mc,0,100);
+function doHelpJob(p, v) {
+  const tc = calcBodyCost(10, p.vit, p, v);
+  const foodGain = randInt(3, 6);
+  const materialGain = randInt(3, 6);
+  p.hp = clampValue(p.hp - tc, 0, 100);
+  addStoredResource(v, "food", foodGain);
+  addStoredResource(v, "materials", materialGain);
 
-  if (Math.random()<0.3) p.int++;
-  if (Math.random()<0.3) p.ind++;
-  v.log(`${p.name}学業:体力-${tc},メンタル-${mc},知力/勤勉上昇`);
-}
+  let logMsg = `${p.name}お手伝い:食料+${foodGain},資材+${materialGain},体力-${tc}`;
+  if (Math.random() < 0.01) {
+    const stat = HELP_JOB_GROWTH_STATS[randInt(0, HELP_JOB_GROWTH_STATS.length - 1)];
+    addAcquiredStat(p, stat.key, 1);
+    logMsg += `,${stat.label}+1`;
+  }
 
-function doTraining(p, v) {
-  let tc=calcJobBodyCost("鍛錬", p, v);
-  let mc=calcJobMindCost("鍛錬", p.ind, p, v);
-  p.hp=clampValue(p.hp-tc,0,100);
-  p.mp=clampValue(p.mp-mc,0,100);
-
-  if (Math.random()<0.4) p.str++;
-  if (Math.random()<0.3) p.vit++;
-  if (Math.random()<0.2) p.cou++;
-  v.log(`${p.name}鍛錬:体力-${tc},メンタル-${mc},筋力/耐久/勇気UP可能`);
+  v.log(logMsg);
 }
 
 function doFarm(p, v) {
@@ -433,18 +458,18 @@ function doFarm(p, v) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
     resourceLabel = "資金";
   } else {
-    v.food = clampValue(v.food+amt, 0, 99999);
+    addStoredResource(v, "food", amt);
   }
 
   let logMsg = `${p.name}農作業:${resourceLabel}+${amt},体力-${tc},メンタル-${mc}`;
 
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.vit++;
+  if (rollJobStatGrowth(p, "vit")) {
+    addAcquiredStat(p, "vit", 1);
     logMsg += ",耐久+1";
   }
-  if (Math.random() < 0.05) {
-    p.ind++;
+  if (rollJobStatGrowth(p, "ind")) {
+    addAcquiredStat(p, "ind", 1);
     logMsg += ",勤勉+1";
   }
 
@@ -469,17 +494,17 @@ function doLumber(p, v) {
   p.mp=clampValue(p.mp-mc,0,100);
 
   let amt=calculateLumberYield(p, v);
-  v.materials=clampValue(v.materials+amt,0,99999);
+  addStoredResource(v, "materials", amt);
 
   let logMsg = `${p.name}伐採:資材+${amt},体力-${tc},メンタル-${mc}`;
 
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.str++;
+  if (rollJobStatGrowth(p, "str")) {
+    addAcquiredStat(p, "str", 1);
     logMsg += ",筋力+1";
   }
-  if (Math.random() < 0.05) {
-    p.ind++;
+  if (rollJobStatGrowth(p, "ind")) {
+    addAcquiredStat(p, "ind", 1);
     logMsg += ",勤勉+1";
   }
 
@@ -499,7 +524,7 @@ function doLumber(p, v) {
 
 function doHunt(p, v) {
   let tc=calcJobBodyCost("狩猟", p, v);
-  let mc=calcJobMindCost("狩猟", p.ind, p, v);
+  let mc=calcJobMindCost("狩猟", p.cou, p, v);
   p.hp=clampValue(p.hp-tc,0,100);
   p.mp=clampValue(p.mp-mc,0,100);
 
@@ -507,10 +532,12 @@ function doHunt(p, v) {
   let r = randInt(1,100);
   let x = 0;
   let result = "";
-  if (r <= 20) {
+  const failureThreshold = v.buildingFlags?.hasHuntingLodge ? 10 : 20;
+  const successThreshold = v.buildingFlags?.hasHuntingLodge ? 80 : 80;
+  if (r <= failureThreshold) {
     x = 0;
     result = "失敗";
-  } else if (r <= 80) {
+  } else if (r <= successThreshold) {
     x = 30;
     result = "成功";
   } else {
@@ -525,17 +552,20 @@ function doHunt(p, v) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
     v.log(`${p.name}狩猟:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
-    v.food = clampValue(v.food+amt, 0, 99999);
+    addStoredResource(v, "food", amt);
     v.log(`${p.name}狩猟:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+  }
+  if (result === "大成功") {
+    incrementTitleCounter(p, TITLE_COUNTER_KEYS.HUNT_CRITICAL, 1, { getPermanentStat });
   }
 
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.str++;
+  if (rollJobStatGrowth(p, "str")) {
+    addAcquiredStat(p, "str", 1);
     v.log(`${p.name}狩猟:${result} 筋力+1`);
   }
-  if (Math.random() < 0.05) {
-    p.cou++;
+  if (rollJobStatGrowth(p, "cou")) {
+    addAcquiredStat(p, "cou", 1);
     v.log(`${p.name}狩猟:${result} 勇気+1`);
   }
 
@@ -554,7 +584,7 @@ function doHunt(p, v) {
 
 function doFish(p, v) {
   let tc=calcJobBodyCost("漁", p, v);
-  let mc=calcJobMindCost("漁", p.ind, p, v);
+  let mc=calcJobMindCost("漁", p.cou, p, v);
   p.hp=clampValue(p.hp-tc,0,100);
   p.mp=clampValue(p.mp-mc,0,100);
 
@@ -562,10 +592,12 @@ function doFish(p, v) {
   let r = randInt(1,100);
   let x = 0;
   let result = "";
-  if (r <= 20) {
+  const failureThreshold = v.buildingFlags?.hasDock ? 10 : 20;
+  const successThreshold = v.buildingFlags?.hasDock ? 80 : 80;
+  if (r <= failureThreshold) {
     x = 0;
     result = "失敗";
-  } else if (r <= 80) {
+  } else if (r <= successThreshold) {
     x = 30;
     result = "成功";
   } else {
@@ -580,17 +612,20 @@ function doFish(p, v) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
     v.log(`${p.name}漁:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
-    v.food = clampValue(v.food+amt, 0, 99999);
+    addStoredResource(v, "food", amt);
     v.log(`${p.name}漁:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+  }
+  if (result === "大成功") {
+    incrementTitleCounter(p, TITLE_COUNTER_KEYS.FISH_CRITICAL, 1, { getPermanentStat });
   }
 
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.vit++;
+  if (rollJobStatGrowth(p, "vit")) {
+    addAcquiredStat(p, "vit", 1);
     v.log(`${p.name}漁:${result} 耐久+1`);
   }
-  if (Math.random() < 0.05) {
-    p.cou++;
+  if (rollJobStatGrowth(p, "cou")) {
+    addAcquiredStat(p, "cou", 1);
     v.log(`${p.name}漁:${result} 勇気+1`);
   }
 
@@ -624,21 +659,21 @@ function doGather(p, v) {
   // ミダスの奇跡の効果
   if (v.villageTraits.includes("ミダス")) {
     v.funds = clampValue(v.funds+f, 0, 99999);
-    v.materials = clampValue(v.materials+mm, 0, 99999);
+    addStoredResource(v, "materials", mm);
     v.log(`${p.name}採集:資金+${f},資材+${mm},体力-${tc},メンタル-${mc}`);
   } else {
-    v.food = clampValue(v.food+f, 0, 99999);
-    v.materials = clampValue(v.materials+mm, 0, 99999);
+    addStoredResource(v, "food", f);
+    addStoredResource(v, "materials", mm);
     v.log(`${p.name}採集:食料+${f},資材+${mm},体力-${tc},メンタル-${mc}`);
   }
 
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.int++;
+  if (rollJobStatGrowth(p, "int")) {
+    addAcquiredStat(p, "int", 1);
     v.log(`${p.name}採集:知力+1`);
   }
-  if (Math.random() < 0.05) {
-    p.dex++;
+  if (rollJobStatGrowth(p, "dex")) {
+    addAcquiredStat(p, "dex", 1);
     v.log(`${p.name}採集:器用+1`);
   }
 
@@ -661,78 +696,50 @@ function doHandiwork(p, v) {
   let logMsg = `${p.name}内職:資金+${amt},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.dex++;
+  if (rollJobStatGrowth(p, "dex")) {
+    addAcquiredStat(p, "dex", 1);
     logMsg += ",器用+1";
   }
-  if (Math.random() < 0.05) {
-    p.ind++;
+  if (rollJobStatGrowth(p, "ind")) {
+    addAcquiredStat(p, "ind", 1);
     logMsg += ",勤勉+1";
   }
 
   v.log(logMsg);
 }
 
-function doMagicCraft(p, v) {
-  let tc=calcJobBodyCost("魔法細工", p, v);
-  let mc=calcJobMindCost("魔法細工", p.ind, p, v);
-  p.hp=clampValue(p.hp-tc,0,100);
-  p.mp=clampValue(p.mp-mc,0,100);
-
-  let amt=calculateMagicCraftYield(p);
-
-  v.funds=clampValue(v.funds+amt,0,99999);
-  v.log(`${p.name}魔法細工:資金+${amt},体力-${tc},メンタル-${mc}`);
+function doResearchJob(p, v) {
+  doResearchLikeJob(p, v, "研究", calculateResearchYield);
 }
 
-function doResearchJob(p, v) {
-  let tc = calcJobBodyCost("研究", p, v);
-  let mc = calcJobMindCost("研究", p.int, p, v);
+function doResearchAssistantJob(p, v) {
+  doResearchLikeJob(p, v, "研究助手", calculateResearchAssistantYield);
+}
+
+function doResearchLikeJob(p, v, jobName, calculateYield) {
+  let tc = calcJobBodyCost(jobName, p, v);
+  let mc = calcJobMindCost(jobName, p.int, p, v);
 
   p.hp = clampValue(p.hp-tc, 0, 100);
   p.mp = clampValue(p.mp-mc, 0, 100);
 
-  let gain = calculateResearchYield(p, v);
+  let gain = calculateYield(p, v);
 
   v.tech = clampValue(v.tech+gain, 0, 99999);
 
-  let logMsg = `${p.name}研究:技術+${gain},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}${jobName}:技術+${gain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.mag++;
+  if (rollJobStatGrowth(p, "mag")) {
+    addAcquiredStat(p, "mag", 1);
     logMsg += ",魔力+1";
   }
-  if (Math.random() < 0.05) {
-    p.int++;
+  if (rollJobStatGrowth(p, "int")) {
+    addAcquiredStat(p, "int", 1);
     logMsg += ",知力+1";
   }
 
   v.log(logMsg);
-}
-
-function doEducationJob(p, v) {
-  let tc=calcJobBodyCost("教育", p, v);
-  let mc=calcJobMindCost("教育", p.eth, p, v);
-
-  p.hp=clampValue(p.hp-tc,0,100);
-  p.mp=clampValue(p.mp-mc,0,100);
-
-  let improved=0;
-  v.villagers.forEach(x=>{
-    if (x.spiritAge>=10 && x.spiritAge<=15) {
-      let mi=Math.floor(p.int/10); if(mi<1) mi=1;
-      let mind2=Math.floor(p.ind/10); if(mind2<1) mind2=1;
-      let meth=Math.floor(p.eth/10); if(meth<1) meth=1;
-      let mcou=Math.floor(p.cou/10); if(mcou<1) mcou=1;
-
-      if (Math.random()<0.2) { x.int += randInt(1,mi); improved++;}
-      if (Math.random()<0.2) { x.ind += randInt(1,mind2); improved++;}
-      if (Math.random()<0.2) { x.eth += randInt(1,meth); improved++;}
-      if (Math.random()<0.2) { x.cou += randInt(1,mcou); improved++;}
-    }
-  });
-  v.log(`${p.name}教育:子供ステ上昇${improved}回,体力-${tc},メンタル-${mc}`);
 }
 
 function doGuardJob(p, v) {
@@ -749,12 +756,12 @@ function doGuardJob(p, v) {
   let logMsg = `${p.name}警備:治安+${inc},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.str++;
+  if (rollJobStatGrowth(p, "str")) {
+    addAcquiredStat(p, "str", 1);
     logMsg += ",筋力+1";
   }
-  if (Math.random() < 0.05) {
-    p.eth++;
+  if (rollJobStatGrowth(p, "eth")) {
+    addAcquiredStat(p, "eth", 1);
     logMsg += ",倫理+1";
   }
 
@@ -778,6 +785,7 @@ function doHealingJob(p, v) {
   if (recoveredTraits.length > 0) {
     recoveredTraits.forEach(trait => restoreRecoveredBodyTraitStats(p, trait));
     p.bodyTraits = p.bodyTraits.filter(trait => !HEALING_RECOVERABLE_BODY_TRAITS.includes(trait));
+    syncEffectiveStats(p);
     refreshJobTable(p, v);
   }
 
@@ -817,12 +825,12 @@ function doDancer(p, v) {
   let logMsg = `${p.name}踊り子:男性${affected}人の幸福+${inc},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.sexdr++;
+  if (rollJobStatGrowth(p, "sexdr")) {
+    addAcquiredStat(p, "sexdr", 1);
     logMsg += ",好色+1";
   }
 
@@ -848,12 +856,12 @@ function doPoet(p, v) {
   let logMsg = `${p.name}詩人:女性${affected}人の幸福+${inc},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.int++;
+  if (rollJobStatGrowth(p, "int")) {
+    addAcquiredStat(p, "int", 1);
     logMsg += ",知力+1";
   }
 
@@ -889,12 +897,12 @@ function doNurse(p, v) {
   }
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.mag++;
+  if (rollJobStatGrowth(p, "mag")) {
+    addAcquiredStat(p, "mag", 1);
     logMsg += ",魔力+1";
   }
-  if (Math.random() < 0.05) {
-    p.eth++;
+  if (rollJobStatGrowth(p, "eth")) {
+    addAcquiredStat(p, "eth", 1);
     logMsg += ",倫理+1";
   }
 
@@ -918,12 +926,12 @@ function doSister(p, v) {
   let logMsg = `${p.name}シスター:全${affected}人のメンタル+${heal},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.eth++;
+  if (rollJobStatGrowth(p, "eth")) {
+    addAcquiredStat(p, "eth", 1);
     logMsg += ",倫理+1";
   }
 
@@ -947,12 +955,12 @@ function doPriest(p, v) {
   let logMsg = `${p.name}神官:全${affected}人のメンタル+${heal},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.eth++;
+  if (rollJobStatGrowth(p, "eth")) {
+    addAcquiredStat(p, "eth", 1);
     logMsg += ",倫理+1";
   }
 
@@ -960,25 +968,53 @@ function doPriest(p, v) {
 }
 
 function doTrading(p, v) {
-  let tc = calcJobBodyCost("行商", p, v);
-  let mc = calcJobMindCost("行商", p.ind, p, v);
+  doTradingLike(p, v, "行商", calculateTradingYield);
+}
+
+function doApprentice(p, v) {
+  doTradingLike(p, v, "丁稚", calculateApprenticeYield);
+}
+
+function doTradingLike(p, v, jobName, calculateYield) {
+  let tc = calcJobBodyCost(jobName, p, v);
+  let mc = calcJobMindCost(jobName, p.int, p, v);
   p.hp = clampValue(p.hp-tc, 0, 100);
   p.mp = clampValue(p.mp-mc, 0, 100);
 
-  let amt = calculateTradingYield(p);
+  const r = randInt(1, 100);
+  let x = 0;
+  let result = "";
+  const receivesMarketBonus = jobName === "行商" || jobName === "丁稚";
+  const failureThreshold = receivesMarketBonus && v.buildingFlags?.hasMarket ? 10 : 20;
+  const successThreshold = 80;
+  if (r <= failureThreshold) {
+    x = 0;
+    result = "失敗";
+  } else if (r <= successThreshold) {
+    x = 30;
+    result = "成功";
+  } else {
+    x = 70;
+    result = "大成功";
+  }
+
+  let amt = calculateYield(p, x);
 
   v.funds = clampValue(v.funds+amt, 0, 99999);
 
-  let logMsg = `${p.name}行商:資金+${amt},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}${jobName}:${result} 資金+${amt},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.int++;
+  if (rollJobStatGrowth(p, "int")) {
+    addAcquiredStat(p, "int", 1);
     logMsg += ",知力+1";
+  }
+  if (jobName === "行商" && result === "大成功") {
+    incrementTitleCounter(p, TITLE_COUNTER_KEYS.TRADING_CRITICAL, 1, { getPermanentStat });
   }
 
   v.log(logMsg);
@@ -991,18 +1027,18 @@ function doMassage(p, v) {
   let logMsg;
 
   if (p.bodySex === "男") {
-    mc = calcJobMindCost("あんま", p.eth, p, v);
+    mc = calcJobMindCost("あんま", p.int, p, v);
     heal = calculateMassageHeal(p);
     logMsg = `${p.name}あんま:体力-${tc},メンタル-${mc}`;
     
     // ステータス上昇判定
-    if (Math.random() < 0.05) {
-      p.str++;
+    if (rollJobStatGrowth(p, "str")) {
+      addAcquiredStat(p, "str", 1);
       logMsg += ",筋力+1";
     }
-    if (Math.random() < 0.05) {
-      p.eth++;
-      logMsg += ",倫理+1";
+    if (rollJobStatGrowth(p, "int")) {
+      addAcquiredStat(p, "int", 1);
+      logMsg += ",知力+1";
     }
   } else {
     mc = calcJobMindCost("あんま", p.sexdr, p, v);
@@ -1010,12 +1046,12 @@ function doMassage(p, v) {
     logMsg = `${p.name}あんま:体力-${tc},メンタル-${mc}`;
     
     // ステータス上昇判定
-    if (Math.random() < 0.05) {
-      p.chr++;
+    if (rollJobStatGrowth(p, "chr")) {
+      addAcquiredStat(p, "chr", 1);
       logMsg += ",魅力+1";
     }
-    if (Math.random() < 0.05) {
-      p.sexdr++;
+    if (rollJobStatGrowth(p, "sexdr")) {
+      addAcquiredStat(p, "sexdr", 1);
       logMsg += ",好色+1";
     }
   }
@@ -1056,12 +1092,12 @@ function doMiko(p, v) {
   let logMsg = `${p.name}巫女:体力-${tc},メンタル-${mc},魔素+${manaGain}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.sexdr++;
+  if (rollJobStatGrowth(p, "sexdr")) {
+    addAcquiredStat(p, "sexdr", 1);
     logMsg += ",好色+1";
   }
 
@@ -1089,12 +1125,12 @@ function doBunny(p, v) {
   let logMsg = `${p.name}バニー:男性${affected}人の幸福+${happinessInc},メンタル+${mentalHeal},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.chr++;
+  if (rollJobStatGrowth(p, "chr")) {
+    addAcquiredStat(p, "chr", 1);
     logMsg += ",魅力+1";
   }
-  if (Math.random() < 0.05) {
-    p.sexdr++;
+  if (rollJobStatGrowth(p, "sexdr")) {
+    addAcquiredStat(p, "sexdr", 1);
     logMsg += ",好色+1";
   }
 
@@ -1107,8 +1143,9 @@ function doAlchemy(p, v) {
   p.hp = clampValue(p.hp-tc, 0, 100);
   p.mp = clampValue(p.mp-mc, 0, 100);
 
-  let fundsGain = calculateAlchemyYield(p);
-  let manaGain = calculateAlchemyYield(p);
+  const alchemyYield = calculateAlchemyYield(p);
+  let fundsGain = alchemyYield.funds;
+  let manaGain = alchemyYield.mana;
   
   v.funds = clampValue(v.funds + fundsGain, 0, 99999);
   v.mana = clampValue(v.mana + manaGain, 0, 99999);
@@ -1116,12 +1153,12 @@ function doAlchemy(p, v) {
   let logMsg = `${p.name}錬金:資金+${fundsGain},魔素+${manaGain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.mag++;
+  if (rollJobStatGrowth(p, "mag")) {
+    addAcquiredStat(p, "mag", 1);
     logMsg += ",魔力+1";
   }
-  if (Math.random() < 0.05) {
-    p.int++;
+  if (rollJobStatGrowth(p, "int")) {
+    addAcquiredStat(p, "int", 1);
     logMsg += ",知力+1";
   }
 
@@ -1130,7 +1167,7 @@ function doAlchemy(p, v) {
 
 function doCopyBook(p, v) {
   let tc = calcJobBodyCost("写本", p, v);
-  let mc = calcJobMindCost("写本", p.ind, p, v);
+  let mc = calcJobMindCost("写本", p.int, p, v);
   p.hp = clampValue(p.hp-tc, 0, 100);
   p.mp = clampValue(p.mp-mc, 0, 100);
 
@@ -1143,12 +1180,12 @@ function doCopyBook(p, v) {
   let logMsg = `${p.name}写本:資金+${fundsGain},技術+${techGain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.dex++;
-    logMsg += ",器用+1";
+  if (rollJobStatGrowth(p, "vit")) {
+    addAcquiredStat(p, "vit", 1);
+    logMsg += ",耐久+1";
   }
-  if (Math.random() < 0.05) {
-    p.int++;
+  if (rollJobStatGrowth(p, "int")) {
+    addAcquiredStat(p, "int", 1);
     logMsg += ",知力+1";
   }
 
@@ -1167,12 +1204,12 @@ function doWeaving(p, v) {
   let logMsg = `${p.name}機織り:資金+${fundsGain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.dex++;
+  if (rollJobStatGrowth(p, "dex")) {
+    addAcquiredStat(p, "dex", 1);
     logMsg += ",器用+1";
   }
-  if (Math.random() < 0.05) {
-    p.ind++;
+  if (rollJobStatGrowth(p, "ind")) {
+    addAcquiredStat(p, "ind", 1);
     logMsg += ",勤勉+1";
   }
 
@@ -1185,22 +1222,31 @@ function doBrewing(p, v) {
   p.hp = clampValue(p.hp-tc, 0, 100);
   p.mp = clampValue(p.mp-mc, 0, 100);
 
-  let brewingYield = calculateBrewingYield(p);
+  let brewingYield = calculateBrewingYield(p, v);
   let foodGain = brewingYield.food;
   let manaGain = brewingYield.mana;
-  
-  v.food = clampValue(v.food + foodGain, 0, 99999);
+
+  const foodResourceName = v.villageTraits.includes("ミダス") ? "資金" : "食料";
+  if (v.villageTraits.includes("ミダス")) {
+    v.funds = clampValue(v.funds + foodGain, 0, 99999);
+  } else {
+    addStoredResource(v, "food", foodGain);
+  }
   v.mana = clampValue(v.mana + manaGain, 0, 99999);
 
-  let logMsg = `${p.name}醸造:食料+${foodGain},魔素+${manaGain},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}醸造:${foodResourceName}+${foodGain},魔素+${manaGain},体力-${tc},メンタル-${mc}`;
   
   // ステータス上昇判定
-  if (Math.random() < 0.05) {
-    p.mag++;
+  if (rollJobStatGrowth(p, "mag")) {
+    addAcquiredStat(p, "mag", 1);
     logMsg += ",魔力+1";
   }
-  if (Math.random() < 0.05) {
-    p.ind++;
+  if (rollJobStatGrowth(p, "vit")) {
+    addAcquiredStat(p, "vit", 1);
+    logMsg += ",耐久+1";
+  }
+  if (rollJobStatGrowth(p, "ind")) {
+    addAcquiredStat(p, "ind", 1);
     logMsg += ",勤勉+1";
   }
 

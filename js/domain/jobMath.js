@@ -6,6 +6,7 @@ const WINTER_TRAIT = "冬";
 const SEASONAL_COST_MULTIPLIER = 1.2;
 // UI 予測ではランダム分岐の期待値を使う。実処理では成功判定後の値を渡す。
 const RANDOM_HARVEST_EXPECTED_BASE = 32;
+const IMPROVED_HARVEST_EXPECTED_BASE = 35;
 const MID_TEEN_TRAIT = "思春期";
 
 export const WORK_COST_TYPES = {
@@ -15,17 +16,15 @@ export const WORK_COST_TYPES = {
 };
 
 export const JOB_COST_TYPES = {
-  "学業": WORK_COST_TYPES.MENTAL,
-  "鍛錬": WORK_COST_TYPES.PHYSICAL,
   "農作業": WORK_COST_TYPES.PHYSICAL,
   "伐採": WORK_COST_TYPES.PHYSICAL,
   "狩猟": WORK_COST_TYPES.PHYSICAL,
   "漁": WORK_COST_TYPES.PHYSICAL,
   "採集": WORK_COST_TYPES.BALANCED,
   "内職": WORK_COST_TYPES.MENTAL,
-  "魔法細工": WORK_COST_TYPES.MENTAL,
   "研究": WORK_COST_TYPES.MENTAL,
-  "教育": WORK_COST_TYPES.MENTAL,
+  "丁稚": WORK_COST_TYPES.BALANCED,
+  "研究助手": WORK_COST_TYPES.MENTAL,
   "警備": WORK_COST_TYPES.PHYSICAL,
   "看護": WORK_COST_TYPES.BALANCED,
   "踊り子": WORK_COST_TYPES.BALANCED,
@@ -47,7 +46,7 @@ const AUTUMN_JOBS = ["農作業", "採集"];
 const COLD_SUMMER_JOBS = ["農作業", "伐採"];
 const GREEN_THUMB_JOBS = ["農作業", "伐採", "採集"];
 const FLYING_JOBS = ["狩猟", "採集"];
-const YOUTH_WORK_JOBS = ["農作業", "伐採", "狩猟", "漁", "採集", "内職"];
+const YOUTH_WORK_JOBS = ["農作業", "伐採", "狩猟", "漁", "採集", "内職", "丁稚", "研究助手"];
 
 function defaultRandomFloat(min, max) {
   return Math.random() * (max - min) + min;
@@ -85,10 +84,14 @@ export function getBodyCostMultiplier(person, village) {
 }
 
 export function getMindCostMultiplier(person, village) {
+  let mul = 1;
   if (hasMindTrait(person, COLD_SENSITIVE_TRAIT) && hasVillageTrait(village, WINTER_TRAIT)) {
-    return SEASONAL_COST_MULTIPLIER;
+    mul *= SEASONAL_COST_MULTIPLIER;
   }
-  return 1;
+  if (hasMindTrait(person, WORKAHOLIC_TRAIT)) {
+    mul *= 0.5;
+  }
+  return mul;
 }
 
 export function estimateBodyCost(base, vit, person = null, village = null) {
@@ -97,9 +100,6 @@ export function estimateBodyCost(base, vit, person = null, village = null) {
 }
 
 export function estimateMindCost(base, statValue, person = null, village = null) {
-  if (hasMindTrait(person, WORKAHOLIC_TRAIT)) {
-    return 0;
-  }
   const cost = statCostBase(base, statValue) * getMindCostMultiplier(person, village);
   return Math.round(cost);
 }
@@ -110,9 +110,6 @@ export function rollBodyCost(base, vit, person = null, village = null, randomFlo
 }
 
 export function rollMindCost(base, statValue, person = null, village = null, randomFloat = defaultRandomFloat) {
-  if (hasMindTrait(person, WORKAHOLIC_TRAIT)) {
-    return 0;
-  }
   const cost = statCostBase(base, statValue) * getMindCostMultiplier(person, village);
   return Math.round(cost * randomFloat(0.9, 1.1));
 }
@@ -125,6 +122,7 @@ export function getLaborYieldMultiplier(job, person = null, village = null) {
   let mul = 1;
   if (hasVillageTrait(village, "豊穣") && ABUNDANCE_JOBS.includes(job)) mul *= 2;
   if (hasVillageTrait(village, "秋") && AUTUMN_JOBS.includes(job)) mul *= 1.5;
+  if (hasVillageTrait(village, "夏") && job === "漁") mul *= 1.2;
   if (hasVillageTrait(village, "冬") && job === "農作業") mul *= 0.5;
   if (hasVillageTrait(village, "冬") && job === "狩猟") mul *= 1.2;
   if (hasVillageTrait(village, "冷夏") && COLD_SUMMER_JOBS.includes(job)) mul *= 0.5;
@@ -143,10 +141,10 @@ export function getLaborYieldMultiplier(job, person = null, village = null) {
   if (hasBodyTrait(person, "月の加護") && job === "狩猟") mul *= 1.2;
   if (hasBodyTrait(person, "夜目") && job === "狩猟") mul *= 1.2;
   if (hasBodyTrait(person, "大地の加護") && job === "農作業") mul *= 1.2;
-  if (hasBodyTrait(person, "水中呼吸") && job === "漁") mul *= 1.5;
-  if (hasMindTrait(person, "森の知恵") && job === "採集") mul *= 1.5;
-  if (hasMindTrait(person, "海の知恵") && job === "漁") mul *= 1.5;
-  if ((person?.hobby === "ハンティング" || person?.hobby === "狩猟") && job === "狩猟") mul *= 1.2;
+  if (hasBodyTrait(person, "水中呼吸") && job === "漁") mul *= 2;
+  if (hasMindTrait(person, "森の知恵") && job === "採集") mul *= 1.2;
+  if (hasMindTrait(person, "海の知恵") && job === "漁") mul *= 1.2;
+  if ((person?.hobby === "ハンティング" || person?.hobby === "狩猟") && job === "狩猟") mul *= 1.1;
   if (hasMindTrait(person, MID_TEEN_TRAIT) && YOUTH_WORK_JOBS.includes(job)) mul *= 0.8;
   return mul;
 }
@@ -161,13 +159,22 @@ export function calculateLumberYield(person, village) {
   return Math.round(base * getLaborYieldMultiplier("伐採", person, village));
 }
 
-export function calculateHuntYield(person, village, baseValue = RANDOM_HARVEST_EXPECTED_BASE) {
-  const base = (Number(baseValue) || 0) * statProduct(person, "str", "cou");
+function getExpectedHarvestBase(job, village) {
+  const flags = village?.buildingFlags || {};
+  if (job === "狩猟" && flags.hasHuntingLodge) return IMPROVED_HARVEST_EXPECTED_BASE;
+  if (job === "漁" && flags.hasDock) return IMPROVED_HARVEST_EXPECTED_BASE;
+  return RANDOM_HARVEST_EXPECTED_BASE;
+}
+
+export function calculateHuntYield(person, village, baseValue = null) {
+  const resolvedBaseValue = baseValue ?? getExpectedHarvestBase("狩猟", village);
+  const base = (Number(resolvedBaseValue) || 0) * statProduct(person, "str", "cou");
   return Math.round(base * getLaborYieldMultiplier("狩猟", person, village));
 }
 
-export function calculateFishYield(person, village, baseValue = RANDOM_HARVEST_EXPECTED_BASE) {
-  const base = (Number(baseValue) || 0) * statProduct(person, "vit", "cou");
+export function calculateFishYield(person, village, baseValue = null) {
+  const resolvedBaseValue = baseValue ?? getExpectedHarvestBase("漁", village);
+  const base = (Number(resolvedBaseValue) || 0) * statProduct(person, "vit", "cou");
   return Math.round(base * getLaborYieldMultiplier("漁", person, village));
 }
 
@@ -181,13 +188,13 @@ export function calculateGatherYield(person, village, materialBase = null) {
 }
 
 export function calculateHandiworkYield(person, village) {
-  const base = 32 * statProduct(person, "dex", "ind");
+  const base = 30 * statProduct(person, "dex", "ind");
   return Math.round(base * getLaborYieldMultiplier("内職", person, village));
 }
 
-export function calculateResearchYield(person, village) {
+export function calculateResearchYield(person, village, job = "研究") {
   const libraryMultiplier = village?.buildingFlags?.hasLibrary ? 1.2 : 1;
-  return Math.round((30 * statProduct(person, "int", "mag")) * libraryMultiplier);
+  return Math.round((30 * statProduct(person, "int", "mag")) * libraryMultiplier * getLaborYieldMultiplier(job, person, village));
 }
 
 export function calculateGuardYield(person) {
@@ -198,12 +205,21 @@ export function calculateGuardYield(person) {
   return Math.max(1, amount);
 }
 
-export function calculateTradingYield(person) {
-  return Math.round(34 * statProduct(person, "chr", "int"));
+export function calculateTradingYield(person, baseValue = RANDOM_HARVEST_EXPECTED_BASE) {
+  return calculateTradingLikeYield(person, "行商", baseValue);
 }
 
-export function calculateMagicCraftYield(person) {
-  return Math.round(38 * statProduct(person, "dex", "mag"));
+export function calculateApprenticeYield(person, baseValue = RANDOM_HARVEST_EXPECTED_BASE) {
+  return calculateTradingLikeYield(person, "丁稚", baseValue);
+}
+
+export function calculateResearchAssistantYield(person, village) {
+  return calculateResearchYield(person, village, "研究助手");
+}
+
+function calculateTradingLikeYield(person, job, baseValue) {
+  const base = (Number(baseValue) || 0) * statProduct(person, "chr", "int");
+  return Math.round(base * getLaborYieldMultiplier(job, person, null));
 }
 
 export function calculateNurseHeal(person, village) {
@@ -258,12 +274,12 @@ export function calculatePoetHappiness(person, village) {
 
 export function calculateMassageHeal(person) {
   return person?.bodySex === "男"
-    ? Math.round(30 * statProduct(person, "str", "eth"))
+    ? Math.round(30 * statProduct(person, "str", "int"))
     : Math.round(30 * statProduct(person, "chr", "sexdr"));
 }
 
 export function calculateMikoMana(person) {
-  return Math.round(18 * statTripleProduct(person, "chr", "mag", "sexdr"));
+  return Math.round(12 * statTripleProduct(person, "chr", "mag", "sexdr"));
 }
 
 export function calculateBunnySupport(person) {
@@ -271,11 +287,15 @@ export function calculateBunnySupport(person) {
 }
 
 export function calculateAlchemyYield(person) {
-  return Math.round(22 * statProduct(person, "mag", "int"));
+  const base = statProduct(person, "mag", "int");
+  return {
+    funds: Math.round(20 * base),
+    mana: Math.round(8 * base),
+  };
 }
 
 export function calculateCopyBookYield(person) {
-  return Math.round(20 * statProduct(person, "dex", "int"));
+  return Math.round(20 * statProduct(person, "vit", "int"));
 }
 
 export function calculateWeavingYield(person) {
@@ -289,9 +309,22 @@ export function calculateWeavingYield(person) {
   return amount;
 }
 
-export function calculateBrewingYield(person) {
+export function calculateBrewingYield(person, village) {
+  const base = statTripleProduct(person, "mag", "vit", "ind");
+  const manaMul = getLaborYieldMultiplier("醸造", person, village);
+  const foodMul = getBrewingFoodYieldMultiplier(person, village);
   return {
-    food: Math.round(34 * statProduct(person, "mag", "ind")),
-    mana: Math.round(8 * statProduct(person, "mag", "ind")),
+    food: Math.round(20 * base * foodMul),
+    mana: Math.round(6 * base * manaMul),
   };
+}
+
+function getBrewingFoodYieldMultiplier(person, village) {
+  let mul = getLaborYieldMultiplier("醸造", person, village);
+  if (hasVillageTrait(village, "豊穣")) mul *= 2;
+  if (hasVillageTrait(village, "秋")) mul *= 1.5;
+  if (hasBodyTrait(person, "緑の指")) mul *= 1.2;
+  if (hasBodyTrait(person, "大地の巫女")) mul *= 1.5;
+  if (hasBodyTrait(person, "大地の加護")) mul *= 1.2;
+  return mul;
 }
