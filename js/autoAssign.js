@@ -25,94 +25,94 @@ import {
 const JOB_NONE = ACTION_NONE;
 const JOB_REST = ACTION_REST;
 const JOB_LEISURE = ACTION_LEISURE;
-const JOB_HEAL = "\u7642\u990a";
-const JOB_LAST_MOMENTS = "\u81e8\u7d42";
-const TRAIT_PACIFIST = "\u975e\u6226\u4e3b\u7fa9";
+const JOB_HEAL = "療養";
+const JOB_LAST_MOMENTS = "臨終";
+const TRAIT_PACIFIST = "非戦主義";
 const JOB_FOOD_SET = new Set([
-  "\u8fb2\u4f5c\u696d",
-  "\u72e9\u731f",
-  "\u6f01",
-  "\u63a1\u96c6",
-  "\u91b8\u9020"
+  "農作業",
+  "狩猟",
+  "漁",
+  "採集",
+  "醸造"
 ]);
 const JOB_FOOD_PRIORITY = {
-  "\u8fb2\u4f5c\u696d": 1.15,
-  "\u63a1\u96c6": 1.05,
-  "\u91b8\u9020": 1.0,
-  "\u72e9\u731f": 0.82,
-  "\u6f01": 0.8
+  "農作業": 1.15,
+  "採集": 1.05,
+  "醸造": 1.0,
+  "狩猟": 0.82,
+  "漁": 0.8
 };
 const JOB_MATERIAL_SET = new Set([
-  "\u4f10\u63a1",
-  "\u63a1\u96c6"
+  "伐採",
+  "採集"
 ]);
 const JOB_FUNDS_SET = new Set([
-  "\u5185\u8077",
-  "\u884c\u5546",
-  "\u4e01\u7a1a",
-  "\u932c\u91d1\u8853",
-  "\u5199\u672c",
-  "\u6a5f\u7e54\u308a"
+  "内職",
+  "行商",
+  "丁稚",
+  "錬金術",
+  "写本",
+  "機織り"
 ]);
 const JOB_RECOVERY_SET = new Set([
-  "\u770b\u8b77",
-  "\u3042\u3093\u307e"
+  "看護",
+  "あんま"
 ]);
 const RECOVERY_ASSIGNMENT_SET = new Set([
-  "\u7642\u990a",
-  "\u4f11\u990a",
-  "\u4f59\u6687",
-  "\u770b\u8b77",
-  "\u3042\u3093\u307e"
+  "療養",
+  "休養",
+  "余暇",
+  "看護",
+  "あんま"
 ]);
 
 const JOB_WEIGHTS = {
-  "\u8fb2\u4f5c\u696d": { vit: 2, ind: 2 },
-  "\u4f10\u63a1": { str: 2, ind: 2 },
-  "\u72e9\u731f": { str: 2, cou: 2 },
-  "\u6f01": { vit: 2, cou: 2 },
-  "\u63a1\u96c6": { dex: 2, int: 2 },
-  "\u5185\u8077": { dex: 2, ind: 2 },
-  "\u7814\u7a76": { int: 2, mag: 2 },
-  "\u7814\u7a76\u52a9\u624b": { int: 2, mag: 2 },
-  "\u8b66\u5099": { str: 2, eth: 2 },
-  "\u770b\u8b77": { mag: 2, eth: 2 },
-  "\u8e0a\u308a\u5b50": { chr: 2, sexdr: 2 },
-  "\u8a69\u4eba": { chr: 4 },
-  "\u30b7\u30b9\u30bf\u30fc": { chr: 2, eth: 2 },
-  "\u795e\u5b98": { chr: 2, eth: 2 },
-  "\u884c\u5546": { chr: 2, int: 2 },
-  "\u4e01\u7a1a": { chr: 2, int: 2 },
-  "\u3042\u3093\u307e": { str: 1, dex: 1, chr: 1, sexdr: 1 },
-  "\u5deb\u5973": { chr: 1.5, mag: 1.5, sexdr: 1.5 },
-  "\u30d0\u30cb\u30fc": { chr: 2, sexdr: 2 },
-  "\u932c\u91d1\u8853": { int: 2, mag: 2 },
-  "\u5199\u672c": { vit: 2, int: 2 },
-  "\u6a5f\u7e54\u308a": { dex: 2, ind: 2 },
-  "\u91b8\u9020": { mag: 2, vit: 2, ind: 2 }
+  "農作業": { vit: 2, ind: 2 },
+  "伐採": { str: 2, ind: 2 },
+  "狩猟": { str: 2, cou: 2 },
+  "漁": { vit: 2, cou: 2 },
+  "採集": { dex: 2, int: 2 },
+  "内職": { dex: 2, ind: 2 },
+  "研究": { int: 2, mag: 2 },
+  "研究助手": { int: 2, mag: 2 },
+  "警備": { str: 2, eth: 2 },
+  "看護": { mag: 2, eth: 2 },
+  "踊り子": { chr: 2, sexdr: 2 },
+  "詩人": { chr: 4 },
+  "シスター": { chr: 2, eth: 2 },
+  "神官": { chr: 2, eth: 2 },
+  "行商": { chr: 2, int: 2 },
+  "丁稚": { chr: 2, int: 2 },
+  "あんま": { str: 1, dex: 1, chr: 1, sexdr: 1 },
+  "巫女": { chr: 1.5, mag: 1.5, sexdr: 1.5 },
+  "バニー": { chr: 2, sexdr: 2 },
+  "錬金術": { int: 2, mag: 2 },
+  "写本": { vit: 2, int: 2 },
+  "機織り": { dex: 2, ind: 2 },
+  "醸造": { mag: 2, vit: 2, ind: 2 }
 };
 
 const JOB_BASE_SCORES = {
-  "\u8fb2\u4f5c\u696d": 20,
-  "\u4f10\u63a1": 20,
-  "\u72e9\u731f": 14,
-  "\u6f01": 14,
-  "\u63a1\u96c6": 14,
-  "\u5185\u8077": 8,
-  "\u7814\u7a76": -8,
-  "\u7814\u7a76\u52a9\u624b": -8,
-  "\u884c\u5546": 8,
-  "\u4e01\u7a1a": 8,
-  "\u932c\u91d1\u8853": 0,
-  "\u5199\u672c": 8,
-  "\u6a5f\u7e54\u308a": 8,
-  "\u91b8\u9020": 14,
-  "\u8b66\u5099": -8,
-  "\u770b\u8b77": 8,
-  "\u8e0a\u308a\u5b50": -8,
-  "\u30b7\u30b9\u30bf\u30fc": -8,
-  "\u3042\u3093\u307e": 8,
-  "\u30d0\u30cb\u30fc": 8
+  "農作業": 20,
+  "伐採": 20,
+  "狩猟": 14,
+  "漁": 14,
+  "採集": 14,
+  "内職": 8,
+  "研究": -8,
+  "研究助手": -8,
+  "行商": 8,
+  "丁稚": 8,
+  "錬金術": 0,
+  "写本": 8,
+  "機織り": 8,
+  "醸造": 14,
+  "警備": -8,
+  "看護": 8,
+  "踊り子": -8,
+  "シスター": -8,
+  "あんま": 8,
+  "バニー": 8
 };
 
 function firstAvailable(candidates, table) {
@@ -128,7 +128,7 @@ function estimateMonthlyFoodCost(village) {
 
 function estimateMonthlyMaterialCost(village) {
   const villagers = Array.isArray(village.villagers) ? village.villagers : [];
-  return village.villageTraits.includes("\u51ac")
+  return village.villageTraits.includes("冬")
     ? villagers.reduce((sum, person) => sum + getVillagerWinterMaterialConsumption(person), 0)
     : 0;
 }
@@ -204,40 +204,40 @@ function hasTrait(person, trait) {
 function getJobTraitMultiplier(person, job, village) {
   let mul = 1;
   const villageTraits = Array.isArray(village?.villageTraits) ? village.villageTraits : [];
-  if (villageTraits.includes("豊穣") && ["農作業", "伐採", "狩猟", "漁", "採集", "醸造"].includes(job)) mul *= 2;
-  if (villageTraits.includes("秋") && ["農作業", "採集", "醸造"].includes(job)) mul *= 1.5;
+  if (villageTraits.includes("豊穣") && ["耕作", "伐採", "狩獵", "漁", "採集", "醸造"].includes(job)) mul *= 2;
+  if (villageTraits.includes("秋") && ["耕作", "採集", "醸造"].includes(job)) mul *= 1.5;
   if (villageTraits.includes("夏") && job === "漁") mul *= 1.2;
-  if (villageTraits.includes("冬") && job === "農作業") mul *= 0.5;
-  if (villageTraits.includes("冬") && job === "狩猟") mul *= 1.2;
-  if (villageTraits.includes("冷夏") && ["農作業", "伐採"].includes(job)) mul *= 0.5;
+  if (villageTraits.includes("冬") && job === "耕作") mul *= 0.5;
+  if (villageTraits.includes("冬") && job === "狩獵") mul *= 1.2;
+  if (villageTraits.includes("冷夏") && ["耕作", "伐採"].includes(job)) mul *= 0.5;
 
-  if (hasTrait(person, "緑の指") && ["農作業", "伐採", "採集", "醸造"].includes(job)) mul *= 1.2;
-  if (hasTrait(person, "大地の巫女") && ["農作業", "醸造"].includes(job)) mul *= 1.5;
-  if (hasTrait(person, "大地の加護") && ["農作業", "醸造"].includes(job)) mul *= 1.2;
-  if (hasTrait(person, "熟練農夫") && job === "農作業") mul *= 1.3;
-  if (hasTrait(person, "達人農夫") && job === "農作業") mul *= 1.5;
+  if (hasTrait(person, "緑の指") && ["耕作", "伐採", "採集", "醸造"].includes(job)) mul *= 1.2;
+  if (hasTrait(person, "大地の巫女") && ["耕作", "醸造"].includes(job)) mul *= 1.5;
+  if (hasTrait(person, "大地の加護") && ["耕作", "醸造"].includes(job)) mul *= 1.2;
+  if (hasTrait(person, "熟練農夫") && job === "耕作") mul *= 1.3;
+  if (hasTrait(person, "達人農夫") && job === "耕作") mul *= 1.5;
   if (hasTrait(person, "熟練木樵") && job === "伐採") mul *= 1.3;
   if (hasTrait(person, "達人木樵") && job === "伐採") mul *= 1.5;
-  if (hasTrait(person, "熟練狩人") && job === "狩猟") mul *= 1.3;
-  if (hasTrait(person, "達人狩人") && job === "狩猟") mul *= 1.5;
-  if (hasTrait(person, "熟練漁師") && job === "漁") mul *= 1.3;
-  if (hasTrait(person, "達人漁師") && job === "漁") mul *= 1.5;
-  if (hasTrait(person, "飛行") && ["狩猟", "採集"].includes(job)) mul *= 1.2;
-  if (hasTrait(person, "月の巫女") && job === "狩猟") mul *= 1.5;
-  if (hasTrait(person, "月の加護") && job === "狩猟") mul *= 1.2;
-  if (hasTrait(person, "夜目") && ["警備", "狩猟"].includes(job)) mul *= 1.2;
+  if (hasTrait(person, "熟練狩人") && job === "狩獵") mul *= 1.3;
+  if (hasTrait(person, "達人狩人") && job === "狩獵") mul *= 1.5;
+  if (hasTrait(person, "熟練漁人") && job === "漁") mul *= 1.3;
+  if (hasTrait(person, "達人漁人") && job === "漁") mul *= 1.5;
+  if (hasTrait(person, "飛行") && ["狩獵", "採集"].includes(job)) mul *= 1.2;
+  if (hasTrait(person, "月の巫女") && job === "狩獵") mul *= 1.5;
+  if (hasTrait(person, "月の加護") && job === "狩獵") mul *= 1.2;
+  if (hasTrait(person, "夜目") && ["警備", "狩獵"].includes(job)) mul *= 1.2;
   if (hasTrait(person, "水中呼吸") && job === "漁") mul *= 2;
   if (hasTrait(person, "森の知恵") && job === "採集") mul *= 1.2;
   if (hasTrait(person, "海の知恵") && job === "漁") mul *= 1.2;
-  if ((person.hobby === "ハンティング" || person.hobby === "狩猟") && job === "狩猟") mul *= 1.1;
-  if (hasTrait(person, "思春期") && ["農作業", "伐採", "狩猟", "漁", "採集", "内職", "丁稚", "研究助手"].includes(job)) mul *= 0.8;
+  if ((person.hobby === "ハンティング" || person.hobby === "狩獵") && job === "狩獵") mul *= 1.1;
+  if (hasTrait(person, "思春期") && ["耕作", "伐採", "狩獵", "漁", "採集", "内職", "丁稚", "研究助手"].includes(job)) mul *= 0.8;
   return mul;
 }
 
 function getJobWeights(person, job) {
-  if (job === "\u3042\u3093\u307e") {
-    if (person.bodySex === "\u7537") return { str: 2, int: 2 };
-    if (person.bodySex === "\u5973") return { chr: 2, sexdr: 2 };
+  if (job === "あんま") {
+    if (person.bodySex === "男") return { str: 2, int: 2 };
+    if (person.bodySex === "女") return { chr: 2, sexdr: 2 };
   }
   return JOB_WEIGHTS[job];
 }
@@ -602,7 +602,7 @@ export function autoAssignRaidActions(village) {
   let shooters = 0;
   let trapMakers = 0;
   let nonParticipants = 0;
-  const targets = Array.isArray(village.villagers) ? village.villagers : [];
+  const targets = Array.isArray(village.villagers.filter(person => !person.assignmentLocked)) ? village.villagers.filter(person => !person.assignmentLocked) : []
   const raidAssignments = buildRaidAssignments(village, targets);
 
   targets.forEach(person => {

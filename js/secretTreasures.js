@@ -226,7 +226,7 @@ export const SECRET_TREASURES = [
   {
     id: "abundance_horn",
     name: "豊穣の角",
-    desc: "豊穣の奇跡と同じ効果。今月のみ農作業・伐採・狩猟・漁・採集の成果と醸造の食料獲得を2倍にする。",
+    desc: "豊穣の奇跡と同じ効果。今月のみ耕作・伐採・狩獵・捕魚・採集の成果と醸造の食料獲得を2倍にする。",
     sellPrice: SECRET_TREASURE_SELL_PRICES.abundance_horn,
     use: applyAbundance
   },

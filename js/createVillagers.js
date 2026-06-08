@@ -886,7 +886,7 @@ export function createRandomVisitor(existingNames = [], forcedType = null, villa
   if (visitorType.type === "棄民") {
     // 特別な精神特性をランダムで追加
     const specialTraits = [
-      "達人農夫", "達人木樵", "達人狩人", "達人漁師", 
+      "達人農夫", "達人木樵", "達人狩人", "達人漁人", 
       "森の知恵", "海の知恵", "歴戦"
     ];
     const randomTrait = specialTraits[Math.floor(Math.random() * specialTraits.length)];

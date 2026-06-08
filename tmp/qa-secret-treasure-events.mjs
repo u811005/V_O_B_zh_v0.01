@@ -31,10 +31,10 @@ const village = {
   buildingFlags: {},
   secretTreasures: [],
   villagers: [
-    makeWorker("農夫A", "農作業"),
-    makeWorker("農夫B", "農作業"),
+    makeWorker("農夫A", "耕作"),
+    makeWorker("農夫B", "耕作"),
     makeWorker("醸造家", "醸造"),
-    makeWorker("漁師", "漁")
+    makeWorker("漁人", "捕魚")
   ],
   log(message) {
     logs.push(String(message));

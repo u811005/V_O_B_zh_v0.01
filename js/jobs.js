@@ -242,17 +242,17 @@ function doJobAction(p, v, secretTreasureFlags = null) {
     case "お手伝い":
       doHelpJob(p, v);
       break;
-    case "農作業":
+    case "耕作":
       doFarm(p, v);
       if (secretTreasureFlags) secretTreasureFlags.field = true;
       break;
     case "伐採":
       doLumber(p, v);
       break;
-    case "狩猟":
+    case "狩獵":
       doHunt(p, v);
       break;
-    case "漁":
+    case "捕魚":
       doFish(p, v);
       if (secretTreasureFlags) secretTreasureFlags.fishing = true;
       break;
@@ -445,8 +445,8 @@ function doHelpJob(p, v) {
 }
 
 function doFarm(p, v) {
-  let tc=calcJobBodyCost("農作業", p, v);
-  let mc=calcJobMindCost("農作業", p.ind, p, v);
+  let tc=calcJobBodyCost("耕作", p, v);
+  let mc=calcJobMindCost("耕作", p.ind, p, v);
   p.hp=clampValue(p.hp-tc,0,100);
   p.mp=clampValue(p.mp-mc,0,100);
 
@@ -461,12 +461,12 @@ function doFarm(p, v) {
     addStoredResource(v, "food", amt);
   }
 
-  let logMsg = `${p.name}農作業:${resourceLabel}+${amt},体力-${tc},メンタル-${mc}`;
+  let logMsg = `${p.name}耕作:${resourceLabel}+${amt},体力-${tc},メンタル-${mc}`;
 
   // ステータス上昇判定
   if (rollJobStatGrowth(p, "vit")) {
     addAcquiredStat(p, "vit", 1);
-    logMsg += ",耐久+1";
+    logMsg += ",耐力+1";
   }
   if (rollJobStatGrowth(p, "ind")) {
     addAcquiredStat(p, "ind", 1);
@@ -523,8 +523,8 @@ function doLumber(p, v) {
 }
 
 function doHunt(p, v) {
-  let tc=calcJobBodyCost("狩猟", p, v);
-  let mc=calcJobMindCost("狩猟", p.cou, p, v);
+  let tc=calcJobBodyCost("狩獵", p, v);
+  let mc=calcJobMindCost("狩獵", p.cou, p, v);
   p.hp=clampValue(p.hp-tc,0,100);
   p.mp=clampValue(p.mp-mc,0,100);
 
@@ -550,10 +550,10 @@ function doHunt(p, v) {
   // ミダスの奇跡の効果
   if (v.villageTraits.includes("ミダス")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
-    v.log(`${p.name}狩猟:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}狩獵:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
     addStoredResource(v, "food", amt);
-    v.log(`${p.name}狩猟:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}狩獵:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
   }
   if (result === "大成功") {
     incrementTitleCounter(p, TITLE_COUNTER_KEYS.HUNT_CRITICAL, 1, { getPermanentStat });
@@ -562,29 +562,29 @@ function doHunt(p, v) {
   // ステータス上昇判定
   if (rollJobStatGrowth(p, "str")) {
     addAcquiredStat(p, "str", 1);
-    v.log(`${p.name}狩猟:${result} 筋力+1`);
+    v.log(`${p.name}狩獵:${result} 筋力+1`);
   }
   if (rollJobStatGrowth(p, "cou")) {
     addAcquiredStat(p, "cou", 1);
-    v.log(`${p.name}狩猟:${result} 勇気+1`);
+    v.log(`${p.name}狩獵:${result} 勇気+1`);
   }
 
   // 特性取得判定
   if (p.spiritAge >= 30 && Math.random() < 0.01 && !p.mindTraits.includes("熟練狩人") && !p.mindTraits.includes("達人狩人")) {
     p.mindTraits.push("熟練狩人");
-    v.log(`${p.name}狩猟:${result} 特性[熟練狩人]獲得`);
+    v.log(`${p.name}狩獵:${result} 特性[熟練狩人]獲得`);
   }
   if (p.mindTraits.includes("熟練狩人") && Math.random() < 0.01) {
     p.mindTraits = p.mindTraits.filter(t => t !== "熟練狩人");
     p.mindTraits.push("達人狩人");
-    v.log(`${p.name}狩猟:${result} 特性[達人狩人]獲得`);
+    v.log(`${p.name}狩獵:${result} 特性[達人狩人]獲得`);
   }
 
 }
 
 function doFish(p, v) {
-  let tc=calcJobBodyCost("漁", p, v);
-  let mc=calcJobMindCost("漁", p.cou, p, v);
+  let tc=calcJobBodyCost("捕魚", p, v);
+  let mc=calcJobMindCost("捕魚", p.cou, p, v);
   p.hp=clampValue(p.hp-tc,0,100);
   p.mp=clampValue(p.mp-mc,0,100);
 
@@ -610,10 +610,10 @@ function doFish(p, v) {
   // ミダスの奇跡の効果
   if (v.villageTraits.includes("ミダス")) {
     v.funds = clampValue(v.funds+amt, 0, 99999);
-    v.log(`${p.name}漁:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}捕魚:${result} 資金+${amt},体力-${tc},メンタル-${mc}`);
   } else {
     addStoredResource(v, "food", amt);
-    v.log(`${p.name}漁:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
+    v.log(`${p.name}捕魚:${result} 食料+${amt},体力-${tc},メンタル-${mc}`);
   }
   if (result === "大成功") {
     incrementTitleCounter(p, TITLE_COUNTER_KEYS.FISH_CRITICAL, 1, { getPermanentStat });
@@ -622,26 +622,26 @@ function doFish(p, v) {
   // ステータス上昇判定
   if (rollJobStatGrowth(p, "vit")) {
     addAcquiredStat(p, "vit", 1);
-    v.log(`${p.name}漁:${result} 耐久+1`);
+    v.log(`${p.name}捕魚:${result} 耐力+1`);
   }
   if (rollJobStatGrowth(p, "cou")) {
     addAcquiredStat(p, "cou", 1);
-    v.log(`${p.name}漁:${result} 勇気+1`);
+    v.log(`${p.name}捕魚:${result} 勇気+1`);
   }
 
   // 特性取得判定
   if (p.int >= 20 && Math.random() < 0.03 && !p.mindTraits.includes("海の知恵")) {
     p.mindTraits.push("海の知恵");
-    v.log(`${p.name}漁:${result} 特性[海の知恵]獲得`);
+    v.log(`${p.name}捕魚:${result} 特性[海の知恵]獲得`);
   }
-  if (p.spiritAge >= 30 && Math.random() < 0.01 && !p.mindTraits.includes("熟練漁師") && !p.mindTraits.includes("達人漁師")) {
-    p.mindTraits.push("熟練漁師");
-    v.log(`${p.name}漁:${result} 特性[熟練漁師]獲得`);
+  if (p.spiritAge >= 30 && Math.random() < 0.01 && !p.mindTraits.includes("熟練漁人") && !p.mindTraits.includes("達人漁人")) {
+    p.mindTraits.push("熟練漁人");
+    v.log(`${p.name}捕魚:${result} 特性[熟練漁人]獲得`);
   }
-  if (p.mindTraits.includes("熟練漁師") && Math.random() < 0.01) {
-    p.mindTraits = p.mindTraits.filter(t => t !== "熟練漁師");
-    p.mindTraits.push("達人漁師");
-    v.log(`${p.name}漁:${result} 特性[達人漁師]獲得`);
+  if (p.mindTraits.includes("熟練漁人") && Math.random() < 0.01) {
+    p.mindTraits = p.mindTraits.filter(t => t !== "熟練漁人");
+    p.mindTraits.push("達人漁人");
+    v.log(`${p.name}捕魚:${result} 特性[達人漁人]獲得`);
   }
 
 }
@@ -1182,7 +1182,7 @@ function doCopyBook(p, v) {
   // ステータス上昇判定
   if (rollJobStatGrowth(p, "vit")) {
     addAcquiredStat(p, "vit", 1);
-    logMsg += ",耐久+1";
+    logMsg += ",耐力+1";
   }
   if (rollJobStatGrowth(p, "int")) {
     addAcquiredStat(p, "int", 1);
@@ -1243,7 +1243,7 @@ function doBrewing(p, v) {
   }
   if (rollJobStatGrowth(p, "vit")) {
     addAcquiredStat(p, "vit", 1);
-    logMsg += ",耐久+1";
+    logMsg += ",耐力+1";
   }
   if (rollJobStatGrowth(p, "ind")) {
     addAcquiredStat(p, "ind", 1);

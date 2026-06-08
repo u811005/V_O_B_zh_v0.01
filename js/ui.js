@@ -401,7 +401,7 @@ function formatRandomHarvestReward(resource, successAmount, criticalAmount, fail
 
 function getRandomHarvestRewardPart(person, village, action) {
   const resource = resourceName(village, "食料");
-  const calc = action === "漁" ? calculateFishYield : calculateHuntYield;
+  const calc = action === "捕魚" ? calculateFishYield : calculateHuntYield;
   return formatRandomHarvestReward(resource, calc(person, village, 30), calc(person, village, 70), calc(person, village, 0));
 }
 
@@ -492,19 +492,19 @@ function getTaskEstimateParts(person, task, village) {
     case "療養":
       parts = [`体力+${Math.floor(20 * (hasTrait(person, "老人") ? 0.6 : hasTrait(person, "中年") ? 0.8 : 1))}`, `メンタル+${Math.floor(20 * (hasTrait(person, "老人") ? 0.6 : hasTrait(person, "中年") ? 0.8 : 1))}`];
       break;
-    case "農作業":
+    case "耕作":
       gain = calculateFarmYield(person, village);
-      parts = [`${resourceName(village, "食料")}+${gain}`, `体力-${jobBodyCost("農作業", person, village)}`, `メンタル-${jobMindCost("農作業", "ind", person, village)}`];
+      parts = [`${resourceName(village, "食料")}+${gain}`, `体力-${jobBodyCost("耕作", person, village)}`, `メンタル-${jobMindCost("耕作", "ind", person, village)}`];
       break;
     case "伐採":
       gain = calculateLumberYield(person, village);
       parts = [`資材+${gain}`, `体力-${jobBodyCost("伐採", person, village)}`, `メンタル-${jobMindCost("伐採", "ind", person, village)}`];
       break;
-    case "狩猟":
-      parts = [getRandomHarvestRewardPart(person, village, "狩猟"), `体力-${jobBodyCost("狩猟", person, village)}`, `メンタル-${jobMindCost("狩猟", "cou", person, village)}`];
+    case "狩獵":
+      parts = [getRandomHarvestRewardPart(person, village, "狩獵"), `体力-${jobBodyCost("狩獵", person, village)}`, `メンタル-${jobMindCost("狩獵", "cou", person, village)}`];
       break;
-    case "漁":
-      parts = [getRandomHarvestRewardPart(person, village, "漁"), `体力-${jobBodyCost("漁", person, village)}`, `メンタル-${jobMindCost("漁", "cou", person, village)}`];
+    case "捕魚":
+      parts = [getRandomHarvestRewardPart(person, village, "捕魚"), `体力-${jobBodyCost("捕魚", person, village)}`, `メンタル-${jobMindCost("捕魚", "cou", person, village)}`];
       break;
     case "採集": {
       const gatherYield = calculateGatherYield(person, village);
@@ -618,10 +618,10 @@ const ACTION_DESCRIPTIONS = {
   "臨終": "危篤状態の固定行動。通常の作業には参加できない。",
   "遊び": "幼い精神が遊びを通じて心身を整える成長段階の行動。",
   "お手伝い": "幼い精神が村の作業を少し手伝い、食料と資材を得る行動。",
-  "農作業": "畑を耕し、村の食料を支える基礎的な生産行動。",
+  "耕作": "畑を耕し、村の食料を支える基礎的な生産行動。",
   "伐採": "木材を切り出し、建築や冬支度に必要な資材を得る生産行動。",
-  "狩猟": "野に出て、危険を伴いながら食料を得る行動。",
-  "漁": "水辺で食料を得る行動。",
+  "狩獵": "野に出て、危険を伴いながら食料を得る行動。",
+  "捕魚": "水辺で食料を得る行動。",
   "採集": "野山から食料や資材を集める柔軟な生産行動。",
   "内職": "小さな手仕事で資金を得る生産系の行動。",
   "行商": "外部と取引し、成功すれば資金を得る行動。",
@@ -663,10 +663,10 @@ function getActionOptionTitle(person, action, village) {
 }
 
 const JOB_KEY_STATS = {
-  "農作業": "耐久×勤勉",
+  "耕作": "耐久×勤勉",
   "伐採": "筋力×勤勉",
-  "狩猟": "筋力×勇気",
-  "漁": "耐久×勇気",
+  "狩獵": "筋力×勇気",
+  "捕魚": "耐久×勇気",
   "採集": "器用×知力",
   "内職": "器用×勤勉",
   "研究": "魔力×知力",
